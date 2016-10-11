@@ -1,0 +1,35 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(0,0,0,0.1);
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 240px;
+  background: white;
+  text-decoration: none;
+}
+
+.root:hover {
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.logoWrapper {
+  display: flex;
+  flex: 1;
+  margin-bottom: 1em;
+  width: 100%;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-self: center;
+  width: 140px;
+  height: 140px;
+}
+
+.name {
+  text-align: center;
+  align-self: flex
+}

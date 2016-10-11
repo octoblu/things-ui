@@ -2,8 +2,9 @@ import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { getDevice } from 'redux-meshblu'
 import { connect } from 'react-redux'
-import Heading from 'zooid-heading'
 import Page from 'zooid-page'
+
+import ThingHeader from '../components/ThingHeader'
 
 import { getMeshbluConfig } from '../services/auth-service'
 
@@ -32,6 +33,7 @@ class Thing extends React.Component {
 
     return (
       <Page>
+        <ThingHeader thing={device} />
       </Page>
     )
   }

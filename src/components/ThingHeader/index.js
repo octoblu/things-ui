@@ -13,11 +13,13 @@ const defaultProps = {
 const ThingHeader = ({ thing }) => {
   if (_.isEmpty(thing)) return null
 
+  const { name, type } = thing
+
   return (
-    <div>
-      <Heading level={3}>Jason Thing</Heading>
-      <Heading level={5}>Fancy Type</Heading>
-    </div>
+    <header>
+      <Heading level={3}>{name}</Heading>
+      <Heading level={5}>{type}</Heading>
+    </header>
   )
 }
 
