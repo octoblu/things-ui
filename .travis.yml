@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+- '5'
+branches:
+  only:
+  - /^v[0-9]/
+env:
+  global: CDN=https://things-octoblu-com-static.octoblu.com
+after_success:
+- npm run coverage
+- npm run mocha:json
+- bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.octoblu.com/bash)
+before_deploy:
+- npm run build
+- export PKG_VERSION="$(node -e 'console.log(require("./package.json").version)')"
+- if [ -z "$PKG_VERSION" ]; then echo 'Missing PKG_VERSION env' && exit 1; fi
+- mkdir -p dpl_assets/v$PKG_VERSION
+- cp -r dist/* dpl_assets/v$PKG_VERSION
+deploy:
+- provider: s3
+  access_key_id: # access key id
+  secret_access_key: # make sure its secure
+  bucket: things-octoblu-com-static.octoblu.com
+  local_dir: dpl_assets
+  skip_cleanup: true
+  region: us-west-2
+  on:
+    tags: true

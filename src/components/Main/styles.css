@@ -1,0 +1,20 @@
+:local .main {
+  padding: 0 1em;
+}
+
+:local .appBarPrimaryLink {
+  text-decoration: none;
+  padding: 1em;
+}
+
+:local .appBarPrimaryLink,
+:local .appBarPrimaryLink:active,
+:local .appBarPrimaryLink:focus,
+:local .appBarPrimaryLink:hover {
+  color: #E9F2FB;
+}
+
+:local .appBarPrimaryLink:hover {
+  color: #fff;
+  background-color: rgba(0,0,0,0.1)
+}
