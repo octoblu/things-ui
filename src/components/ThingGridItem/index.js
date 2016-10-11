@@ -13,7 +13,7 @@ const defaultProps = {
   thing: null,
 }
 
-const ThingListItem = ({ thing }) => {
+const ThingGridItem = ({ thing }) => {
   if (_.isEmpty(thing)) return null
   if (_.isEmpty(thing.uuid)) return null
 
@@ -25,20 +25,14 @@ const ThingListItem = ({ thing }) => {
   }
 
   return (
-    <div className={styles.root}>
-      <input type="checkbox" className={styles.checkbox} />
+    <Link to={`/things/${uuid}`} className={styles.root}>
       <div className={styles.logoWrapper}>{thingLogo}</div>
-      <div className={styles.body}>
-        <Link to={`/things/${uuid}`} className={styles.name}>
-          {name || uuid}
-        </Link>
-        <div><span className={styles.tag}>Tag #1</span></div>
-      </div>
-    </div>
+      <div className={styles.name}>{name || 'no-name'}</div>
+    </Link>
   )
 }
 
-ThingListItem.propTypes    = propTypes
-ThingListItem.defaultProps = defaultProps
+ThingGridItem.propTypes    = propTypes
+ThingGridItem.defaultProps = defaultProps
 
-export default ThingListItem
+export default ThingGridItem
