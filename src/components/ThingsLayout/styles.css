@@ -1,0 +1,7 @@
+.root {
+  /*background: pink;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 960px;
+}

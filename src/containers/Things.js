@@ -1,11 +1,10 @@
-import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { search } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
 import { getMeshbluConfig } from '../services/auth-service'
 
-import ThingList from '../components/ThingList'
+import ThingsLayout from '../components/ThingsLayout'
 
 const propTypes = {
   search: PropTypes.func,
@@ -31,16 +30,7 @@ class Things extends React.Component {
   }
 
   render() {
-    const { devices, error, fetching } = this.props.things
-
-    if (fetching) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
-    if (_.isEmpty(devices)) return <div>No Things Found</div>
-
-
-    return (
-      <ThingList things={devices} />
-    )
+    return <ThingsLayout things={this.props.things} />
   }
 }
 

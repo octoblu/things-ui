@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import Page from 'zooid-page'
 
 import ThingListItem from '../ThingListItem'
 
@@ -19,7 +18,7 @@ const ThingList = ({ things }) => {
 
   const thingItems = _.map(things, thing => <ThingListItem thing={thing} key={thing.uuid} />)
 
-  return <Page className={styles.root} width="medium">{thingItems}</Page>
+  return <div className={styles.root}>{thingItems}</div>
 }
 
 ThingList.propTypes    = propTypes

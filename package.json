@@ -52,6 +52,7 @@
     "zooid-button": "^1.2.2",
     "zooid-device-icon": "^1.0.6",
     "zooid-heading": "^1.0.8",
+    "zooid-input": "^2.3.1",
     "zooid-page": "^3.0.0",
     "zooid-spinner": "^1.0.1",
     "zooid-ui": "^8.0.0"
