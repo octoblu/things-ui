@@ -21,10 +21,13 @@ const ThingsLayout = ({ things }) => {
   if (_.isEmpty(devices)) return <div>No Things Found</div>
 
   return (
-    <Page width="medium" className={styles.root}>
-      <ThingList things={devices} />
-      {/* <ThingListActions /> */}
-    </Page>
+    <div>
+      <div>Things</div>
+      <Page width="medium" className={styles.root}>
+        <ThingList things={devices} />
+        {/* <ThingListActions /> */}
+      </Page>
+    </div>
   )
 }
 

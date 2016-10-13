@@ -3,6 +3,8 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import DeviceImage from 'zooid-device-icon'
 
+import ThingName from '../ThingName'
+
 import styles from './styles.css'
 
 const propTypes = {
@@ -30,7 +32,7 @@ const ThingListItem = ({ thing }) => {
       <div className={styles.logoWrapper}>{thingLogo}</div>
       <div className={styles.body}>
         <Link to={`/things/${uuid}`} className={styles.name}>
-          {name || uuid}
+          <ThingName thing={thing} />
         </Link>
         <div><span className={styles.tag}>Tag #1</span></div>
       </div>

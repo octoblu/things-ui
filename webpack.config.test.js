@@ -26,6 +26,9 @@ module.exports = {
       config: path.join(__dirname, 'src', 'config', 'development')
     }
   },
+  node: {
+    fs: "empty"
+  },
   module: {
     loaders: [{
       test: /\.js$/,

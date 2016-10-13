@@ -36,6 +36,7 @@
     "atob": "^2.0.3",
     "browser-meshblu-http": "^5.4.0",
     "debug": "^2.2.0",
+    "json-schema-ref-parser": "^3.1.2",
     "lodash": "^4.16.4",
     "react": "^15.2.1",
     "react-cookie": "^0.4.8",
@@ -43,6 +44,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.6",
+    "react-schema-form": "^0.2.9",
     "redux": "^3.6.0",
     "redux-act": "^1.0.0",
     "redux-logger": "^2.7.0",
@@ -53,6 +55,7 @@
     "zooid-device-icon": "^1.0.6",
     "zooid-heading": "^1.0.8",
     "zooid-input": "^2.3.1",
+    "zooid-json-schema-editor": "^3.0.1",
     "zooid-page": "^3.0.0",
     "zooid-spinner": "^1.0.1",
     "zooid-ui": "^8.0.0"

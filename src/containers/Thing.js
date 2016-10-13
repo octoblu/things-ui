@@ -1,10 +1,10 @@
+import RefParser from 'json-schema-ref-parser'
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { getDevice } from 'redux-meshblu'
 import { connect } from 'react-redux'
-import Page from 'zooid-page'
 
-import ThingHeader from '../components/ThingHeader'
+import ThingLayout from '../components/ThingLayout'
 
 import { getMeshbluConfig } from '../services/auth-service'
 
@@ -15,26 +15,42 @@ const propTypes = {
 }
 
 class Thing extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      message: null,
+      form: null,
+    }
+  }
   componentDidMount() {
     const meshbluConfig = getMeshbluConfig()
     const { deviceUuid } = this.props.params
 
     this.props.getDevice(deviceUuid, meshbluConfig)
+    .then(({ payload }) => {
+      RefParser.dereference(payload.schemas)
+      .then((schemas) => {
+        this.setState({
+          form: schemas.form,
+          message: schemas.message,
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    })
   }
 
   render() {
-    const { device, error, fetching } = this.props.thing
-
-    if (fetching) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
-    if (_.isEmpty(device)) return <div>No Thing Found</div>
-
-    const { name, type, logo } = device
+    const { form, message } = this.state
 
     return (
-      <Page>
-        <ThingHeader thing={device} />
-      </Page>
+      <ThingLayout
+        formSchema={form}
+        messageSchema={message}
+        thing={this.props.thing}
+      />
     )
   }
 }
