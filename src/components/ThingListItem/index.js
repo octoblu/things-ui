@@ -26,8 +26,6 @@ const ThingListItem = ({ onThingSelection, selected, thing }) => {
 
   const { uuid, logo, type } = thing
 
-  console.log('SELECTED', selected)
-  
   return (
     <div className={styles.root}>
       <input

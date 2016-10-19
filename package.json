@@ -33,7 +33,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "async": "^2.1.2",
     "atob": "^2.0.3",
+    "bluebird": "^3.4.6",
     "browser-meshblu-http": "^5.4.0",
     "debug": "^2.2.0",
     "json-schema-ref-parser": "^3.1.2",

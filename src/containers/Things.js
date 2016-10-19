@@ -1,10 +1,12 @@
+import Promise from 'bluebird'
+import pluralize from 'pluralize'
 import React, { PropTypes } from 'react'
-import { search } from 'redux-meshblu'
+import { search, unregister } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
-import { getMeshbluConfig } from '../services/auth-service'
 import { selectThing, unselectThing } from '../actions/thing'
 import { clearSelectedThings } from '../actions/things'
+import { getMeshbluConfig } from '../services/auth-service'
 
 import ThingsLayout from '../components/ThingsLayout'
 
@@ -15,12 +17,14 @@ const propTypes = {
 
 class Things extends React.Component {
   componentDidMount() {
-    const meshbluConfig = getMeshbluConfig()
+    this.fetchThings()
+  }
 
+  fetchThings() {
+    const meshbluConfig = getMeshbluConfig()
     const query = {
       owner: meshbluConfig.uuid,
     }
-
     const projection = {
       uuid: true,
       name: true,
@@ -38,7 +42,17 @@ class Things extends React.Component {
   }
 
   handleDeleteSelection = () => {
-    console.log('handleDeleteSelection');
+    const { selectedThings }  = this.props.things
+    const selectedThingsCount = selectedThings.length
+    const confirmationMessage = `Are you sure you want to delete ${selectedThingsCount} ${pluralize('thing', selectedThingsCount)}`
+    const meshbluConfig       = getMeshbluConfig()
+
+    if (confirm(confirmationMessage)) {
+      Promise.each(selectedThings, (selectedThingUuid) => this.props.dispatch(unregister(selectedThingUuid, meshbluConfig)))
+      .then((data) => {
+        this.fetchThings()
+      })
+    }
   }
 
   handleTagSelection = () => {
