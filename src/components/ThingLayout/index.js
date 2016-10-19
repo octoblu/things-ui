@@ -6,15 +6,15 @@ import ThingHeader from '../ThingHeader'
 import ThingMessaging from '../ThingMessaging'
 
 const propTypes = {
-  thing: PropTypes.object,
   formSchema: PropTypes.object,
   messageSchema: PropTypes.object,
+  thing: PropTypes.object,
 }
 
 const defaultProps = {
-  thing: null,
   formSchema: null,
   messageSchema: null,
+  thing: null,
 }
 
 const ThingLayout = ({ thing, formSchema, messageSchema }) => {

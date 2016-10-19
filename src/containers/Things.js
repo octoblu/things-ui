@@ -3,20 +3,24 @@ import { search } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
 import { getMeshbluConfig } from '../services/auth-service'
+import { selectThing, unselectThing } from '../actions/thing'
+import { clearSelectedThings } from '../actions/things'
 
 import ThingsLayout from '../components/ThingsLayout'
 
 const propTypes = {
-  search: PropTypes.func,
+  dispatch: PropTypes.func,
   things: PropTypes.object,
 }
 
 class Things extends React.Component {
   componentDidMount() {
     const meshbluConfig = getMeshbluConfig()
+
     const query = {
       owner: meshbluConfig.uuid,
     }
+
     const projection = {
       uuid: true,
       name: true,
@@ -26,11 +30,37 @@ class Things extends React.Component {
       meshblu: true,
     }
 
-    this.props.search({ query, projection }, meshbluConfig)
+    this.props.dispatch(search({ query, projection }, meshbluConfig))
+  }
+
+  handleClearSelection = () => {
+    return this.props.dispatch(clearSelectedThings())
+  }
+
+  handleDeleteSelection = () => {
+    console.log('handleDeleteSelection');
+  }
+
+  handleTagSelection = () => {
+    console.log('handleTagSelection');
+  }
+
+  handleThingSelectionToggle = (thingUuid, selected) => {
+    if (selected) return this.props.dispatch(selectThing(thingUuid))
+
+    return this.props.dispatch(unselectThing(thingUuid))
   }
 
   render() {
-    return <ThingsLayout things={this.props.things} />
+    return (
+      <ThingsLayout
+        onClearSelection={this.handleClearSelection}
+        onDeleteSelection={this.handleDeleteSelection}
+        onTagSelection={this.handleTagSelection}
+        onThingSelection={this.handleThingSelectionToggle}
+        things={this.props.things}
+      />
+    )
   }
 }
 
@@ -40,11 +70,4 @@ const mapStateToProps = ({ things }) => {
   return { things }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    search: (query, meshbluConfig) => dispatch(search(query, meshbluConfig)),
-  }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Things)
+export default connect(mapStateToProps)(Things)

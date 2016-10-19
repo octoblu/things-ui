@@ -1,6 +1,9 @@
 import { expect } from 'chai'
 import { searchActions } from 'redux-meshblu'
 
+import { selectThing, unselectThing } from '../../actions/thing'
+import { clearSelectedThings } from '../../actions/things'
+
 import reducer from './'
 
 describe('Things Reducer', () => {
@@ -8,6 +11,7 @@ describe('Things Reducer', () => {
     devices: null,
     error: null,
     fetching: false,
+    selectedThings: [],
   }
 
   it('should return the initial state', () => {
@@ -40,6 +44,61 @@ describe('Things Reducer', () => {
         type: searchActions.searchFailure.getType(),
         payload: new Error('Bang!'),
       })).to.deep.equal({ ...initialState, error: new Error('Bang!') })
+    })
+  })
+
+  describe('selectThing', () => {
+    it('should handle selectThing action', () => {
+      expect(
+        reducer(undefined, {
+          type: selectThing.getType(),
+          payload: 'my-selected-thing-uuid',
+        })
+      ).to.deep.equal({ ...initialState, selectedThings: ['my-selected-thing-uuid'] })
+    })
+  })
+
+  describe('clearSelectedThings', () => {
+    it('should handle clearSelectedThings action', () => {
+      const currentState = {
+        ...initialState,
+        selectedThings: [
+          'thing-uuid-1',
+          'thing-uuid-2',
+          'thing-uuid-3',
+        ],
+      }
+
+      expect(
+        reducer(currentState, { type: clearSelectedThings.getType() })
+      ).to.deep.equal(initialState)
+    })
+  })
+  describe('unselectThing', () => {
+    it('should handle unselecting a thing', () => {
+      const currentState = {
+        ...initialState,
+        selectedThings: [
+          'thing-uuid-1',
+          'thing-uuid-2',
+          'thing-uuid-3',
+        ],
+      }
+
+      const expectedState = {
+        ...currentState,
+        selectedThings: [
+          'thing-uuid-1',
+          'thing-uuid-3',
+        ],
+      }
+
+      expect(
+        reducer(currentState, {
+          type: unselectThing.getType(),
+          payload: 'thing-uuid-2',
+        })
+      ).to.deep.equal(expectedState)
     })
   })
 })

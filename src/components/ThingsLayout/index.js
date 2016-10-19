@@ -8,13 +8,29 @@ import ThingListActions from '../ThingListActions'
 import styles from './styles.css'
 
 const propTypes = {
+  onClearSelection: PropTypes.func,
+  onDeleteSelection: PropTypes.func,
+  onTagSelection: PropTypes.func,
+  onThingSelection: PropTypes.func,
   things: PropTypes.object.isRequired,
 }
 
-const defaultProps = {}
+const defaultProps = {
+  onClearSelection: _.noop,
+  onDeleteSelection: _.noop,
+  onTagSelection: _.noop,
+  onThingSelection: _.noop,
+}
 
-const ThingsLayout = ({ things }) => {
-  const { devices, error, fetching } = things
+const ThingsLayout = (props) => {
+  const {
+    onThingSelection,
+    onClearSelection,
+    onDeleteSelection,
+    onTagSelection,
+    things,
+  } = props
+  const { devices, error, fetching, selectedThings } = things
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -22,10 +38,19 @@ const ThingsLayout = ({ things }) => {
 
   return (
     <div>
-      <div>Things</div>
+      <ThingListActions
+        onClearSelection={onClearSelection}
+        onDeleteSelection={onDeleteSelection}
+        onTagSelection={onTagSelection}
+        selectedThings={selectedThings}
+      />
+
       <Page width="medium" className={styles.root}>
-        <ThingList things={devices} />
-        {/* <ThingListActions /> */}
+        <ThingList
+          onThingSelection={onThingSelection}
+          selectedThings={selectedThings}
+          things={devices}
+        />
       </Page>
     </div>
   )

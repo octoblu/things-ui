@@ -8,32 +8,45 @@ import ThingName from '../ThingName'
 import styles from './styles.css'
 
 const propTypes = {
+  onThingSelection: PropTypes.func,
+  selected: PropTypes.bool,
   thing: PropTypes.object,
 }
 
 const defaultProps = {
+  onThingSelection: _.noop,
+  selected: false,
   thing: null,
 }
 
-const ThingListItem = ({ thing }) => {
+
+const ThingListItem = ({ onThingSelection, selected, thing }) => {
   if (_.isEmpty(thing)) return null
   if (_.isEmpty(thing.uuid)) return null
 
-  const { name, uuid, logo, type } = thing
+  const { uuid, logo, type } = thing
 
-  let thingLogo = <img src={logo} alt={name} className={styles.logo} />
-  if (!logo) {
-    thingLogo = <DeviceImage type={type} className={styles.logo} />
-  }
-
+  console.log('SELECTED', selected)
+  
   return (
     <div className={styles.root}>
-      <input type="checkbox" className={styles.checkbox} />
-      <div className={styles.logoWrapper}>{thingLogo}</div>
+      <input
+        type="checkbox"
+        className={styles.checkbox}
+        name={uuid}
+        checked={selected}
+        onChange={({ target }) => onThingSelection(target.name, target.checked)}
+      />
+
+      <div className={styles.logoWrapper}>
+        <DeviceImage type={type} logo={logo} className={styles.logo} />
+      </div>
+
       <div className={styles.body}>
         <Link to={`/things/${uuid}`} className={styles.name}>
           <ThingName thing={thing} />
         </Link>
+
         <div><span className={styles.tag}>Tag #1</span></div>
       </div>
     </div>
