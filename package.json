@@ -1,6 +1,6 @@
 {
   "name": "things-octoblu-com",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "things-octoblu-com",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "atob": "^2.0.3",
     "bluebird": "^3.4.6",
     "browser-meshblu-http": "^5.4.0",
+    "coffee-script": "^1.11.1",
     "debug": "^2.2.0",
     "json-schema-ref-parser": "^3.1.2",
     "lodash": "^4.16.4",
@@ -55,7 +56,8 @@
     "redux-thunk": "^2.1.0",
     "zooid-alert": "^1.0.2",
     "zooid-button": "^1.2.2",
-    "zooid-device-icon": "^1.0.8",
+    "zooid-device-icon": "^1.0.6",
+    "zooid-dialog": "^1.0.2",
     "zooid-heading": "^1.0.8",
     "zooid-input": "^2.3.1",
     "zooid-json-schema-editor": "^3.0.1",

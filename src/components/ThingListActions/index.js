@@ -9,7 +9,7 @@ import styles from './styles.css'
 
 const propTypes = {
   onClearSelection: PropTypes.func,
-  onDeleteSelection: PropTypes.func,
+  onDeleteDialogShow: PropTypes.func,
   onTagSelection: PropTypes.func,
   selectedThings: PropTypes.array,
 }
@@ -21,7 +21,7 @@ const defaultProps = {
 const ThingListActions = (props) => {
   const {
     onClearSelection,
-    onDeleteSelection,
+    onDeleteDialogShow,
     onTagSelection,
     selectedThings,
   } = props
@@ -30,9 +30,9 @@ const ThingListActions = (props) => {
 
   return (
     <div className={styles.root}>
-      <div>{`${selectedThings.length} ${pluralize('items', selectedThings.length)} selected`}</div>
+      <div>{`${selectedThings.length} ${pluralize('Thing', selectedThings.length)} selected`}</div>
       <Button kind="no-style" onClick={onTagSelection}>Tag</Button>
-      <Button kind="no-style" onClick={onDeleteSelection}>Delete</Button>
+      <Button kind="no-style" onClick={onDeleteDialogShow}>Delete</Button>
       <Button kind="no-style" onClick={onClearSelection}>Clear Selection</Button>
     </div>
   )

@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  box-align: center;
+  align-items: center;
+  padding: 0 16px;
+  height: 52px;
+  min-height: 52px;
+  margin-bottom: 3px;
+  background: #2278cf;
+  background: #FFF;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.15), 0 1px 5px 0 rgba(0, 0, 0, 0.1);
+}

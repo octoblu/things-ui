@@ -1,14 +1,19 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
+import Button from 'zooid-button'
+import Dialog, { DialogActions, DialogBody, DialogHeader } from 'zooid-dialog'
 import Page from 'zooid-page'
 
 import ThingList from '../ThingList'
 import ThingListActions from '../ThingListActions'
+import ThingsPageHeader from '../ThingsPageHeader'
 
 import styles from './styles.css'
 
 const propTypes = {
   onClearSelection: PropTypes.func,
+  onDeleteDialogDismiss: PropTypes.func,
+  onDeleteDialogShow: PropTypes.func,
   onDeleteSelection: PropTypes.func,
   onTagSelection: PropTypes.func,
   onThingSelection: PropTypes.func,
@@ -17,6 +22,8 @@ const propTypes = {
 
 const defaultProps = {
   onClearSelection: _.noop,
+  onDeleteDialogDismiss: _.noop,
+  onDeleteDialogShow: _.noop,
   onDeleteSelection: _.noop,
   onTagSelection: _.noop,
   onThingSelection: _.noop,
@@ -24,13 +31,16 @@ const defaultProps = {
 
 const ThingsLayout = (props) => {
   const {
-    onThingSelection,
     onClearSelection,
+    onDeleteDialogDismiss,
+    onDeleteDialogShow,
     onDeleteSelection,
     onTagSelection,
+    onThingSelection,
     things,
   } = props
-  const { devices, error, fetching, selectedThings } = things
+
+  const { devices, error, fetching, selectedThings, showDeleteDialog } = things
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -38,9 +48,11 @@ const ThingsLayout = (props) => {
 
   return (
     <div>
+      <ThingsPageHeader />
+
       <ThingListActions
         onClearSelection={onClearSelection}
-        onDeleteSelection={onDeleteSelection}
+        onDeleteDialogShow={onDeleteDialogShow}
         onTagSelection={onTagSelection}
         selectedThings={selectedThings}
       />
@@ -52,6 +64,15 @@ const ThingsLayout = (props) => {
           things={devices}
         />
       </Page>
+
+      <Dialog visible={showDeleteDialog}>
+        <DialogHeader>Are you sure?</DialogHeader>
+        <DialogBody>Permanently delete x things? You can't undo this action.</DialogBody>
+        <DialogActions>
+          <Button kind="danger" onClick={onDeleteSelection}>Delete</Button>
+          <Button onClick={onDeleteDialogDismiss}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

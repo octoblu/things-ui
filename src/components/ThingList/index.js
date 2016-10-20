@@ -21,12 +21,14 @@ const ThingList = ({ onThingSelection, things, selectedThings }) => {
   if (_.isEmpty(things)) return null
 
   const thingItems = _.map(things, (thing) => {
+    const { uuid } = thing
+
     return (
       <ThingListItem
         onThingSelection={onThingSelection}
-        selected={!(_.isEmpty(_.find(selectedThings, thingUuid => thingUuid === thing.uuid)))}
+        selected={!(_.isEmpty(_.find(selectedThings, { uuid })))}
         thing={thing}
-        key={thing.uuid}
+        key={uuid}
       />
     )
   })

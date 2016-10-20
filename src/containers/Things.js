@@ -1,11 +1,16 @@
-import Promise from 'bluebird'
 import pluralize from 'pluralize'
 import React, { PropTypes } from 'react'
 import { search, unregister } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
 import { selectThing, unselectThing } from '../actions/thing'
-import { clearSelectedThings } from '../actions/things'
+import {
+  clearSelectedThings,
+  deleteSelectedThings,
+  deleteSelection,
+  dismissDeleteDialog,
+  showDeleteDialog
+} from '../actions/things'
 import { getMeshbluConfig } from '../services/auth-service'
 
 import ThingsLayout from '../components/ThingsLayout'
@@ -32,6 +37,7 @@ class Things extends React.Component {
       type: true,
       logo: true,
       meshblu: true,
+      octoblu: true,
     }
 
     this.props.dispatch(search({ query, projection }, meshbluConfig))
@@ -42,17 +48,19 @@ class Things extends React.Component {
   }
 
   handleDeleteSelection = () => {
-    const { selectedThings }  = this.props.things
-    const selectedThingsCount = selectedThings.length
-    const confirmationMessage = `Are you sure you want to delete ${selectedThingsCount} ${pluralize('thing', selectedThingsCount)}`
-    const meshbluConfig       = getMeshbluConfig()
+    const { dispatch, things } = this.props
 
-    if (confirm(confirmationMessage)) {
-      Promise.each(selectedThings, (selectedThingUuid) => this.props.dispatch(unregister(selectedThingUuid, meshbluConfig)))
-      .then((data) => {
-        this.fetchThings()
-      })
-    }
+    return dispatch(deleteSelection(things.selectedThings)).then(() => {
+      dispatch(dismissDeleteDialog())
+    })
+  }
+
+  handleDeleteDialogShow = () => {
+    this.props.dispatch(showDeleteDialog())
+  }
+
+  handleDeleteDialogDismiss = () => {
+    this.props.dispatch(dismissDeleteDialog())
   }
 
   handleTagSelection = () => {
@@ -61,7 +69,6 @@ class Things extends React.Component {
 
   handleThingSelectionToggle = (thingUuid, selected) => {
     if (selected) return this.props.dispatch(selectThing(thingUuid))
-
     return this.props.dispatch(unselectThing(thingUuid))
   }
 
@@ -69,6 +76,8 @@ class Things extends React.Component {
     return (
       <ThingsLayout
         onClearSelection={this.handleClearSelection}
+        onDeleteDialogShow={this.handleDeleteDialogShow}
+        onDeleteDialogDismiss={this.handleDeleteDialogDismiss}
         onDeleteSelection={this.handleDeleteSelection}
         onTagSelection={this.handleTagSelection}
         onThingSelection={this.handleThingSelectionToggle}
