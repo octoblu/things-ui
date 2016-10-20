@@ -1468,6 +1468,10 @@ code-point-at@^1.0.0:
   dependencies:
     number-is-nan "^1.0.0"
 
+coffee-script@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.11.1.tgz#bf1c47ad64443a0d95d12df2b147cc0a4daad6e9"
+
 collapse-white-space@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.2.tgz#9c463fb9c6d190d2dcae21a356a01bcae9eeef6d"

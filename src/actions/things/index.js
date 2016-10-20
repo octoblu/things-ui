@@ -10,6 +10,8 @@ const deleteSelectedThingsSuccess = createAction('/things/selection/delete/succe
 const deleteSelectedThingsFailure = createAction('/things/selection/delete/failure')
 const dismissDeleteDialog         = createAction('/things/selection/delete/dialog/dismiss')
 const showDeleteDialog            = createAction('/things/selection/delete/dialog/show')
+const dismissTagDialog            = createAction('/things/selection/tag/dialog/dismiss')
+const showTagDialog               = createAction('/things/selection/tag/dialog/show')
 const tagSelectedThings           = createAction('/things/selection/tag')
 
 const deleteSelection = (selectedThings) => {
@@ -31,5 +33,7 @@ export {
   deleteSelectedThingsFailure,
   dismissDeleteDialog,
   showDeleteDialog,
+  dismissTagDialog,
+  showTagDialog,
   tagSelectedThings,
 }

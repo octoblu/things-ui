@@ -18,6 +18,7 @@ describe('Things Reducer', () => {
     fetching: false,
     selectedThings: [],
     showDeleteDialog: false,
+    showTagDialog: false,
   }
 
   it('should return the initial state', () => {

@@ -9,7 +9,11 @@ import {
   deleteSelectedThings,
   deleteSelection,
   dismissDeleteDialog,
-  showDeleteDialog
+  showDeleteDialog,
+  dismissTagDialog,
+  showTagDialog,
+
+
 } from '../actions/things'
 import { getMeshbluConfig } from '../services/auth-service'
 
@@ -63,6 +67,15 @@ class Things extends React.Component {
     this.props.dispatch(dismissDeleteDialog())
   }
 
+  handleTagDialogShow = () => {
+    console.log('handleTagDialogShow');
+    this.props.dispatch(showTagDialog())
+  }
+
+  handleTagDialogDismiss = () => {
+    this.props.dispatch(dismissTagDialog())
+  }
+
   handleTagSelection = () => {
     console.log('handleTagSelection');
   }
@@ -79,6 +92,8 @@ class Things extends React.Component {
         onDeleteDialogShow={this.handleDeleteDialogShow}
         onDeleteDialogDismiss={this.handleDeleteDialogDismiss}
         onDeleteSelection={this.handleDeleteSelection}
+        onTagDialogShow={this.handleTagDialogShow}
+        onTagDialogDismiss={this.handleTagDialogDismiss}
         onTagSelection={this.handleTagSelection}
         onThingSelection={this.handleThingSelectionToggle}
         things={this.props.things}

@@ -8,7 +8,9 @@ import {
   deleteSelectedThingsSuccess,
   deleteSelectedThingsFailure,
   dismissDeleteDialog,
-  showDeleteDialog
+  showDeleteDialog,
+  dismissTagDialog,
+  showTagDialog,
 } from '../../actions/things'
 
 
@@ -19,6 +21,7 @@ const initialState = {
   fetching: false,
   selectedThings: [],
   showDeleteDialog: false,
+  showTagDialog: false,
   deletingThings: false,
 }
 
@@ -39,6 +42,8 @@ export default createReducer({
   },
   [dismissDeleteDialog]: state => ({ ...state, showDeleteDialog: false }),
   [showDeleteDialog]: state => ({ ...state, showDeleteDialog: true }),
+  [dismissTagDialog]: state => ({ ...state, showTagDialog: false }),
+  [showTagDialog]: state => ({ ...state, showTagDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, payload) => ({ ...initialState, devices: payload, fetching: false, selectedThings: [] }),
   [searchFailure]: (state, payload) => ({ ...initialState, error: payload, fetching: false }),
