@@ -32,8 +32,8 @@ export {
   deleteSelectedThingsSuccess,
   deleteSelectedThingsFailure,
   dismissDeleteDialog,
-  showDeleteDialog,
   dismissTagDialog,
+  showDeleteDialog,
   showTagDialog,
   tagSelectedThings,
 }
