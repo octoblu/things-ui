@@ -16,13 +16,14 @@ import {
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
+  availableTags: [],
+  deletingThings: false,
   devices: null,
   error: null,
   fetching: false,
   selectedThings: [],
   showDeleteDialog: false,
   showTagDialog: false,
-  deletingThings: false,
 }
 
 export default createReducer({
@@ -45,7 +46,22 @@ export default createReducer({
   [dismissTagDialog]: state => ({ ...state, showTagDialog: false }),
   [showTagDialog]: state => ({ ...state, showTagDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
-  [searchSuccess]: (state, payload) => ({ ...initialState, devices: payload, fetching: false, selectedThings: [] }),
+  [searchSuccess]: (state, devices) => {
+    // const availableTags = _(devices)
+    //   .map(device => _.get(device, 'octoblu.tags'))
+    //   .flatten()
+    //   .uniq()
+    //   .compact()
+    //   .value()
+    const availableTags = ['Project Fleck', 'Project Genisys', 'Sprinklers 2.0']
+    return {
+      ...initialState,
+      availableTags,
+      devices,
+      fetching: false,
+      selectedThings: [],
+    }
+  },
   [searchFailure]: (state, payload) => ({ ...initialState, error: payload, fetching: false }),
   [selectThing]: (state, payload) => {
     const { selectedThings } = state

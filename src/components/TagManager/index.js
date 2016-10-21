@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Input from 'zooid-input  '
+import Input from 'zooid-input'
 
 import TagList from '../TagList'
 import styles from './styles.css'
@@ -17,9 +17,10 @@ const defaultProps = {}
 
 
 class TagManager extends React.Component {
-  detectKeyDownHandler (event) {
+  detectKeyDownHandler(event) {
     console.log('Event', event)
   }
+
   render() {
     const { availableTags, selectedDevices, selectedDeviceTags } = this.props
 
@@ -40,14 +41,7 @@ TagManager.propTypes    = propTypes
 TagManager.defaultProps = defaultProps
 
 const mapStateToProps = ({ things }) => {
-  const { devices, selectedThings } = things
-  const availableTags = _(devices)
-    .map(device => device.octoblu.tags)
-    .flatten()
-    .uniq()
-    .compact()
-    .value()
-
+  const { availableTags, devices, selectedThings } = things
   const selectedDevices = _.intersectionBy(devices, selectedThings, 'uuid')
   let selectedDeviceTags = _(selectedDevices)
     .map('octoblu.tags')

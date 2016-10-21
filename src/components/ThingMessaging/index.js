@@ -13,14 +13,11 @@ const defaultProps = {
 const ThingMessaging = ({ formSchema, messageSchema }) => {
   if (_.isEmpty(messageSchema)) return null
 
-  console.log('formSchema', formSchema);
-  console.log('messageSchema', messageSchema);
-
   return (
     <div>
       <SchemaForm
-        schema={messageSchema.SendEmail}
-        form={formSchema.SendEmail}
+        schema={{}}
+        form={{}}
         onModelChange={_.noop}
       />
     </div>

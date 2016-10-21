@@ -12,6 +12,7 @@ import reducer from './'
 
 describe('Things Reducer', () => {
   const initialState = {
+    availableTags: [],
     devices: null,
     deletingThings: false,
     error: null,
@@ -36,14 +37,37 @@ describe('Things Reducer', () => {
 
     it('should handle fetching success', () => {
       const devices = [
-        { uuid: 'my-thing-1-uuid' },
-        { uuid: 'my-thing-2-uuid' },
+        {
+          uuid: 'my-thing-1-uuid',
+          octoblu: {
+            tags: ['Project Genisys', 'Fleck Project'],
+          },
+        },
+        {
+          uuid: 'my-thing-2-uuid',
+        },
+        {
+          uuid: 'my-thing-3-uuid',
+          octoblu: {
+            tags: ['Project Genisys', 'Olu Project'],
+          },
+        },
+        {
+          uuid: 'my-thing-4-uuid',
+          octoblu: {
+            links: [],
+          },
+        },
       ]
 
       expect(reducer(undefined, {
         type: searchActions.searchSuccess.getType(),
         payload: devices,
-      })).to.deep.equal({ ...initialState, devices })
+      })).to.deep.equal({
+        ...initialState,
+        availableTags: ['Project Genisys', 'Fleck Project', 'Olu Project'],
+        devices,
+      })
     })
 
     it('should handle fetching failure', () => {
@@ -61,7 +85,10 @@ describe('Things Reducer', () => {
           type: selectThing.getType(),
           payload: 'my-selected-thing-uuid',
         })
-      ).to.deep.equal({ ...initialState, selectedThings: [{ uuid: 'my-selected-thing-uuid' }] })
+      ).to.deep.equal({
+        ...initialState,
+        selectedThings: [{ uuid: 'my-selected-thing-uuid' }]
+      })
     })
   })
 
