@@ -1,9 +1,13 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import Page from 'zooid-page'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import ThingHeader from '../ThingHeader'
 import ThingMessaging from '../ThingMessaging'
+import MessageThing from '../../containers/MessageThing'
+import {Nav} from 'zooid-ui'
+import {Link} from 'react-router'
 
 const propTypes = {
   formSchema: PropTypes.object,
@@ -27,7 +31,18 @@ const ThingLayout = ({ thing, formSchema, messageSchema }) => {
   return (
     <Page>
       <ThingHeader thing={device} />
-
+      <Tabs>
+      <TabList>
+          <Tab>Message</Tab>
+          <Tab>Configure</Tab>
+        </TabList>
+        <TabPanel>
+          <MessageThing thing={thing} formSchema={formSchema} messageSchema={messageSchema}/>
+        </TabPanel>
+        <TabPanel>
+          <h2>Configure Me</h2>
+        </TabPanel>
+      </Tabs>
       <ThingMessaging
         formSchema={formSchema}
         messageSchema={messageSchema}
