@@ -6,6 +6,9 @@ import ThingMessageConsole from '../components/ThingMessageConsole'
 
 
 const propTypes = {
+  messageSchema: PropTypes.object,
+  thing: PropTypes.object,
+  formSchema: PropTypes.object,
 }
 
 const defaultProps = {
@@ -14,18 +17,22 @@ const defaultProps = {
 class MessageThing extends React.Component {
   constructor(props) {
     super(props)
-    const {thing, messageSchema, formSchema} = props
     this.state = {
-      thing,
-      messageSchema,
-      formSchema
+      thing: null,
+      messageSchema: null,
+      formSchema: null,
     }
-
   }
   sendMessageHandler(message){
 
   }
   componentDidMount() {
+      const {thing, messageSchema, formSchema } = this.props
+    this.setState({
+      thing,
+      messageSchema,
+      formSchema
+    })
     //set up subscriptions if we need to
   }
   render() {

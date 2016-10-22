@@ -23,7 +23,7 @@ const defaultProps = {
 
 const ThingLayout = ({ thing, formSchema, messageSchema }) => {
   const { device, error, fetching } = thing
-
+  console.log("Message Schema in ThingLayout", messageSchema)
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
   if (_.isEmpty(device)) return <div>No Thing Found</div>
@@ -37,7 +37,7 @@ const ThingLayout = ({ thing, formSchema, messageSchema }) => {
           <Tab>Configure</Tab>
         </TabList>
         <TabPanel>
-          <MessageThing thing={thing} formSchema={formSchema} messageSchema={messageSchema}/>
+          <MessageThing thing={thing} formSchema={formSchema} messageSchema={messageSchema} />
         </TabPanel>
         <TabPanel>
           <h2>Configure Me</h2>
