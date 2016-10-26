@@ -47,12 +47,6 @@ export default createReducer({
   [showTagDialog]: state => ({ ...state, showTagDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    // const availableTags = _(devices)
-    //   .map(device => _.get(device, 'octoblu.tags'))
-    //   .flatten()
-    //   .uniq()
-    //   .compact()
-    //   .value()
     const availableTags = ['Project Fleck', 'Project Genisys', 'Sprinklers 2.0']
     return {
       ...initialState,

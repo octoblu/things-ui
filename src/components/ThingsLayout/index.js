@@ -45,7 +45,7 @@ const ThingsLayout = (props) => {
     things,
   } = props
 
-  const { devices, error, fetching, selectedThings, showDeleteDialog, showTagDialog } = things
+  const { deletingThings, devices, error, fetching, selectedThings, showDeleteDialog, showTagDialog } = things
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -73,9 +73,11 @@ const ThingsLayout = (props) => {
       <TagDialog visible={showTagDialog} onTagDialogDismiss={onTagDialogDismiss} />
 
       <DeleteDialog
-        visible={showDeleteDialog}
+        deletingThings={deletingThings}
         onDeleteSelection={onDeleteSelection}
         onDeleteDialogDismiss={onDeleteDialogDismiss}
+        selectedThings={selectedThings}
+        visible={showDeleteDialog}
       />
     </div>
   )
