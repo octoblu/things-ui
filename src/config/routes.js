@@ -2,7 +2,6 @@ import React from 'react'
 import { Route, IndexRoute, Router } from 'react-router'
 import App from '../containers/App'
 import Home from '../containers/Home'
-import MessageThing from '../containers/MessageThing'
 import Thing from '../containers/Thing'
 import Things from '../containers/Things'
 import NotFound from '../components/NotFound'
@@ -17,7 +16,6 @@ export default ({ history }) => {
         <Route path="things" component={Things} />
         <Route path="things/:deviceUuid" component={Thing}>
           <IndexRoute component={Thing} />
-          <Route path="message" component={MessageThing} />
         </Route>
       </Route>
 
