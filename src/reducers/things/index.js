@@ -16,7 +16,6 @@ import {
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
-  availableTags: [],
   deletingThings: false,
   devices: null,
   error: null,
@@ -47,10 +46,11 @@ export default createReducer({
   [showTagDialog]: state => ({ ...state, showTagDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    const availableTags = ['Project Fleck', 'Project Genisys', 'Sprinklers 2.0']
+    const applications = _.filter(devices, {'type': 'octoblu:application'})
+
     return {
       ...initialState,
-      availableTags,
+      applications,
       devices,
       fetching: false,
       selectedThings: [],
