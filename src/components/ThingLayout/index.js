@@ -20,7 +20,6 @@ const handleSendMessage = (message) => {
 
 const ThingLayout = ({ thing }) => {
   const { device, error, fetching } = thing
-
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
   if (_.isEmpty(device)) return <div>No Thing Found</div>

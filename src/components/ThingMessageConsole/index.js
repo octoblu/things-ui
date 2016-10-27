@@ -4,6 +4,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles';
 import { addMessagingPermissionsForDevice } from '../../services/subscription-service'
 import { getMeshbluConfig } from '../../services/auth-service'
+import { getCredentials } from '../../services/auth-service'
 import DeviceFirehose from '../../services/device-firehose'
 
 const propTypes = {}
@@ -17,7 +18,6 @@ class ThingMessageConsole extends React.Component {
       thing: null,
       firehose: null,
     }
-
   }
 
   componentDidMount () {
@@ -42,6 +42,9 @@ class ThingMessageConsole extends React.Component {
     // this.deviceFireHose = createFireHoseConnection({ emitterUuid: device.uuid , subscriberUuid: credentials.uuid })
     // this.deviceFirehose.connect(this.handleFirehoseConnectionError)
     // this.deviceFirehose.on(`message`, this.handleFirehoseMessage)
+
+    this.deviceFirehose = new DeviceFirehose(credentials)
+    this.deviceFirehose.connect(this.handleFirehoseConnectionError)
   }
 
   handleFirehoseConnectionError = (err) => {
@@ -55,7 +58,7 @@ class ThingMessageConsole extends React.Component {
   render() {
     return (
       <div>
-      <SyntaxHighlighter language='javascript' style={tomorrowNight}>var greeting = 'hello'</SyntaxHighlighter>
+        <SyntaxHighlighter language='javascript' style={tomorrowNight}>var greeting = 'hello'</SyntaxHighlighter>
       </div>
     )
   }
