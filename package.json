@@ -37,6 +37,7 @@
     "atob": "^2.0.3",
     "bluebird": "^3.4.6",
     "browser-meshblu-http": "^5.4.0",
+    "coffee-loader": "^0.7.2",
     "coffee-script": "^1.11.1",
     "debug": "^2.2.0",
     "json-schema-ref-parser": "^3.1.2",

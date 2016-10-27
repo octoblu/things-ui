@@ -55,7 +55,7 @@ class ThingMessageConsole extends React.Component {
   render() {
     return (
       <div>
-      <SyntaxHighlighter language='javascript' style={tomorrowNight}></SyntaxHighlighter>
+      <SyntaxHighlighter language='javascript' style={tomorrowNight}>var greeting = 'hello'</SyntaxHighlighter>
       </div>
     )
   }
