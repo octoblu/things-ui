@@ -1,7 +1,11 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import ThingMessageConsole from '../ThingMessageConsole'
+import MeshbluHttp from 'browser-meshblu-http'
 import { DeviceMessageSchemaContainer } from 'zooid-meshblu-device-editor'
+import { MESHBLU_HOST, MESHBLU_PORT } from 'config'
+import ThingMessageConsole from '../ThingMessageConsole'
+import { getMeshbluConfig } from '../../services/auth-service'
+
 import styles from './styles.css'
 
 const propTypes = {
@@ -10,8 +14,18 @@ const propTypes = {
 
 const defaultProps = {}
 
-const sendMessageHandler = (message) => {
-  console.log('Message!', message)
+const sendMessageHandler = (msg) => {
+  const crendentials = _.assign(getMeshbluConfig(), {
+    hostname: MESHBLU_HOST,
+    port: MESHBLU_PORT
+  })
+  const { device } = this.props.thing
+  const meshblu = new MeshbluHttp(credentials)
+  console.log('Message is', msg)
+  const message = _.assign(msg, { devices: [device.uuid] })
+  meshblu.message(message, (error, result ) => {
+    console.log('Result of sending messages', error, result)
+  })
 }
 
 const MessageThing = ({ thing }) => {
