@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react'
+import SyntaxHighlighter from 'react-syntax-highlighter';
+
+import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles';
 import { addMessagingPermissionsForDevice } from '../../services/subscription-service'
 import { getMeshbluConfig } from '../../services/auth-service'
 import DeviceFirehose from '../../services/device-firehose'
@@ -50,7 +53,11 @@ class ThingMessageConsole extends React.Component {
   }
 
   render() {
-    return <div>ThingMessageConsole</div>
+    return (
+      <div>
+      <SyntaxHighlighter language='javascript' style={tomorrowNight}></SyntaxHighlighter>
+      </div>
+    )
   }
 }
 

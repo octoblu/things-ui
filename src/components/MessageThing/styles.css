@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.messageInput {
+  width: 50%;
+  border: 1px solid limegreen;
+  margin: 0px 0px 0px 0px;
+}
+
+
+.messageConsole {
+  width: 50%;
+  border: 2px solid purple;
+  background-color: oldlace;
+  margin: 0px 0px 0px 0px;
+}

@@ -6,9 +6,11 @@ import reducer from './'
 describe('Thing Reducer', () => {
   const initialState = {
     device: null,
+    schemasDerefed: false,
     error: null,
     fetching: false,
   }
+
 
   it('should return the initial state', () => {
     expect(
