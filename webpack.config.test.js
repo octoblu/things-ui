@@ -36,6 +36,11 @@ module.exports = {
       include: path.join(__dirname, 'src')
     },
     {
+        test: /\.coffee$/,
+        loader: "coffee-loader",
+        include: path.join(__dirname, 'node_modules')
+      },
+    {
       test:   /\.css$/,
       loader: "style-loader!css-loader!postcss-loader"
     },

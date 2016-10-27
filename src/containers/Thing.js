@@ -4,12 +4,18 @@ import React, { PropTypes } from 'react'
 import { getDevice } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
+import {
+  derefDeviceSchemas,
+  derefDeviceSchemasFailure,
+  derefDeviceSchemasSuccess,
+} from '../actions/thing'
+
 import ThingLayout from '../components/ThingLayout'
 
 import { getMeshbluConfig } from '../services/auth-service'
 
 const propTypes = {
-  getDevice: PropTypes.func,
+  dispatch: PropTypes.func,
   params: PropTypes.object,
   thing: PropTypes.object,
 }
@@ -17,40 +23,21 @@ const propTypes = {
 class Thing extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      message: null,
-      form: null,
-    }
   }
+
   componentDidMount() {
     const meshbluConfig = getMeshbluConfig()
-    const { deviceUuid } = this.props.params
+    const { dispatch, params } = this.props
 
-    this.props.getDevice(deviceUuid, meshbluConfig)
-    .then(({ payload }) => {
-      RefParser.dereference(payload.schemas)
-      .then((schemas) => {
-        this.setState({
-          form: schemas.form,
-          message: schemas.message,
-        })
+    dispatch(getDevice({ uuid: params.deviceUuid, meshbluConfig }))
+      .then(({ payload }) => {
+        dispatch(derefDeviceSchemas(payload))
       })
-      .catch((err) => {
-        console.error(err)
-      })
-    })
   }
 
   render() {
-    const { form, message } = this.state
-
     return (
-      <ThingLayout
-        formSchema={form}
-        messageSchema={message}
-        thing={this.props.thing}
-      />
+      <ThingLayout thing={this.props.thing} />
     )
   }
 }
@@ -61,11 +48,4 @@ const mapStateToProps = ({ thing }) => {
   return { thing }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getDevice: (deviceUuid, meshbluConfig) => dispatch(getDevice(deviceUuid, meshbluConfig)),
-  }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Thing)
+export default connect(mapStateToProps)(Thing)
