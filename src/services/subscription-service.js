@@ -60,6 +60,11 @@ const createMessageSubscriptionsForDevice = ({ userDevice = getMeshbluConfig(), 
       emitterUuid,
       type: 'message.received',
     }),
+    apply(meshbluHttp.createSubscription, {
+      subscriberUuid: userDevice.uuid,
+      emitterUuid: userDevice.uuid,
+      type: 'message.received',
+    }),
   ], callback)
 }
 

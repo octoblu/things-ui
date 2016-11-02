@@ -21,25 +21,25 @@ const sendMessageHandler = (msg, thing) => {
   })
 
   const { device } = thing
-  const meshblu = new MeshbluHttp(credentials)
+  const meshblu    = new MeshbluHttp(credentials)
+  const { metadata } = msg
+  const message = { ...msg, devices: [device.uuid], metadata: { ...metadata, respondTo: device.uuid } }
 
-  console.log('Message is', msg)
-  const message = _.assign(msg, { devices: [device.uuid] })
-  meshblu.message(message, (error, result ) => {
+  meshblu.message(message, (error, result) => {
     console.log('Result of sending messages', error, result)
   })
 }
 
 const MessageThing = ({ thing }) => {
   if (_.isEmpty(thing.device)) return null
-  if (!thing.schemasDerefed) return <div>Dereferencing Schemas</div>
+  if (_.isEmpty(thing.device.schemas.message)) return <div>No Message Schema :(</div>
 
   return (
     <div className={styles.root}>
       <div className={styles.messageInput}>
         <DeviceMessageSchemaContainer
           device={thing.device}
-          onSubmit={(message) => sendMessageHandler(message, thing)}
+          onSubmit={message => sendMessageHandler(message, thing)}
           className={styles.messageInput}
         />
       </div>

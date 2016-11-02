@@ -140,6 +140,11 @@ describe('Subscription Service', () => {
         .post('/v2/devices/emitter-device-uuid/subscriptions/emitter-device-uuid/message.received')
         .reply(200)
 
+        subscriberMessageReceivedHandler =
+          meshbluMock
+          .post('/v2/devices/subscriber-device-uuid/subscriptions/subscriber-device-uuid/message.received')
+          .reply(200)
+
       createMessageSubscriptionsForDevice(
         {
           userDevice,

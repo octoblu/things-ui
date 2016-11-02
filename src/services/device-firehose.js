@@ -41,11 +41,13 @@ export default class DeviceFirehose extends EventEmitter2 {
   }
 
   _onMessage = (message) => {
-    if (this._isStale(message)) return
+    console.log('Boom!', message);
+    // if (this._isStale(message)) return
 
     const device = this._parseDevice(message)
-    this._updateLastUpdatedAt(message)
-    this.emit(`device:${device.uuid}`, device)
+    // this._updateLastUpdatedAt(message)
+    // this.emit(`device:${device.uuid}`, device)
+    this.emit(`device:${device.uuid}`, message)
   }
 
   _parseDevice(message) {

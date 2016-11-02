@@ -1,14 +1,9 @@
-import RefParser from 'json-schema-ref-parser'
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { getDevice } from 'redux-meshblu'
 import { connect } from 'react-redux'
 
-import {
-  derefDeviceSchemas,
-  derefDeviceSchemasFailure,
-  derefDeviceSchemasSuccess,
-} from '../actions/thing'
+import { derefDeviceSchemas } from '../actions/thing'
 
 import ThingLayout from '../components/ThingLayout'
 
@@ -28,17 +23,14 @@ class Thing extends React.Component {
     dispatch(getDevice({ uuid: params.deviceUuid, meshbluConfig }))
       .then(({ payload }) => {
         if (_.get(payload.schemas.message, '$ref')) {
-          dispatch(derefDeviceSchemas(payload))
+          dispatch(derefDeviceSchemas(payload.schemas))
         }
       })
   }
 
 
   render() {
-    // return null
-    return (
-      <ThingLayout thing={this.props.thing} />
-    )
+    return <ThingLayout thing={this.props.thing} />
   }
 }
 
