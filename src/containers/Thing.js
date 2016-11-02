@@ -21,21 +21,21 @@ const propTypes = {
 }
 
 class Thing extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
     const meshbluConfig = getMeshbluConfig()
     const { dispatch, params } = this.props
 
     dispatch(getDevice({ uuid: params.deviceUuid, meshbluConfig }))
       .then(({ payload }) => {
-        dispatch(derefDeviceSchemas(payload))
+        if (_.get(payload.schemas.message, '$ref')) {
+          dispatch(derefDeviceSchemas(payload))
+        }
       })
   }
 
+
   render() {
+    // return null
     return (
       <ThingLayout thing={this.props.thing} />
     )

@@ -1,85 +1,69 @@
 import _ from 'lodash'
 import async from 'async'
+import apply from 'async/apply'
 import MeshbluHttp from 'browser-meshblu-http'
-import { MESHBLU_HOST, MESHBLU_PORT } from 'config'
 
 import { getMeshbluConfig } from './auth-service'
 
-function createMessageSubscriptionsForDevice({ subscriberCredentials, emitterUuid }, callback) {
-  const meshbluHttp = new MeshbluHttp({
-    uuid: subscriberCredentials.uuid,
-    token: subscriberCredentials.token,
-    hostname: MESHBLU_HOST,
-    port: MESHBLU_PORT,
-  })
-
-  async.series([
-    async.apply(meshbluHttp.createSubscription({
-      subscriberUuid: subscriberCredentials.uuid,
-      emitterUuid,
-      type: 'message.received' })),
-    async.apply(meshbluHttp.createSubscription({
-      subscriberUuid: subscriberCredentials.uuid,
-      emitterUuid,
-      type: 'message.sent',
-    })),
-    async.apply(meshbluHttp.createSubscription({
-      subscriberUuid: subscriberCredentials.uuid,
-      emitterUuid: subscriberCredentials.uuid,
-      type: 'message.received',
-    })),
-  ], callback)
-}
-
-function _isV2Device(device) {
+const _isV2Device = (device) => {
   if (_.get(device, 'meshblu.version') === '2.0.0') return true
   return false
 }
 
-function _addV2MessagingPermissions({ subscriberCredentials, emitterDevice }, callback) {
-  console.log('_addV2', subscriberCredentials)
-  const meshbluHttp = new MeshbluHttp({
-    uuid: subscriberCredentials.uuid,
-    token: subscriberCredentials.token,
-    hostname: MESHBLU_HOST,
-    port: MESHBLU_PORT,
-  })
+const _addV2MessagingPermissions = ({ userDevice, device }, callback) => {
+  const meshbluHttp = new MeshbluHttp(userDevice)
 
   const updateQuery = {
     $addToSet: {
-      'meshblu.whitelists.message.received': { uuid: subscriberCredentials.uuid },
-      'meshblu.whitelists.message.sent': { uuid: subscriberCredentials.uuid },
+      'meshblu.whitelists.message.received': { uuid: userDevice.uuid },
+      'meshblu.whitelists.message.sent': { uuid: userDevice.uuid },
     },
   }
-  return meshbluHttp.updateDangerously(emitterDevice.uuid, updateQuery, callback)
+  return meshbluHttp.updateDangerously(device.uuid, updateQuery, callback)
 }
 
-function _addV1MessagingPermissions({ subscriberCredentials, emitterDevice }, callback) {
-  const meshbluHttp = new MeshbluHttp({
-    uuid: subscriberCredentials.uuid,
-    token: subscriberCredentials.token,
-    hostname: MESHBLU_HOST,
-    port: MESHBLU_PORT,
-  })
+const _addV1MessagingPermissions = ({ userDevice, device }, callback) => {
+  const meshbluHttp = new MeshbluHttp(userDevice)
   const updateQuery = {
     $addToSet: {
-      sendWhitelist: subscriberCredentials.uuid,
-      receiveWhitelist: subscriberCredentials.uuid,
+      sendWhitelist: userDevice.uuid,
+      receiveWhitelist: userDevice.uuid,
     },
   }
 
-  return meshbluHttp.updateDangerously(emitterDevice.uuid, updateQuery, callback)
+  return meshbluHttp.updateDangerously(device.uuid, updateQuery, callback)
 }
 
-function addMessagingPermissionsForDevice({ subscriberCredentials = getMeshbluConfig(), emitterDevice }, callback) {
-  if (_isV2Device(emitterDevice)) {
-    return _addV2MessagingPermissions({ subscriberUuid, emitterUuid: emitterDevice.uuid }, callback)
+const addUserToDeviceWhiteLists = ({ userDevice = getMeshbluConfig(), device }, callback) => {
+  if (_isV2Device(device)) {
+    return _addV2MessagingPermissions({ userDevice, device }, callback)
   }
-  return _addV1MessagingPermissions({ subscriberUuid, emitterUuid: emitterDevice.uuid }, callback)
+  return _addV1MessagingPermissions({ userDevice, device }, callback)
 }
 
+const createMessageSubscriptionsForDevice = ({ userDevice = getMeshbluConfig(), emitterUuid }, callback) => {
+  const meshbluHttp = new MeshbluHttp(userDevice)
+
+  async.series([
+    apply(meshbluHttp.createSubscription, {
+      subscriberUuid: userDevice.uuid,
+      emitterUuid,
+      type: 'message.received',
+    }),
+    apply(meshbluHttp.createSubscription, {
+      subscriberUuid: userDevice.uuid,
+      emitterUuid,
+      type: 'message.sent',
+    }),
+    apply(meshbluHttp.createSubscription, {
+      subscriberUuid: emitterUuid,
+      emitterUuid,
+      type: 'message.received',
+    }),
+  ], callback)
+}
 
 export {
-  addMessagingPermissionsForDevice,
+  addUserToDeviceWhiteLists,
   createMessageSubscriptionsForDevice,
 }

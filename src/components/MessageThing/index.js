@@ -14,13 +14,15 @@ const propTypes = {
 
 const defaultProps = {}
 
-const sendMessageHandler = (msg) => {
-  const crendentials = _.assign(getMeshbluConfig(), {
+const sendMessageHandler = (msg, thing) => {
+  const credentials = _.assign(getMeshbluConfig(), {
     hostname: MESHBLU_HOST,
-    port: MESHBLU_PORT
+    port: MESHBLU_PORT,
   })
-  const { device } = this.props.thing
+
+  const { device } = thing
   const meshblu = new MeshbluHttp(credentials)
+
   console.log('Message is', msg)
   const message = _.assign(msg, { devices: [device.uuid] })
   meshblu.message(message, (error, result ) => {
@@ -37,14 +39,12 @@ const MessageThing = ({ thing }) => {
       <div className={styles.messageInput}>
         <DeviceMessageSchemaContainer
           device={thing.device}
-          onSubmit={sendMessageHandler.bind(this)}
+          onSubmit={(message) => sendMessageHandler(message, thing)}
           className={styles.messageInput}
         />
       </div>
       <div className={styles.messageConsole}>
-        <ThingMessageConsole
-          thing={thing}
-        />
+        <ThingMessageConsole />
       </div>
     </div>
   )

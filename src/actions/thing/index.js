@@ -11,12 +11,9 @@ const derefDeviceSchemas = (device) => {
   return (dispatch) => {
     dispatch(derefDeviceSchemasRequest(device))
 
-    return RefParser.dereference(device.schemas)
-    .then((schemas) => {
-      dispatch(derefDeviceSchemasSuccess(schemas))
-    })
-    .catch((err) => {
-      dispatch(derefDeviceSchemasFailure({ err }))
+    return RefParser.dereference(device.schemas, (err, schemas) => {
+      if (err) return dispatch(derefDeviceSchemasFailure(err))
+      return dispatch(derefDeviceSchemasSuccess(schemas))
     })
   }
 }

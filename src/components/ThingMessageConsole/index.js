@@ -1,17 +1,24 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import SyntaxHighlighter from 'react-syntax-highlighter';
-
 import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles';
+
 import {
-  addMessagingPermissionsForDevice,
+  addUserToDeviceWhiteLists,
   createMessageSubscriptionsForDevice,
 } from '../../services/subscription-service'
+
 import { getMeshbluConfig } from '../../services/auth-service'
 import { getCredentials } from '../../services/auth-service'
 import DeviceFirehose from '../../services/device-firehose'
 
-const propTypes = {}
-const defaultProps = {}
+const propTypes = {
+  thing: PropTypes.object,
+}
+
+const defaultProps = {
+  thing: null,
+}
 
 class ThingMessageConsole extends React.Component {
   constructor(props) {
@@ -24,31 +31,44 @@ class ThingMessageConsole extends React.Component {
   }
 
   componentDidMount() {
-    console.log('ThingMessage - Starting componentDidMount');
-    const credentials = getMeshbluConfig()
-    const { device } = this.props.thing
-    //Use Async or Bluebird
-    console.log('credentials', credentials)
-    addMessagingPermissionsForDevice({ subscriberUuid: credentials.uuid, emitterDevice: device }, (error) => {
+    const userDevice = getMeshbluConfig()
+    const { dispatch, thing }   = this.props
+    const { device }            = thing
 
-    })
-    createMessageSubscriptionsForDevice({ subscriberUuid: credentials.uuid, emitterDevice: device })
-    this.setState({
-      credentials,
-      thing,
-    })
-    this.deviceFirehose = new DeviceFirehose(credentials)
-    this.deviceFirehose.connect(this.handleFirehoseConnectionError)
-    this.deviceFirehose.on('message', this.handleFirehoseMessage)
-    this.setState({
-      credentials,
-      thing,
-      firehose: deviceFireHose
+    console.log('ThingMessageConsole->componentDidMount', device, userDevice)
+    console.log('userDevice', userDevice)
+
+    dispatch(addUserToDeviceWhiteLists({ userDevice,  device: device }))
+      .then(() => dispatch(subscribeUserToDeviceMessages({ userDevice, emitterUuid: device.uuid})))
+      .catch((err) => console.log('Error'))
+    // subscribeUserToDeviceMessages
+    // connect firehose
+    // listen for messages
+
+
+
+
+
+
+    addUserToDeviceWhiteLists({ userDevice,  device: device }, (error, results) => {
+      console.log('addMessagePermissionsForDevice', error, results)
+      createMessageSubscriptionsForDevice({ userDevice, emitterUuid: device.uuid}, (subscriptionError, subResults) => {
+        console.log('addMessagePermissionsForDevice',subscriptionError, subResults)
+        const deviceFirehose = new DeviceFirehose({
+          uuid: userDevice.uuid,
+          token: userDevice.token,
+        })
+        deviceFirehose.connect(this.handleFirehoseConnectionError)
+        deviceFirehose.on('message', this.handleFirehoseMessage)
+        this.setState({
+          firehose: deviceFirehose
+        })
+      })
     })
   }
 
-  handleFirehoseConnectionError = (err) => {
-    console.log('Firehose Connection Error', err);
+  handleFirehoseConnectionError = (err, result) => {
+    console.log('Firehose Connection Error', JSON.stringify(err, null, 2));
   }
 
   handleFirehoseMessage = (msg) => {
@@ -58,7 +78,7 @@ class ThingMessageConsole extends React.Component {
   render() {
     return (
       <div>
-        <SyntaxHighlighter language='javascript' style={tomorrowNight}>var greeting = 'hello'</SyntaxHighlighter>
+        <SyntaxHighlighter language='javascript' style={tomorrowNight}>{}</SyntaxHighlighter>
       </div>
     )
   }
@@ -67,4 +87,9 @@ class ThingMessageConsole extends React.Component {
 ThingMessageConsole.propTypes    = propTypes
 ThingMessageConsole.defaultProps = defaultProps
 
-export default ThingMessageConsole
+
+const mapStateToProps = ({ thing }) => {
+  return { thing }
+}
+
+export default connect(mapStateToProps)(ThingMessageConsole)
