@@ -4,8 +4,9 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles';
 import Firehose from 'meshblu-firehose-socket.io/src/firehose-socket-io.coffee'
 import { FIREHOSE_CONFIG } from 'config'
-
+import Button from 'zooid-button'
 import { setupMessageSubscription, messageReceived } from '../../actions/thing'
+import styles from './styles.css'
 
 import {
   addUserToDeviceWhiteLists,
@@ -54,8 +55,20 @@ class ThingMessageConsole extends React.Component {
   render() {
     const { messages }= this.props.thing
     return (
-      <div>
-        <SyntaxHighlighter language='javascript' style={tomorrowNight}>{JSON.stringify(messages, null, 2)}</SyntaxHighlighter>
+      <div className={styles.root}>
+        <SyntaxHighlighter
+          className={styles.consoleText}
+          language='javascript'
+          style={tomorrowNight}
+          >
+          {JSON.stringify(messages, null, 2)}
+        </SyntaxHighlighter>
+        <Button
+          block
+          kind="hollow-neutral"
+        >
+        Clear
+      </Button>
       </div>
     )
   }

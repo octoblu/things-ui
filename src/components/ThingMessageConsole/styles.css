@@ -1,0 +1,14 @@
+.root{
+  padding: 5px 5px 5px 5px;
+}
+
+.consoleText{
+  margin: 10px 0 10px 0;
+  height: 400px;
+  max-height: 500px;
+  overflow-y: scroll; 
+}
+
+.clear-button{
+
+}
