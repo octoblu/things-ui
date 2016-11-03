@@ -7,7 +7,7 @@ import TagList from '../TagList'
 import styles from './styles.css'
 
 const propTypes = {
-  applications: PropTypes.array.isRequired,
+  applicationDevices: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   selectedDevices: PropTypes.array.isRequired,
   selectedDeviceTags: PropTypes.array.isRequired,
@@ -22,7 +22,9 @@ class TagManager extends React.Component {
   }
 
   render() {
-    const { applications, selectedDevices, selectedDeviceTags } = this.props
+    const { applicationDevices, selectedDevices, selectedDeviceTags } = this.props
+
+    console.log("in TagManager applicationDevices", applicationDevices);
 
     if (_.isEmpty(selectedDevices)) return null
 
@@ -31,7 +33,7 @@ class TagManager extends React.Component {
         <Input
           placeholder="Add Tag" onKeyDown={this.detectKeyDownHandler.bind(this)}
         />
-        <TagList tags={applications} selectedTags={selectedDeviceTags} />
+        <TagList tags={applicationDevices} selectedTags={selectedDeviceTags} />
       </div>
     )
   }
@@ -41,13 +43,16 @@ TagManager.propTypes    = propTypes
 TagManager.defaultProps = defaultProps
 
 const mapStateToProps = ({ things }) => {
-  const { applications, devices, selectedThings } = things
+  const { applicationDevices, devices, selectedThings } = things
   const selectedDevices = _.intersectionBy(devices, selectedThings, 'uuid')
-  const selectedDeviceTags = null
+  const selectedDeviceTags = []
+
 
   console.log('Selected Devices', selectedDevices);
-  console.log('Selected Devices', selectedDevices);
-  return { applications, selectedDevices, selectedDeviceTags }
+  console.log('Application Devices', applicationDevices)
+  // console.log('Selected Device Tags', selectedDeviceTags);
+
+  return { applicationDevices, selectedDevices, selectedDeviceTags }
 }
 
 export default connect(mapStateToProps)(TagManager)

@@ -47,6 +47,8 @@ const ThingsLayout = (props) => {
 
   const { deletingThings, devices, error, fetching, selectedThings, showDeleteDialog, showTagDialog } = things
 
+  console.log("LOOKIE", things);
+
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
   if (_.isEmpty(devices)) return <div>No Things Found</div>

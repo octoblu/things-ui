@@ -22,7 +22,7 @@ class Thing extends React.Component {
 
     dispatch(getDevice({ uuid: params.deviceUuid, meshbluConfig }))
       .then(({ payload }) => {
-        if (_.get(payload.schemas.message, '$ref')) {
+        if (_.get(payload.schemas, 'message.$ref')) {
           dispatch(derefDeviceSchemas(payload.schemas))
         }
       })

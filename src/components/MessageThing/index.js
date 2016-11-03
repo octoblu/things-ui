@@ -32,7 +32,8 @@ const sendMessageHandler = (msg, thing) => {
 
 const MessageThing = ({ thing }) => {
   if (_.isEmpty(thing.device)) return null
-  if (_.isEmpty(thing.device.schemas.message)) return <div>No Message Schema :(</div>
+
+  if (!_.get(thing.device, 'schemas.message')) return <div>No Message Schema :(</div>
 
   return (
     <div className={styles.root}>
