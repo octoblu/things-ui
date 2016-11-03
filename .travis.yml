@@ -1,34 +1,39 @@
 language: node_js
 node_js:
-  - '6'
+- '6'
 branches:
   only:
-    - '/^v[0-9]/'
+  - /^v[0-9]/
 env:
-  global: 'CDN=https://things-octoblu-com-static.octoblu.com'
+  global:
+  - CDN=https://things-octoblu-com-static.octoblu.com
+  - secure: UfyidsmbRkVktvLTITgYd09hLdAacAT3o9sdT9vp2Xv6EDD9f87oorwg50QS58Px26WzuZhtTCppUUx9NP2XbAbFaPQva6uV4fTrJIBJE4UhI2H2X/WkjjCUw2C5xM1ANbynSwi3ZM6BWEPvbpx4BMsFlhBU5TKyhCNqG7w7EGCwmqiPFCsDYerIoTOf7Ti+4aFTfG5xBHcdRZms9cWbAXRdhbE/IJg13v7f9nGOtmXpk0QmpM6oXAXD0Q9hYelOkd6HVV0FsDmAyuYeP4bb/XACBmtzVStdWsaLOzYodPDPGd1p/YnyyP3IU/hMv0B03PxDoB64Dc4+IUIAuJD5BBNDxgphPzBe+N8yTGRKV1YDicWPAOUpmnFDKSMVUDElryJWlmpwl6E8aTfHRLPat1v7o3B9u6AntL4DU1GvIkCqFPaFe1tf72e7ZT9Us/PGszHO7NyJM8276G/hYTq72ZFR5WvxtOAsua41a9WQAd/Qcl2Hy2aO21CTpUuJePImfAP1K9BpTFwibdf2v2QLPkcM1NgpDCkk3vGXbl9z2LP4DR6w4ThbAA4xe9UQyvp/DZwMaEwbZb7AYgCcQYlWDlCWdjaqjvaTpODJayjvjNd9SK5QJSQsAAtWnooK/4uRe14GRRj+tvGq2ruSBfrPwxvC0Iob9MljBtSZcKRB0/4=
+  - secure: uYqbEClqRW8Xyyd7wMLEfn7sHmFRYyuZHL+nt1K7SGDgPM41AS/CDpX+K9rvmPnkfT/M/00KbwoLpmjxmrAEuz3naKlfaelO3vyLPYwB1QfSauPL+2MPEbyTWQBWM54cg8Y9B+mlKho5868S44OTcOS1e9CuawehA7uYRKqRjBS4j5xc5oUUY3TA+9QXVVRuJLnys1xELef7lVaCWWgTyIkpcbJF28JlL8+XMI08RT0LYOYd9dBd4Rq/BNuoFQqd+amctd655KmfPEN9OpbZCWxyDpmpRfttFgYWKSixYup4y8uZwdhJ6mTcw+HFwRfe5JONDJXzPHIGf9DItEzaYBQS3w9+tH6kJX1Xd+euEFeAdETvtkwqz8hZKnf7ptPOth2iz+7Y/x8BrLfWM3aOFbt+KW3TDMoiSPB0MXADSXvEb1jDPMHSqw9g3n/T+8VS9nNCFW+70sLyOuXnLSQxm+s0W+tV6kA8RbDdvtmmR6WTvJYsJLTRymiuXyIcoheeEAFedg82K05gXV147EGohyRHfGkkrMgyqSsD9YYOsoBk34FnoLSee52WYDWAe58ayP4Pgv4gx5QcGCpsgo2n8olCxGgT/n9pqcWt+1fNhi0k6mvhrqM+WNVHOB/k7smWLf1S7c187lU/5YQRxGU2MtK3mVgTR7foUnVjO0SVPXs=
 after_success:
-  - npm run coverage
-  - 'npm run mocha:json'
-  - 'bash <(curl -s https://codecov.io/bash)'
-  - 'bash <(curl -s https://codecov.octoblu.com/bash)'
+- npm run coverage
+- npm run mocha:json
+- bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.octoblu.com/bash)
 before_deploy:
-  - npm run build
-  - >-
-    export PKG_VERSION="$(node -e
-    'console.log(require("./package.json").version)')"
-  - 'if [ -z "$PKG_VERSION" ]; then echo ''Missing PKG_VERSION env'' && exit 1; fi'
-  - mkdir -p dpl_assets/v$PKG_VERSION
-  - cp -r dist/* dpl_assets/v$PKG_VERSION
+- npm run build
+- export PKG_VERSION="$(node -e 'console.log(require("./package.json").version)')"
+- if [ -z "$PKG_VERSION" ]; then echo 'Missing PKG_VERSION env' && exit 1; fi
+- mkdir -p dpl_assets/v$PKG_VERSION
+- cp -r dist/* dpl_assets/v$PKG_VERSION
 deploy:
+  matrix:
   - provider: s3
-    access_key_id: null
-    secret_access_key: null
+    access_key_id: AKIAJU3UCEPAB64BWU7A
+    secret_access-key:
+      secure: rmedOtLvAqa83PQ3Rirnt569app4p90OnGEac3F5Fi85P2WkpkhvTx5+9BMQx1dAxdi1kRn0M6/mV8GI+WcSvIJGdUxPqLAP+bHl/OV+IzpvuMHaAAmIteWn2GTJ17rxRGBFHsjWOsMNA4MsoZ4Z/4rC40TbfKf6NsnSChXwcEUYQIIvBKaSTfYSmO1hlHhHRS0R3e540l2Kg0x38kFRhIJ7NtJHCisB/thYu+BbF0ojKJNm/Bfcct9VecyM0ah3Mum2j40EtB1onWigwYR7AMoQvY/CAqpIYb+0sq7wbxz6OMu03UQKMB07+aVVIxU32y1egtYAxMw9Ed1B1WPFJaF7C5k321dik4oRfbYdVFB5H8ZQMflVIeMbvGfm5bhnfUdtxRDbZGgqtxuWhNm8UswGj5f2tzByodAY8udi/YvCf8Z0IG0qKGRbhhWcXx/mK4n/uOGHCMxmgkC73BxhnToby1wfRJxJ0zp4Dv3fctStzirP9DqA2K6AOEfPq2AX+R8NzP4KLZPEuVB1oMRtTRq0f2GyZNbw2p11+/XRT07X+in13GraQk6rqdzT+pOI211rvewMGEevJ273q+fi/PX9vgSk/ex2OToDuftoJ/rw/CedjbGuRd0N527KVliOP7XULJZhtLSSxrd4f/7YoHZpQ5SzKhd+trYsXvOsebI=
     bucket: things-octoblu-com-static.octoblu.com
     local_dir: dpl_assets
     skip_cleanup: true
     region: us-west-2
-    'on':
+    on:
       tags: true
 notifications:
   webhooks:
-    - 'https://beekeeper.octoblu.com/webhooks/travis:ci'
+  - https://beekeeper.octoblu.com/webhooks/travis:ci
+dd:
+  secure: JX7S0biETJfhGupgX+jZ9XAYh7+JFsWezhaFrdHk4cFJDxIkhjwyxrlS07t+8+JfXc0KAtI8zboIhwx0VhJ+jhAEzM3gyKmvazcV1tZwBo4UFDFfo5h3MMiB524B6fV07Ax1/hl97Ikrp4cM7Vy84icuU1mFe+3DNNyo6mFDd/Nki1gCV3YoGamsNO9SHQe5SSpcaMnFEtHmvPaQxxW7Y8dvP7JRptSqqBT2uEeMltX8kqAZo9ZiKrDrwHykzk2yzcOUFDBzSYkK+TAVjVk/jrfIxaJIMycL7YOFYfw1ihSS85FXjKBDYhuKPXYcv60qxG8s1jwTAQWLtOQFqtY9y2kL0uGIRtFFT+ZIjC37tC0RDjsjddbsyhcEHXJWkkUkPy3UKl5GPGNl04cxKAJEiQX+X+oTfeiws1tTv/iMHqB7ATzZJ2dC11IItNBTdNIb5FcCzUWjDYzRrFaS2cQu01AdtFHqbampoT9jHj3YDgPZV2gC0r0V6iE4ZzHH4F2juTciiF3oW6TXGLqYlwSAypCCuuxBPX/CQNegeFJ+jRSybub++k2QfhDAC4/s0YFp0IhWkgQG2tBOMjcK6ggCE6RXVB4lWYf9LtsrhcKjCie0c5cJAe1zIpddRa5Pv983W9N8WzHuz8wagDz3+3YoGV9xnlDZPas9qKbenCixVUU=
