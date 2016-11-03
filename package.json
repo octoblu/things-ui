@@ -1,7 +1,7 @@
 {
-  "name": "things-octoblu-com",
-  "version": "1.0.7",
-  "description": "things-octoblu-com",
+  "name": "things-ui",
+  "version": "1.0.8",
+  "description": "things-ui",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -21,15 +21,15 @@
     "babel",
     "webpack"
   ],
-  "homepage": "https://github.com/octoblu/things-octoblu-com",
-  "bugs": "https://github.com/octoblu/things-octoblu-com/issues",
+  "homepage": "https://github.com/octoblu/things-ui",
+  "bugs": "https://github.com/octoblu/things-ui/issues",
   "author": {
     "name": "Octoblu Inc",
     "url": "https://github.com/octoblu"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/octoblu/things-octoblu-com.git"
+    "url": "https://github.com/octoblu/things-ui.git"
   },
   "license": "MIT",
   "dependencies": {
