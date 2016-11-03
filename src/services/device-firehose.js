@@ -45,6 +45,8 @@ export default class DeviceFirehose extends EventEmitter2 {
     // if (this._isStale(message)) return
 
     const device = this._parseDevice(message)
+    
+    console.log('DEVICE', device)
     // this._updateLastUpdatedAt(message)
     // this.emit(`device:${device.uuid}`, device)
     this.emit(`device:${device.uuid}`, message)

@@ -7,15 +7,17 @@ import {
   derefDeviceSchemasRequest,
   derefDeviceSchemasFailure,
   derefDeviceSchemasSuccess,
+  messageReceived,
 } from '../../actions/thing'
 
 const { getDeviceRequest, getDeviceSuccess, getDeviceFailure } = getDeviceActions
 
 const initialState = {
   device: null,
-  schemasDerefed: false,
   error: null,
   fetching: false,
+  messages: [],
+  schemasDerefed: false,
 }
 
 export default createReducer({
@@ -38,4 +40,9 @@ export default createReducer({
     }
   },
   [getDeviceFailure]: (state, payload) => ({ ...initialState, error: payload, fetching: false }),
+  [getDeviceFailure]: (state, payload) => ({ ...initialState, error: payload, fetching: false }),
+  [messageReceived]: (state, payload) => {
+    const { messages } = state
+    return { ...state, messages: [...messages, payload] }
+  },
 }, initialState)
