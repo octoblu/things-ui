@@ -41,6 +41,28 @@ const addUserToDeviceWhiteLists = ({ userDevice = getMeshbluConfig(), device }, 
   return _addV1MessagingPermissions({ userDevice, device }, callback)
 }
 
+const addDeviceToUserMessageReceivedWhitelist = ({ userDevice = getMeshbluConfig(), device }, callback) => {
+  const meshbluHttp = new MeshbluHttp(userDevice)
+  let updateQuery
+  if (_isV2Device(userDevice)) {
+    updateQuery = {
+      $addToSet: {
+        'meshblu.whitelists.message.received': { uuid: device.uuid },
+        'meshblu.whitelists.message.sent': { uuid: device.uuid },
+      },
+    }
+  } else {
+    updateQuery = {
+      $addToSet: {
+        sendWhitelist: device.uuid,
+        receiveWhitelist: device.uuid,
+      },
+    }
+  }
+  return meshbluHttp.updateDangerously(userDevice.uuid, updateQuery, callback)
+  // return _addV1MessagingPermissions({userDevice: device, device: userDevice})
+}
+
 const createMessageSubscriptionsForDevice = ({ userDevice = getMeshbluConfig(), emitterUuid }, callback) => {
   const meshbluHttp = new MeshbluHttp(userDevice)
 
@@ -71,4 +93,5 @@ const createMessageSubscriptionsForDevice = ({ userDevice = getMeshbluConfig(), 
 export {
   addUserToDeviceWhiteLists,
   createMessageSubscriptionsForDevice,
+  addDeviceToUserMessageReceivedWhitelist,
 }
