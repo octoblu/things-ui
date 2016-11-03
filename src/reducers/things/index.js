@@ -47,12 +47,12 @@ export default createReducer({
   [showTagDialog]: state => ({ ...state, showTagDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    const applicationDevices = _.filter(devices, {'type': 'octoblu:application'})
+    const applicationDevices = _.filter(devices, { type: 'octoblu:application' })
 
     return {
       ...initialState,
       applicationDevices,
-      devices: _.reject(devices, {'type': 'octoblu:application'}),
+      devices,
       fetching: false,
       selectedThings: [],
     }

@@ -12,8 +12,6 @@ import {
   showDeleteDialog,
   dismissTagDialog,
   showTagDialog,
-
-
 } from '../actions/things'
 import { getMeshbluConfig } from '../services/auth-service'
 
@@ -31,9 +29,7 @@ class Things extends React.Component {
 
   fetchThings() {
     const meshbluConfig = getMeshbluConfig()
-    const query = {
-      owner: meshbluConfig.uuid,
-    }
+    const query = { owner: meshbluConfig.uuid }
     const projection = {
       uuid: true,
       name: true,

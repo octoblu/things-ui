@@ -12,6 +12,7 @@ import reducer from './'
 
 describe('Things Reducer', () => {
   const initialState = {
+    applicationDevices: [],
     deletingThings: false,
     devices: null,
     error: null,
@@ -36,27 +37,10 @@ describe('Things Reducer', () => {
 
     it('should handle fetching success', () => {
       const devices = [
-        {
-          uuid: 'my-thing-1-uuid',
-          octoblu: {
-            tags: ['Project Genisys', 'Fleck Project'],
-          },
-        },
-        {
-          uuid: 'my-thing-2-uuid',
-        },
-        {
-          uuid: 'my-thing-3-uuid',
-          octoblu: {
-            tags: ['Project Genisys', 'Olu Project'],
-          },
-        },
-        {
-          uuid: 'my-thing-4-uuid',
-          octoblu: {
-            links: [],
-          },
-        },
+        { uuid: 'my-thing-1-uuid' },
+        { uuid: 'my-thing-2-uuid' },
+        { uuid: 'my-thing-3-uuid' },
+        { uuid: 'my-thing-4-uuid' },
         {
           uuid: 'my-app-1-uuid',
           type: 'octoblu:application',
@@ -67,10 +51,9 @@ describe('Things Reducer', () => {
           type: 'octoblu:application',
           devices: [],
         },
-
       ]
 
-      const applications = [
+      const applicationDevices = [
         {
           uuid: 'my-app-1-uuid',
           type: 'octoblu:application',
@@ -88,7 +71,7 @@ describe('Things Reducer', () => {
         payload: devices,
       })).to.deep.equal({
         ...initialState,
-        applications,
+        applicationDevices,
         devices,
       })
     })
