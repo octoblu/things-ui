@@ -3,7 +3,7 @@ node_js:
 - '6'
 branches:
   only:
-  - /^v[0-9]/
+    - '/^v[0-9]/'
 env:
   global:
   - CDN=https://things-octoblu-com-static.octoblu.com
