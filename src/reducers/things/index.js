@@ -1,8 +1,11 @@
 import _ from 'lodash'
 import { createReducer } from 'redux-act'
 import { searchActions } from 'redux-meshblu'
+
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
+  addThingsToApplication,
+  removeThingsFromApplication,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
@@ -27,7 +30,52 @@ const initialState = {
   showTagDialog: false,
 }
 
+
+const computeSelectedApplications = ({ devices, selectedThings }) => {
+  return _(devices)
+    .filter({ type: 'octoblu:application' })
+    .filter(application => (_.difference(selectedThings, application.devices).length === 0))
+    .map('uuid')
+    .value()
+}
+
 export default createReducer({
+  [addThingsToApplication]: (state, applicationUuid) => {
+    const updatedDevices = _.map(state.devices, (device) => {
+      if (device.uuid !== applicationUuid) return device
+      return {
+        ...device,
+        devices: _.uniq([...device.devices, ...state.selectedThings]),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      selectedApplications: computeSelectedApplications({
+        devices: updatedDevices,
+        selectedThings: state.selectedThings,
+      }),
+    }
+  },
+  [removeThingsFromApplication]: (state, applicationUuid) => {
+    const updatedDevices = _.map(state.devices, (device) => {
+      if (device.uuid !== applicationUuid) return device
+      return {
+        ...device,
+        devices: _.difference(device.devices, state.selectedThings),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      selectedApplications: computeSelectedApplications({
+        devices: updatedDevices,
+        selectedThings: state.selectedThings,
+      }),
+    }
+  },
   [clearSelectedThings]: state => ({ ...state, selectedThings: [] }),
   [deleteSelectedThings]: state => ({ ...state, deletingThings: true }),
   [deleteSelectedThingsSuccess]: (state) => {
@@ -47,11 +95,7 @@ export default createReducer({
   [dismissTagDialog]: state => ({ ...state, showTagDialog: false, selectedApplications: [] }),
   [showTagDialog]: (state) => {
     const { devices, selectedThings } = state
-    const selectedApplications = _(devices)
-      .filter({ type: 'octoblu:application' })
-      .filter(application => (_.difference(selectedThings, application.devices).length === 0))
-      .map('uuid')
-      .value()
+    const selectedApplications = computeSelectedApplications({ devices, selectedThings })
 
     return {
       ...state,
@@ -69,7 +113,7 @@ export default createReducer({
     return {
       ...initialState,
       applications,
-      devices,
+      devices: _.reject(devices, { type: 'octoblu:application' }),
       fetching: false,
       selectedThings: [],
     }
