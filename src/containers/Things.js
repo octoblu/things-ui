@@ -29,15 +29,22 @@ class Things extends React.Component {
 
   fetchThings() {
     const meshbluConfig = getMeshbluConfig()
-    const query = { owner: meshbluConfig.uuid }
+    const query = {
+      owner: meshbluConfig.uuid,
+      type: {
+        $ne: 'octoblu:user',
+      },
+    }
+
     const projection = {
-      uuid: true,
-      name: true,
-      online: true,
-      type: true,
+      devices: true,
       logo: true,
       meshblu: true,
+      name: true,
       octoblu: true,
+      online: true,
+      type: true,
+      uuid: true,
     }
 
     this.props.dispatch(search({ query, projection }, meshbluConfig))
@@ -64,7 +71,6 @@ class Things extends React.Component {
   }
 
   handleTagDialogShow = () => {
-    console.log('handleTagDialogShow');
     this.props.dispatch(showTagDialog())
   }
 

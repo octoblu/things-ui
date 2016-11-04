@@ -5,24 +5,24 @@ import List from 'zooid-list'
 import TagListItem from '../TagListItem'
 
 const propTypes = {
-  tags: PropTypes.array,
-  selectedTags: PropTypes.array,
+  applications: PropTypes.array,
+  selectedApplications: PropTypes.array,
 }
 const defaultProps = {
-  tags: [],
-  selectedTags: [],
+  applications: [],
+  selectedApplications: [],
 }
 
-const TagList = ({ selectedTags, tags }) => {
-  if (_.isEmpty(tags)) return null
+const TagList = ({ selectedApplications, applications }) => {
+  if (_.isEmpty(applications)) return null
 
-  const tagListItems = _.map(tags, (tag) => {
-    const selected = selectedTags.includes(tag)
-    return <TagListItem tag={tag} key={tag} selected={selected} />
+  const applicationListItems = _.map(applications, (application) => {
+    const selected = selectedApplications.includes(application.uuid)
+    return <TagListItem application={application} key={application.uuid} selected={selected} />
   })
 
   return (
-    <List>{tagListItems}</List>
+    <List>{applicationListItems}</List>
   )
 }
 

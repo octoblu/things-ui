@@ -5,19 +5,19 @@ import styles from './styles.css'
 
 const propTypes = {
   selected: PropTypes.bool,
-  tag: PropTypes.string,
+  application: PropTypes.object,
 }
 
 const defaultProps = {
   selected: false,
-  tag: null,
+  application: null,
 }
 
-const TagListItem = ({ selected, tag }) => {
+const TagListItem = ({ selected, application }) => {
   return (
     <ListItem className={styles.root}>
-      <span>{tag}</span>
-      <input type="checkbox" defaultChecked={selected} name={tag} />
+      <span>{application.name}</span>
+      <input type="checkbox" defaultChecked={selected} name={application.name} />
     </ListItem>
   )
 }

@@ -8,13 +8,9 @@ import styles from './styles.css'
 
 const propTypes = {
   applicationDevices: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  selectedDevices: PropTypes.array.isRequired,
-  selectedDeviceTags: PropTypes.array.isRequired,
+  selectedThings: PropTypes.array.isRequired,
+  selectedApplications: PropTypes.array.isRequired,
 }
-
-const defaultProps = {}
-
 
 class TagManager extends React.Component {
   detectKeyDownHandler(event) {
@@ -22,37 +18,28 @@ class TagManager extends React.Component {
   }
 
   render() {
-    const { applicationDevices, selectedDevices, selectedDeviceTags } = this.props
+    const { applicationDevices, selectedThings, selectedApplications } = this.props
 
-    console.log("in TagManager applicationDevices", applicationDevices);
-
-    if (_.isEmpty(selectedDevices)) return null
+    if (_.isEmpty(selectedThings)) return null
 
     return (
       <div className={styles.root}>
         <Input
           placeholder="Add Tag" onKeyDown={this.detectKeyDownHandler.bind(this)}
         />
-        <TagList tags={applicationDevices} selectedTags={selectedDeviceTags} />
+        <TagList applications={applicationDevices} selectedApplications={selectedApplications} />
       </div>
     )
   }
 }
 
-TagManager.propTypes    = propTypes
-TagManager.defaultProps = defaultProps
+TagManager.propTypes = propTypes
 
 const mapStateToProps = ({ things }) => {
-  const { applicationDevices, devices, selectedThings } = things
-  const selectedDevices = _.intersectionBy(devices, selectedThings, 'uuid')
-  const selectedDeviceTags = []
+  const { devices, selectedApplications, selectedThings } = things
+  const applicationDevices = _.filter(devices, { type: 'octoblu:application' })
 
-
-  console.log('Selected Devices', selectedDevices);
-  console.log('Application Devices', applicationDevices)
-  // console.log('Selected Device Tags', selectedDeviceTags);
-
-  return { applicationDevices, selectedDevices, selectedDeviceTags }
+  return { applicationDevices, selectedApplications, selectedThings }
 }
 
 export default connect(mapStateToProps)(TagManager)

@@ -16,11 +16,12 @@ import {
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
-  applicationDevices: [],
+  applications: [],
   deletingThings: false,
   devices: null,
   error: null,
   fetching: false,
+  selectedApplications: [],
   selectedThings: [],
   showDeleteDialog: false,
   showTagDialog: false,
@@ -28,11 +29,11 @@ const initialState = {
 
 export default createReducer({
   [clearSelectedThings]: state => ({ ...state, selectedThings: [] }),
-  [deleteSelectedThings]: (state) => {
-    return { ...state, deletingThings: true }
-  },
+  [deleteSelectedThings]: state => ({ ...state, deletingThings: true }),
   [deleteSelectedThingsSuccess]: (state) => {
-    const updatedDevices =  _.differenceBy(state.devices, state.selectedThings, 'uuid')
+    const updatedDevices =  _.filter(state.devices, ({ uuid }) => {
+      return (!_.includes(state.selectedThings, uuid))
+    })
 
     return {
       ...state,
@@ -43,15 +44,31 @@ export default createReducer({
   },
   [dismissDeleteDialog]: state => ({ ...state, showDeleteDialog: false }),
   [showDeleteDialog]: state => ({ ...state, showDeleteDialog: true }),
-  [dismissTagDialog]: state => ({ ...state, showTagDialog: false }),
-  [showTagDialog]: state => ({ ...state, showTagDialog: true }),
+  [dismissTagDialog]: state => ({ ...state, showTagDialog: false, selectedApplications: [] }),
+  [showTagDialog]: (state) => {
+    const { devices, selectedThings } = state
+    const selectedApplications = _(devices)
+      .filter({ type: 'octoblu:application' })
+      .filter(application => (_.difference(selectedThings, application.devices).length === 0))
+      .map('uuid')
+      .value()
+
+    return {
+      ...state,
+      selectedApplications,
+      showTagDialog: true,
+    }
+  },
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    const applicationDevices = _.filter(devices, { type: 'octoblu:application' })
+    const applications = _(devices)
+      .filter({ type: 'octoblu:application' })
+      .map('uuid')
+      .value()
 
     return {
       ...initialState,
-      applicationDevices,
+      applications,
       devices,
       fetching: false,
       selectedThings: [],
@@ -60,12 +77,11 @@ export default createReducer({
   [searchFailure]: (state, payload) => ({ ...initialState, error: payload, fetching: false }),
   [selectThing]: (state, payload) => {
     const { selectedThings } = state
-    selectedThings.push({ uuid: payload })
+    selectedThings.push(payload)
     return { ...state, selectedThings }
   },
   [unselectThing]: (state, payload) => {
-    const { selectedThings } = state
-    const filteredDevices = _.reject(selectedThings, { uuid: payload })
+    const filteredDevices = _.without(state.selectedThings, payload)
     return { ...state, selectedThings: filteredDevices }
   },
 }, initialState)

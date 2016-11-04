@@ -6,17 +6,20 @@ import {
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
+  dismissTagDialog,
+  showTagDialog,
 } from '../../actions/things'
 
 import reducer from './'
 
 describe('Things Reducer', () => {
   const initialState = {
-    applicationDevices: [],
+    applications: [],
     deletingThings: false,
     devices: null,
     error: null,
     fetching: false,
+    selectedApplications: [],
     selectedThings: [],
     showDeleteDialog: false,
     showTagDialog: false,
@@ -53,17 +56,9 @@ describe('Things Reducer', () => {
         },
       ]
 
-      const applicationDevices = [
-        {
-          uuid: 'my-app-1-uuid',
-          type: 'octoblu:application',
-          devices: [],
-        },
-        {
-          uuid: 'my-app-2-uuid',
-          type: 'octoblu:application',
-          devices: [],
-        },
+      const applications = [
+        'my-app-1-uuid',
+        'my-app-2-uuid',
       ]
 
       expect(reducer(undefined, {
@@ -71,7 +66,7 @@ describe('Things Reducer', () => {
         payload: devices,
       })).to.deep.equal({
         ...initialState,
-        applicationDevices,
+        applications,
         devices,
       })
     })
@@ -93,13 +88,13 @@ describe('Things Reducer', () => {
         })
       ).to.deep.equal({
         ...initialState,
-        selectedThings: [{ uuid: 'my-selected-thing-uuid' }]
+        selectedThings: ['my-selected-thing-uuid'],
       })
     })
   })
 
-  describe('clearSelectedThings', () => {
-    it('should handle clearSelectedThings action', () => {
+  describe('unselectThing', () => {
+    it('should handle unselecting a thing', () => {
       const currentState = {
         ...initialState,
         selectedThings: [
@@ -109,28 +104,11 @@ describe('Things Reducer', () => {
         ],
       }
 
-      expect(
-        reducer(currentState, { type: clearSelectedThings.getType() })
-      ).to.deep.equal(initialState)
-    })
-  })
-
-  describe('unselectThing', () => {
-    it('should handle unselecting a thing', () => {
-      const currentState = {
-        ...initialState,
-        selectedThings: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-        ],
-      }
-
       const expectedState = {
         ...currentState,
         selectedThings: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-3' },
+          'thing-uuid-1',
+          'thing-uuid-3',
         ],
       }
 
@@ -139,6 +117,87 @@ describe('Things Reducer', () => {
           type: unselectThing.getType(),
           payload: 'thing-uuid-2',
         })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
+  describe('clearSelectedThings', () => {
+    it('should handle clearSelectedThings action', () => {
+      const state = {
+        ...initialState,
+        selectedThings: [
+          'thing-uuid-1',
+          'thing-uuid-2',
+          'thing-uuid-3',
+        ],
+      }
+
+      expect(
+        reducer(state, { type: clearSelectedThings.getType() })
+      ).to.deep.equal(initialState)
+    })
+  })
+
+  describe('showTagDialog', () => {
+    it('should handle showTagDialog action', () => {
+      const state = {
+        ...initialState,
+        applications: [
+          'app-uuid-1',
+          'app-uuid-2',
+        ],
+        devices: [
+          { uuid: 'thing-uuid-1' },
+          { uuid: 'thing-uuid-2' },
+          { uuid: 'thing-uuid-3' },
+          {
+            uuid: 'app-uuid-1',
+            type: 'octoblu:application',
+            devices: [
+              'thing-uuid-1',
+              'thing-uuid-2',
+              'thing-uuid-3',
+            ],
+          },
+          {
+            uuid: 'app-uuid-2',
+            type: 'octoblu:application',
+            devices: ['thing-uuid-1'],
+          },
+        ],
+        selectedThings: [
+          'thing-uuid-1',
+          'thing-uuid-3',
+        ],
+      }
+
+      const expectedState = {
+        ...state,
+        selectedApplications: ['app-uuid-1'],
+        showTagDialog: true,
+      }
+
+      expect(
+        reducer(state, { type: showTagDialog.getType() })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
+  describe('dismissTagDialog', () => {
+    it('should handle dismissTagDialog action', () => {
+      const state = {
+        ...initialState,
+        showTagDialog: true,
+        selectedApplications: ['fool'],
+      }
+
+      const expectedState = {
+        ...state,
+        showTagDialog: false,
+        selectedApplications: [],
+      }
+      expect(
+        reducer(state, { type: dismissTagDialog.getType() })
       ).to.deep.equal(expectedState)
     })
   })
@@ -153,8 +212,8 @@ describe('Things Reducer', () => {
           { uuid: 'thing-3-uuid' },
         ],
         selectedThings: [
-          { uuid: 'thing-1-uuid' },
-          { uuid: 'thing-3-uuid' },
+          'thing-1-uuid',
+          'thing-3-uuid',
         ],
         deletingThings: false,
       }
@@ -180,8 +239,8 @@ describe('Things Reducer', () => {
           { uuid: 'thing-3-uuid' },
         ],
         selectedThings: [
-          { uuid: 'thing-1-uuid' },
-          { uuid: 'thing-3-uuid' },
+          'thing-1-uuid',
+          'thing-3-uuid',
         ],
         deletingThings: true,
       }

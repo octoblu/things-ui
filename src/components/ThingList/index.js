@@ -26,7 +26,7 @@ const ThingList = ({ onThingSelection, things, selectedThings }) => {
     return (
       <ThingListItem
         onThingSelection={onThingSelection}
-        selected={!(_.isEmpty(_.find(selectedThings, { uuid })))}
+        selected={_.includes(selectedThings, uuid)}
         thing={thing}
         key={uuid}
       />

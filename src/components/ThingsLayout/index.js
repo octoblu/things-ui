@@ -45,9 +45,15 @@ const ThingsLayout = (props) => {
     things,
   } = props
 
-  const { deletingThings, devices, error, fetching, selectedThings, showDeleteDialog, showTagDialog } = things
-
-  console.log("LOOKIE", things);
+  const {
+    deletingThings,
+    devices,
+    error,
+    fetching,
+    selectedThings,
+    showDeleteDialog,
+    showTagDialog,
+  } = things
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>

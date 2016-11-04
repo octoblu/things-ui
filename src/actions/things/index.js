@@ -19,7 +19,7 @@ const deleteSelection = (selectedThings) => {
     const meshbluConfig = getMeshbluConfig()
     dispatch(deleteSelectedThings(selectedThings))
 
-    return Promise.each(selectedThings, ({ uuid }) => dispatch(unregister({ uuid, meshbluConfig })))
+    return Promise.each(selectedThings, uuid => dispatch(unregister({ uuid, meshbluConfig })))
       .then(() => dispatch(deleteSelectedThingsSuccess()))
       .catch(err => dispatch(deleteSelectedThingsFailure(err)))
   }
