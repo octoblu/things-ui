@@ -3,7 +3,7 @@ node_js:
 - '6'
 branches:
   only:
-- '/^v[0-9]/'
+    - '/^v[0-9]/'
 env:
   global:
   - CDN=https://things-static.octoblu.com
@@ -21,14 +21,14 @@ before_deploy:
 - mkdir -p dpl_assets/v$PKG_VERSION
 - cp -r dist/* dpl_assets/v$PKG_VERSION
 deploy:
-- provider: s3
-  access_key_id: AKIAJU3UCEPAB64BWU7A
-  secret_access-key:
-    secure: rmedOtLvAqa83PQ3Rirnt569app4p90OnGEac3F5Fi85P2WkpkhvTx5+9BMQx1dAxdi1kRn0M6/mV8GI+WcSvIJGdUxPqLAP+bHl/OV+IzpvuMHaAAmIteWn2GTJ17rxRGBFHsjWOsMNA4MsoZ4Z/4rC40TbfKf6NsnSChXwcEUYQIIvBKaSTfYSmO1hlHhHRS0R3e540l2Kg0x38kFRhIJ7NtJHCisB/thYu+BbF0ojKJNm/Bfcct9VecyM0ah3Mum2j40EtB1onWigwYR7AMoQvY/CAqpIYb+0sq7wbxz6OMu03UQKMB07+aVVIxU32y1egtYAxMw9Ed1B1WPFJaF7C5k321dik4oRfbYdVFB5H8ZQMflVIeMbvGfm5bhnfUdtxRDbZGgqtxuWhNm8UswGj5f2tzByodAY8udi/YvCf8Z0IG0qKGRbhhWcXx/mK4n/uOGHCMxmgkC73BxhnToby1wfRJxJ0zp4Dv3fctStzirP9DqA2K6AOEfPq2AX+R8NzP4KLZPEuVB1oMRtTRq0f2GyZNbw2p11+/XRT07X+in13GraQk6rqdzT+pOI211rvewMGEevJ273q+fi/PX9vgSk/ex2OToDuftoJ/rw/CedjbGuRd0N527KVliOP7XULJZhtLSSxrd4f/7YoHZpQ5SzKhd+trYsXvOsebI=
-  bucket: things-static.octoblu.com
-  local_dir: dpl_assets
-  skip_cleanup: true
-  region: us-west-2
+  - provider: s3
+    access_key_id: AKIAJU3UCEPAB64BWU7A
+    secret_access-key:
+      secure: rmedOtLvAqa83PQ3Rirnt569app4p90OnGEac3F5Fi85P2WkpkhvTx5+9BMQx1dAxdi1kRn0M6/mV8GI+WcSvIJGdUxPqLAP+bHl/OV+IzpvuMHaAAmIteWn2GTJ17rxRGBFHsjWOsMNA4MsoZ4Z/4rC40TbfKf6NsnSChXwcEUYQIIvBKaSTfYSmO1hlHhHRS0R3e540l2Kg0x38kFRhIJ7NtJHCisB/thYu+BbF0ojKJNm/Bfcct9VecyM0ah3Mum2j40EtB1onWigwYR7AMoQvY/CAqpIYb+0sq7wbxz6OMu03UQKMB07+aVVIxU32y1egtYAxMw9Ed1B1WPFJaF7C5k321dik4oRfbYdVFB5H8ZQMflVIeMbvGfm5bhnfUdtxRDbZGgqtxuWhNm8UswGj5f2tzByodAY8udi/YvCf8Z0IG0qKGRbhhWcXx/mK4n/uOGHCMxmgkC73BxhnToby1wfRJxJ0zp4Dv3fctStzirP9DqA2K6AOEfPq2AX+R8NzP4KLZPEuVB1oMRtTRq0f2GyZNbw2p11+/XRT07X+in13GraQk6rqdzT+pOI211rvewMGEevJ273q+fi/PX9vgSk/ex2OToDuftoJ/rw/CedjbGuRd0N527KVliOP7XULJZhtLSSxrd4f/7YoHZpQ5SzKhd+trYsXvOsebI=
+    bucket: things-static.octoblu.com
+    local_dir: dpl_assets
+    skip_cleanup: true
+    region: us-west-2
 notifications:
   webhooks:
   - https://beekeeper.octoblu.com/webhooks/travis:ci
