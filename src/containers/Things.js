@@ -78,8 +78,8 @@ class Things extends React.Component {
     this.props.dispatch(dismissTagDialog())
   }
 
-  handleTagSelection = () => {
-    console.log('handleTagSelection');
+  handleUpdateTags = () => {
+    console.log('onUpdateTags');
   }
 
   handleThingSelectionToggle = (thingUuid, selected) => {
@@ -98,6 +98,7 @@ class Things extends React.Component {
         onTagDialogDismiss={this.handleTagDialogDismiss}
         onTagSelection={this.handleTagSelection}
         onThingSelection={this.handleThingSelectionToggle}
+        onUpdateTags={this.handleUpdateTags}
         things={this.props.things}
       />
     )

@@ -19,6 +19,7 @@ const propTypes = {
   onTagDialogShow: PropTypes.func,
   onTagDialogDismiss: PropTypes.func,
   onThingSelection: PropTypes.func,
+  onUpdateTags: PropTypes.func,
   things: PropTypes.object.isRequired,
 }
 
@@ -31,6 +32,7 @@ const defaultProps = {
   onTagDialogDismiss: _.noop,
   onTagSelection: _.noop,
   onThingSelection: _.noop,
+  onUpdateTags: _.noop,
 }
 
 const ThingsLayout = (props) => {
@@ -42,6 +44,7 @@ const ThingsLayout = (props) => {
     onTagDialogDismiss,
     onTagDialogShow,
     onThingSelection,
+    onUpdateTags,
     things,
   } = props
 
@@ -78,7 +81,11 @@ const ThingsLayout = (props) => {
         />
       </Page>
 
-      <TagDialog visible={showTagDialog} onTagDialogDismiss={onTagDialogDismiss} />
+      <TagDialog
+        visible={showTagDialog}
+        onTagDialogDismiss={onTagDialogDismiss}
+        onUpdateTags={onUpdateTags}
+      />
 
       <DeleteDialog
         deletingThings={deletingThings}
