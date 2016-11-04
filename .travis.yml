@@ -1,9 +1,6 @@
 language: node_js
 node_js:
 - '6'
-branches:
-  only:
-    - '/^v[0-9]/'
 env:
   global:
   - CDN=https://things-static.octoblu.com
@@ -29,6 +26,11 @@ deploy:
     local_dir: dpl_assets
     skip_cleanup: true
     region: us-west-2
+    on:
+      branch:
+        only:
+          - '/^v[0-9]/'
+
 notifications:
   webhooks:
   - https://beekeeper.octoblu.com/webhooks/travis:ci
