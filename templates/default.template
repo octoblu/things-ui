@@ -22,6 +22,10 @@ server {
     expires -1;
     access_log off;
 
+    if ($http_x_forwarded_proto = 'http') {
+      return 301 https://$host$request_uri;
+    }
+
     root /usr/share/nginx/html;
 
     index index.html;
