@@ -27,9 +27,7 @@ deploy:
     skip_cleanup: true
     region: us-west-2
     on:
-      branch:
-        only:
-          - '/^v[0-9]/'
+      all_branches: true
 
 notifications:
   webhooks:
