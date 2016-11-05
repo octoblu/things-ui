@@ -11,40 +11,43 @@ import ThingsPageHeader from '../ThingsPageHeader'
 import styles from './styles.css'
 
 const propTypes = {
+  onApplicationDialogShow: PropTypes.func,
+  onApplicationDialogDismiss: PropTypes.func,
   onClearSelection: PropTypes.func,
   onDeleteDialogDismiss: PropTypes.func,
   onDeleteDialogShow: PropTypes.func,
   onDeleteSelection: PropTypes.func,
   onTagSelection: PropTypes.func,
-  onTagDialogShow: PropTypes.func,
-  onTagDialogDismiss: PropTypes.func,
   onThingSelection: PropTypes.func,
   onUpdateTags: PropTypes.func,
+  showApplicationDialog: PropTypes.bool,
   things: PropTypes.object.isRequired,
 }
 
 const defaultProps = {
+  onApplicationDialogShow: _.noop,
+  onApplicationDialogDismiss: _.noop,
   onClearSelection: _.noop,
   onDeleteDialogDismiss: _.noop,
   onDeleteDialogShow: _.noop,
   onDeleteSelection: _.noop,
-  onTagDialogShow: _.noop,
-  onTagDialogDismiss: _.noop,
   onTagSelection: _.noop,
   onThingSelection: _.noop,
   onUpdateTags: _.noop,
+  showApplicationDialog: false,
 }
 
 const ThingsLayout = (props) => {
   const {
+    onApplicationDialogDismiss,
+    onApplicationDialogShow,
     onClearSelection,
     onDeleteDialogDismiss,
     onDeleteDialogShow,
     onDeleteSelection,
-    onTagDialogDismiss,
-    onTagDialogShow,
     onThingSelection,
     onUpdateTags,
+    showApplicationDialog,
     things,
   } = props
 
@@ -55,7 +58,6 @@ const ThingsLayout = (props) => {
     fetching,
     selectedThings,
     showDeleteDialog,
-    showTagDialog,
   } = things
 
   if (fetching) return <div>Loading...</div>
@@ -69,7 +71,7 @@ const ThingsLayout = (props) => {
       <ThingListActions
         onClearSelection={onClearSelection}
         onDeleteDialogShow={onDeleteDialogShow}
-        onTagDialogShow={onTagDialogShow}
+        onApplicationDialogShow={onApplicationDialogShow}
         selectedThings={selectedThings}
       />
 
@@ -82,8 +84,8 @@ const ThingsLayout = (props) => {
       </Page>
 
       <TagDialog
-        visible={showTagDialog}
-        onTagDialogDismiss={onTagDialogDismiss}
+        visible={showApplicationDialog}
+        onApplicationDialogDismiss={onApplicationDialogDismiss}
         onUpdateTags={onUpdateTags}
       />
 

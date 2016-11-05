@@ -7,17 +7,17 @@ import TagManager from '../TagManager'
 
 const propTypes = {
   visible: PropTypes.bool,
-  onTagDialogDismiss: PropTypes.func,
+  onApplicationDialogDismiss: PropTypes.func,
   onUpdateTags: PropTypes.func,
 }
 
 const defaultProps = {
   visible: false,
-  onTagDialogDismiss: _.noop,
+  onApplicationDialogDismiss: _.noop,
   onUpdateTags: _.noop,
 }
 
-const TagDialog = ({ visible, onTagDialogDismiss, onUpdateTags }) => {
+const TagDialog = ({ visible, onApplicationDialogDismiss, onUpdateTags }) => {
   return (
     <Dialog visible={visible}>
       <DialogHeader>
@@ -30,7 +30,7 @@ const TagDialog = ({ visible, onTagDialogDismiss, onUpdateTags }) => {
 
       <DialogActions>
         <Button onClick={onUpdateTags} kind="primary">Update</Button>
-        <Button onClick={onTagDialogDismiss}>Cancel</Button>
+        <Button onClick={onApplicationDialogDismiss}>Cancel</Button>
       </DialogActions>
     </Dialog>
   )

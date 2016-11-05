@@ -12,8 +12,6 @@ import {
   deleteSelectedThingsFailure,
   dismissDeleteDialog,
   showDeleteDialog,
-  dismissTagDialog,
-  showTagDialog,
 } from '../../actions/things'
 
 
@@ -27,7 +25,6 @@ const initialState = {
   selectedApplications: [],
   selectedThings: [],
   showDeleteDialog: false,
-  showTagDialog: false,
 }
 
 
@@ -92,17 +89,6 @@ export default createReducer({
   },
   [dismissDeleteDialog]: state => ({ ...state, showDeleteDialog: false }),
   [showDeleteDialog]: state => ({ ...state, showDeleteDialog: true }),
-  [dismissTagDialog]: state => ({ ...state, showTagDialog: false, selectedApplications: [] }),
-  [showTagDialog]: (state) => {
-    const { devices, selectedThings } = state
-    const selectedApplications = computeSelectedApplications({ devices, selectedThings })
-
-    return {
-      ...state,
-      selectedApplications,
-      showTagDialog: true,
-    }
-  },
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
     const applications = _(devices)
@@ -113,7 +99,7 @@ export default createReducer({
     return {
       ...initialState,
       applications,
-      devices: _.reject(devices, { type: 'octoblu:application' }),
+      devices: _.reject(devices, { type: 'octoblu:application'}),
       fetching: false,
       selectedThings: [],
     }

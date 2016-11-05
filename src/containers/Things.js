@@ -10,9 +10,13 @@ import {
   deleteSelection,
   dismissDeleteDialog,
   showDeleteDialog,
-  dismissTagDialog,
-  showTagDialog,
 } from '../actions/things'
+
+import {
+  dismissApplicationDialog,
+  showApplicationDialog,
+} from '../actions/applications'
+
 import { getMeshbluConfig } from '../services/auth-service'
 
 import ThingsLayout from '../components/ThingsLayout'
@@ -70,12 +74,13 @@ class Things extends React.Component {
     this.props.dispatch(dismissDeleteDialog())
   }
 
-  handleTagDialogShow = () => {
-    this.props.dispatch(showTagDialog())
+  handleApplicationDialogShow = () => {
+    const { selectedThings } = this.props.things
+    this.props.dispatch(showApplicationDialog(selectedThings))
   }
 
-  handleTagDialogDismiss = () => {
-    this.props.dispatch(dismissTagDialog())
+  handleApplicationDialogDismiss = () => {
+    this.props.dispatch(dismissApplicationDialog())
   }
 
   handleUpdateTags = () => {
@@ -94,11 +99,12 @@ class Things extends React.Component {
         onDeleteDialogShow={this.handleDeleteDialogShow}
         onDeleteDialogDismiss={this.handleDeleteDialogDismiss}
         onDeleteSelection={this.handleDeleteSelection}
-        onTagDialogShow={this.handleTagDialogShow}
-        onTagDialogDismiss={this.handleTagDialogDismiss}
+        onApplicationDialogShow={this.handleApplicationDialogShow}
+        onApplicationDialogDismiss={this.handleApplicationDialogDismiss}
         onTagSelection={this.handleTagSelection}
         onThingSelection={this.handleThingSelectionToggle}
         onUpdateTags={this.handleUpdateTags}
+        showApplicationDialog={this.props.showApplicationDialog}
         things={this.props.things}
       />
     )
@@ -107,8 +113,9 @@ class Things extends React.Component {
 
 Things.propTypes = propTypes
 
-const mapStateToProps = ({ things }) => {
-  return { things }
+const mapStateToProps = ({ applications, things }) => {
+  const {showApplicationDialog} = applications
+  return { showApplicationDialog, things }
 }
 
 export default connect(mapStateToProps)(Things)

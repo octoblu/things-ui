@@ -9,8 +9,6 @@ import {
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
-  dismissTagDialog,
-  showTagDialog,
 } from '../../actions/things'
 
 import reducer from './'
@@ -25,7 +23,6 @@ describe('Things Reducer', () => {
     selectedApplications: [],
     selectedThings: [],
     showDeleteDialog: false,
-    showTagDialog: false,
   }
 
   it('should return the initial state', () => {
@@ -138,70 +135,6 @@ describe('Things Reducer', () => {
       expect(
         reducer(state, { type: clearSelectedThings.getType() })
       ).to.deep.equal(initialState)
-    })
-  })
-
-  describe('showTagDialog', () => {
-    it('should handle showTagDialog action', () => {
-      const state = {
-        ...initialState,
-        applications: [
-          'app-uuid-1',
-          'app-uuid-2',
-        ],
-        devices: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-          {
-            uuid: 'app-uuid-1',
-            type: 'octoblu:application',
-            devices: [
-              'thing-uuid-1',
-              'thing-uuid-2',
-              'thing-uuid-3',
-            ],
-          },
-          {
-            uuid: 'app-uuid-2',
-            type: 'octoblu:application',
-            devices: ['thing-uuid-1'],
-          },
-        ],
-        selectedThings: [
-          'thing-uuid-1',
-          'thing-uuid-3',
-        ],
-      }
-
-      const expectedState = {
-        ...state,
-        selectedApplications: ['app-uuid-1'],
-        showTagDialog: true,
-      }
-
-      expect(
-        reducer(state, { type: showTagDialog.getType() })
-      ).to.deep.equal(expectedState)
-    })
-  })
-
-  describe('dismissTagDialog', () => {
-    it('should handle dismissTagDialog action', () => {
-      const state = {
-        ...initialState,
-        showTagDialog: true,
-        selectedApplications: ['fool'],
-      }
-
-      const expectedState = {
-        ...state,
-        showTagDialog: false,
-        selectedApplications: [],
-      }
-      expect(
-        reducer(state, { type: dismissTagDialog.getType() })
-      ).to.deep.equal(expectedState)
     })
   })
 

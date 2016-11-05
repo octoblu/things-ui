@@ -2,20 +2,32 @@ import _ from 'lodash'
 import { createReducer } from 'redux-act'
 import { searchActions } from 'redux-meshblu'
 
-// import {
-//   addThingsToApplication,
-//   removeThingsFromApplication,
-// } from '../../actions/things'
+import {
+  dismissApplicationDialog,
+  showApplicationDialog,
+} from '../../actions/applications'
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
-
 const initialState = {
   devices: null,
   error: null,
   fetching: false,
+  showApplicationDialog: false,
+}
+
+const computeSelectedApplications = ({ devices, selectedThings }) => {
+  return _(devices)
+    .filter(application => (_.difference(selectedThings, application.devices).length === 0))
+    .map('uuid')
+    .value()
 }
 
 export default createReducer({
+  [dismissApplicationDialog]: state => ({
+    ...state,
+    showApplicationDialog: false,
+    selectedApplications: [],
+  }),
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
@@ -25,53 +37,15 @@ export default createReducer({
       fetching: false,
     }
   },
+  [showApplicationDialog]: (state, selectedThings) => {
+    const selectedApplications = computeSelectedApplications({
+      devices: state.devices,
+      selectedThings,
+    })
+    return {
+      ...state,
+      selectedApplications,
+      showApplicationDialog: true,
+    }
+  },
 }, initialState)
-
-
-//
-// const computeSelectedApplications = ({ devices, selectedThings }) => {
-//   return _(devices)
-//     .filter({ type: 'octoblu:application' })
-//     .filter(application => (_.difference(selectedThings, application.devices).length === 0))
-//     .map('uuid')
-//     .value()
-// }
-//
-// export default createReducer({
-//   [addThingsToApplication]: (state, applicationUuid) => {
-//     const updatedDevices = _.map(state.devices, (device) => {
-//       if (device.uuid !== applicationUuid) return device
-//       return {
-//         ...device,
-//         devices: _.uniq([...device.devices, ...state.selectedThings]),
-//       }
-//     })
-//
-//     return {
-//       ...state,
-//       devices: updatedDevices,
-//       selectedApplications: computeSelectedApplications({
-//         devices: updatedDevices,
-//         selectedThings: state.selectedThings,
-//       }),
-//     }
-//   },
-//   [removeThingsFromApplication]: (state, applicationUuid) => {
-//     const updatedDevices = _.map(state.devices, (device) => {
-//       if (device.uuid !== applicationUuid) return device
-//       return {
-//         ...device,
-//         devices: _.difference(device.devices, state.selectedThings),
-//       }
-//     })
-//
-//     return {
-//       ...state,
-//       devices: updatedDevices,
-//       selectedApplications: computeSelectedApplications({
-//         devices: updatedDevices,
-//         selectedThings: state.selectedThings,
-//       }),
-//     }
-//   },
-// }, initialState)

@@ -2,6 +2,11 @@ import { expect } from 'chai'
 import _ from 'lodash'
 import { searchActions } from 'redux-meshblu'
 
+import {
+  dismissApplicationDialog,
+  showApplicationDialog,
+} from '../../actions/applications'
+
 import reducer from './'
 
 describe('Applications Reducer', () => {
@@ -9,6 +14,7 @@ describe('Applications Reducer', () => {
     devices: null,
     error: null,
     fetching: false,
+    showApplicationDialog: false,
   }
 
   it('should return the initial state', () => {
@@ -64,6 +70,60 @@ describe('Applications Reducer', () => {
         fetching: false,
         error: new Error('Nooooo'),
       })
+    })
+  })
+
+  describe('showApplicationDialog', () => {
+    it('should handle showApplicationDialog action', () => {
+      const state = {
+        ...initialState,
+        devices: [
+          {
+            uuid: 'app-uuid-1',
+            type: 'octoblu:application',
+            devices: [
+              'thing-uuid-1',
+              'thing-uuid-2',
+              'thing-uuid-3',
+            ],
+          },
+          {
+            uuid: 'app-uuid-2',
+            type: 'octoblu:application',
+            devices: ['thing-uuid-1'],
+          },
+        ],
+      }
+      const expectedState = {
+        ...state,
+        selectedApplications: ['app-uuid-1'],
+        showApplicationDialog: true,
+      }
+      expect(
+        reducer(state, {
+          type: showApplicationDialog.getType(),
+          payload: ['thing-uuid-1', 'thing-uuid-3'],
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+  describe('dismissApplicationDialog', () => {
+    it('should handle dismissApplicationDialog action', () => {
+      const state = {
+        ...initialState,
+        showApplicationDialog: true,
+        selectedApplications: ['cats'],
+      }
+      const expectedState = {
+        ...state,
+        selectedApplications: [],
+        showApplicationDialog: false,
+      }
+      expect(
+        reducer(state, {
+          type: dismissApplicationDialog.getType(),
+        })
+      ).to.deep.equal(expectedState)
     })
   })
 })
