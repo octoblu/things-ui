@@ -4,8 +4,8 @@ import { searchActions } from 'redux-meshblu'
 
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
-  addThingsToGroup,
-  removeThingsFromGroup,
+  addSelectedThingsToGroup,
+  removeSelectedThingsFromGroup,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
@@ -19,7 +19,6 @@ describe('Things Reducer', () => {
     devices: null,
     error: null,
     fetching: false,
-    selectedGroups: [],
     selectedThings: [],
     showDeleteDialog: false,
   }
@@ -186,106 +185,6 @@ describe('Things Reducer', () => {
       expect(
         reducer(currentState, {
           type: deleteSelectedThingsSuccess.getType(),
-        })
-      ).to.deep.equal(expectedState)
-    })
-  })
-
-  describe('addThingsToGroup', () => {
-    it('should handle addThingsToGroup action', () => {
-      const state = {
-        ...initialState,
-        devices: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-          {
-            uuid: 'app-uuid-1',
-            type: 'octoblu:group',
-            devices: [
-              'thing-uuid-2',
-            ],
-          },
-        ],
-        selectedThings: [
-          'thing-uuid-1',
-          'thing-uuid-3',
-        ],
-        selectedGroups: [],
-      }
-
-      const expectedState = {
-        ...state,
-        devices: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-          {
-            uuid: 'app-uuid-1',
-            type: 'octoblu:group',
-            devices: [
-              'thing-uuid-2',
-              'thing-uuid-1',
-              'thing-uuid-3',
-            ],
-          },
-        ],
-        selectedGroups: ['app-uuid-1'],
-      }
-
-      expect(
-        reducer(state, {
-          type: addThingsToGroup.getType(),
-          payload: 'app-uuid-1',
-        })
-      ).to.deep.equal(expectedState)
-    })
-  })
-
-  describe('removeThingsFromGroup', () => {
-    it('should handle removeThingsFromGroup action', () => {
-      const state = {
-        ...initialState,
-        devices: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-          {
-            uuid: 'app-uuid-1',
-            type: 'octoblu:group',
-            devices: [
-              'thing-uuid-2',
-              'thing-uuid-1',
-              'thing-uuid-3',
-            ],
-          },
-        ],
-        selectedThings: [
-          'thing-uuid-1',
-          'thing-uuid-3',
-        ],
-      }
-
-      const expectedState = {
-        ...state,
-        devices: [
-          { uuid: 'thing-uuid-1' },
-          { uuid: 'thing-uuid-2' },
-          { uuid: 'thing-uuid-3' },
-          {
-            uuid: 'app-uuid-1',
-            type: 'octoblu:group',
-            devices: [
-              'thing-uuid-2',
-            ],
-          },
-        ],
-      }
-
-      expect(
-        reducer(state, {
-          type: removeThingsFromGroup.getType(),
-          payload: 'app-uuid-1',
         })
       ).to.deep.equal(expectedState)
     })

@@ -14,6 +14,7 @@ describe('Groups Reducer', () => {
     devices: null,
     error: null,
     fetching: false,
+    selectedGroups: [],
     showGroupDialog: false,
   }
 

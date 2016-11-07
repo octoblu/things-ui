@@ -4,16 +4,16 @@ import { connect } from 'react-redux'
 import Input from 'zooid-input'
 
 import {
-  addThingsToGroup,
-  removeThingsFromGroup,
-} from '../../actions/things'
+  addSelectedThingsToGroup,
+  removeSelectedThingsFromGroup,
+} from '../../actions/groups'
 
 import GroupList from '../GroupList'
 
 import styles from './styles.css'
 
 const propTypes = {
-  groupDevices: PropTypes.array,
+  groups: PropTypes.array,
   dispatch: PropTypes.func,
   selectedThings: PropTypes.array,
   selectedGroups: PropTypes.array,
@@ -27,15 +27,12 @@ class GroupManager extends React.Component {
   handleUpdateGroupDevices({ groupUuid, inGroup }) {
     const { dispatch } = this.props
 
-    if (inGroup) {
-      return dispatch(removeThingsFromGroup(groupUuid))
-    }
-
-    return dispatch(addThingsToGroup(groupUuid))
+    if (inGroup) return dispatch(removeSelectedThingsFromGroup(groupUuid))
+    return dispatch(addSelectedThingsToGroup(groupUuid))
   }
 
   render() {
-    const { groupDevices, selectedThings, selectedGroups } = this.props
+    const { groups, selectedThings, selectedGroups } = this.props
 
     if (_.isEmpty(selectedThings)) return null
 
@@ -47,7 +44,7 @@ class GroupManager extends React.Component {
         />
 
         <GroupList
-          groups={groupDevices}
+          groups={groups}
           selectedGroups={selectedGroups}
           onUpdateGroupDevices={this.handleUpdateGroupDevices.bind(this)}
         />
@@ -59,10 +56,10 @@ class GroupManager extends React.Component {
 GroupManager.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
-  const { selectedGroups, selectedThings } = things
-  const groupDevices = groups.devices
+  const { devices, selectedGroups } = groups
+  const { selectedThings } = things
 
-  return { groupDevices, selectedGroups, selectedThings }
+  return { groups: devices, selectedGroups, selectedThings }
 }
 
 export default connect(mapStateToProps)(GroupManager)

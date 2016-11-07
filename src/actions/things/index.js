@@ -4,17 +4,15 @@ import { unregister } from 'redux-meshblu'
 
 import { getMeshbluConfig } from '../../services/auth-service'
 
-const addThingsToGroup      = createAction('/things/selection/add/group')
-const removeThingsFromGroup = createAction('/things/selection/remove/group')
 const clearSelectedThings         = createAction('/things/selection/clear')
 const deleteSelectedThings        = createAction('/things/selection/delete')
 const deleteSelectedThingsSuccess = createAction('/things/selection/delete/success')
 const deleteSelectedThingsFailure = createAction('/things/selection/delete/failure')
 const dismissDeleteDialog         = createAction('/things/selection/dialog/delete/dismiss')
 const showDeleteDialog            = createAction('/things/selection/dialog/delete/show')
-const updateSelectedGroups          = createAction('/things/selection/update/group')
-const updateSelectedGroupsSuccess   = createAction('/things/selection/update/group/success')
-const updateSelectedGroupsFailure   = createAction('/things/selection/update/group/failure')
+const updateSelectedGroups        = createAction('/things/selection/update/group')
+const updateSelectedGroupsSuccess = createAction('/things/selection/update/group/success')
+const updateSelectedGroupsFailure = createAction('/things/selection/update/group/failure')
 
 const deleteSelection = (selectedThings) => {
   return (dispatch) => {
@@ -40,8 +38,6 @@ const deleteSelection = (selectedThings) => {
 // }
 
 export {
-  addThingsToGroup,
-  removeThingsFromGroup,
   clearSelectedThings,
   deleteSelection,
   deleteSelectedThings,

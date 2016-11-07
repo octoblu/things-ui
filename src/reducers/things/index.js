@@ -4,8 +4,6 @@ import { searchActions } from 'redux-meshblu'
 
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
-  addThingsToGroup,
-  removeThingsFromGroup,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
@@ -21,7 +19,6 @@ const initialState = {
   devices: null,
   error: null,
   fetching: false,
-  selectedGroups: [],
   selectedThings: [],
   showDeleteDialog: false,
 }
@@ -36,42 +33,6 @@ const computeSelectedGroups = ({ devices, selectedThings }) => {
 }
 
 export default createReducer({
-  [addThingsToGroup]: (state, groupUuid) => {
-    const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== groupUuid) return device
-      return {
-        ...device,
-        devices: _.uniq([...device.devices, ...state.selectedThings]),
-      }
-    })
-
-    return {
-      ...state,
-      devices: updatedDevices,
-      selectedGroups: computeSelectedGroups({
-        devices: updatedDevices,
-        selectedThings: state.selectedThings,
-      }),
-    }
-  },
-  [removeThingsFromGroup]: (state, groupUuid) => {
-    const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== groupUuid) return device
-      return {
-        ...device,
-        devices: _.difference(device.devices, state.selectedThings),
-      }
-    })
-
-    return {
-      ...state,
-      devices: updatedDevices,
-      selectedGroups: computeSelectedGroups({
-        devices: updatedDevices,
-        selectedThings: state.selectedThings,
-      }),
-    }
-  },
   [clearSelectedThings]: state => ({ ...state, selectedThings: [] }),
   [deleteSelectedThings]: state => ({ ...state, deletingThings: true }),
   [deleteSelectedThingsSuccess]: (state) => {

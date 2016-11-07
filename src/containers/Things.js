@@ -114,7 +114,7 @@ class Things extends React.Component {
 Things.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
-  const {showGroupDialog} = groups
+  const { showGroupDialog } = groups
   return { showGroupDialog, things }
 }
 

@@ -3,6 +3,8 @@ import { createReducer } from 'redux-act'
 import { searchActions } from 'redux-meshblu'
 
 import {
+  addSelectedThingsToGroup,
+  removeSelectedThingsFromGroup,
   dismissGroupDialog,
   showGroupDialog,
 } from '../../actions/groups'
@@ -12,6 +14,7 @@ const initialState = {
   devices: null,
   error: null,
   fetching: false,
+  selectedGroups: [],
   showGroupDialog: false,
 }
 
@@ -23,11 +26,43 @@ const computeSelectedGroups = ({ devices, selectedThings }) => {
 }
 
 export default createReducer({
-  [dismissGroupDialog]: state => ({
-    ...state,
-    showGroupDialog: false,
-    selectedGroups: [],
-  }),
+  [addSelectedThingsToGroup]: (state, groupUuid) => {
+    const updatedDevices = _.map(state.devices, (device) => {
+      if (device.uuid !== groupUuid) return device
+      return {
+        ...device,
+        devices: _.uniq([...device.devices, ...state.selectedThings]),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      selectedGroups: computeSelectedGroups({
+        devices: updatedDevices,
+        selectedThings: state.selectedThings,
+      }),
+    }
+  },
+  [removeSelectedThingsFromGroup]: (state, groupUuid) => {
+    const updatedDevices = _.map(state.devices, (device) => {
+      if (device.uuid !== groupUuid) return device
+      return {
+        ...device,
+        devices: _.difference(device.devices, state.selectedThings),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      selectedGroups: computeSelectedGroups({
+        devices: updatedDevices,
+        selectedThings: state.selectedThings,
+      }),
+    }
+  },
+
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
@@ -37,6 +72,11 @@ export default createReducer({
       fetching: false,
     }
   },
+  [dismissGroupDialog]: state => ({
+    ...state,
+    showGroupDialog: false,
+    selectedGroups: [],
+  }),
   [showGroupDialog]: (state, selectedThings) => {
     const selectedGroups = computeSelectedGroups({
       devices: state.devices,
