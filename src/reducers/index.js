@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
-import applications from './applications'
+import groups from './groups'
 import thing from './thing'
 import things from './things'
 
 const rootReducer = combineReducers({
-  applications,
+  groups,
   routing: routerReducer,
   thing,
   things,

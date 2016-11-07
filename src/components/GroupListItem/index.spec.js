@@ -5,10 +5,10 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { mount, shallow } from 'enzyme'
 
-import TagListItem from './'
+import GroupListItem from './'
 
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
 
-describe('<TagListItem />', () => {
+describe('<GroupListItem />', () => {
 })

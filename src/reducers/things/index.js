@@ -17,20 +17,20 @@ import {
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
-  applications: [],
+  groups: [],
   deletingThings: false,
   devices: null,
   error: null,
   fetching: false,
-  selectedApplications: [],
+  selectedGroups: [],
   selectedThings: [],
   showDeleteDialog: false,
 }
 
 
-const computeSelectedApplications = ({ devices, selectedThings }) => {
+const computeSelectedGroups = ({ devices, selectedThings }) => {
   return _(devices)
-    .filter({ type: 'octoblu:application' })
+    .filter({ type: 'octoblu:group' })
     .filter(application => (_.difference(selectedThings, application.devices).length === 0))
     .map('uuid')
     .value()
@@ -49,7 +49,7 @@ export default createReducer({
     return {
       ...state,
       devices: updatedDevices,
-      selectedApplications: computeSelectedApplications({
+      selectedGroups: computeSelectedGroups({
         devices: updatedDevices,
         selectedThings: state.selectedThings,
       }),
@@ -67,7 +67,7 @@ export default createReducer({
     return {
       ...state,
       devices: updatedDevices,
-      selectedApplications: computeSelectedApplications({
+      selectedGroups: computeSelectedGroups({
         devices: updatedDevices,
         selectedThings: state.selectedThings,
       }),
@@ -91,15 +91,15 @@ export default createReducer({
   [showDeleteDialog]: state => ({ ...state, showDeleteDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    const applications = _(devices)
-      .filter({ type: 'octoblu:application' })
+    const groups = _(devices)
+      .filter({ type: 'octoblu:group' })
       .map('uuid')
       .value()
 
     return {
       ...initialState,
-      applications,
-      devices: _.reject(devices, { type: 'octoblu:application'}),
+      groups,
+      devices: _.reject(devices, { type: 'octoblu:group'}),
       fetching: false,
       selectedThings: [],
     }

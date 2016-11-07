@@ -16,7 +16,7 @@ const defaultProps = {
   selected: false,
 }
 
-const TagListItem = ({ application, onUpdateApplicationDevices, selected }) => {
+const GroupListItem = ({ application, onUpdateApplicationDevices, selected }) => {
   return (
     <ListItem className={styles.root}>
       <span>{application.name}</span>
@@ -30,7 +30,7 @@ const TagListItem = ({ application, onUpdateApplicationDevices, selected }) => {
   )
 }
 
-TagListItem.propTypes    = propTypes
-TagListItem.defaultProps = defaultProps
+GroupListItem.propTypes    = propTypes
+GroupListItem.defaultProps = defaultProps
 
-export default TagListItem
+export default GroupListItem

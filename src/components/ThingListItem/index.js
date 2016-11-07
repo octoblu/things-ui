@@ -45,7 +45,7 @@ const ThingListItem = ({ onThingSelection, selected, thing }) => {
           <ThingName thing={thing} />
         </Link>
 
-        <div><span className={styles.tag}>Tag #1</span></div>
+        <div><span className={styles.group}>Group #1</span></div>
       </div>
     </div>
   )

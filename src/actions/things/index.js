@@ -4,17 +4,17 @@ import { unregister } from 'redux-meshblu'
 
 import { getMeshbluConfig } from '../../services/auth-service'
 
-const addThingsToApplication      = createAction('/things/selection/add/tag')
-const removeThingsFromApplication = createAction('/things/selection/remove/tag')
+const addThingsToApplication      = createAction('/things/selection/add/group')
+const removeThingsFromApplication = createAction('/things/selection/remove/group')
 const clearSelectedThings         = createAction('/things/selection/clear')
 const deleteSelectedThings        = createAction('/things/selection/delete')
 const deleteSelectedThingsSuccess = createAction('/things/selection/delete/success')
 const deleteSelectedThingsFailure = createAction('/things/selection/delete/failure')
 const dismissDeleteDialog         = createAction('/things/selection/dialog/delete/dismiss')
 const showDeleteDialog            = createAction('/things/selection/dialog/delete/show')
-const updateSelectedTags          = createAction('/things/selection/update/tag')
-const updateSelectedTagsSuccess   = createAction('/things/selection/update/tag/success')
-const updateSelectedTagsFailure   = createAction('/things/selection/update/tag/failure')
+const updateSelectedGroups          = createAction('/things/selection/update/group')
+const updateSelectedGroupsSuccess   = createAction('/things/selection/update/group/success')
+const updateSelectedGroupsFailure   = createAction('/things/selection/update/group/failure')
 
 const deleteSelection = (selectedThings) => {
   return (dispatch) => {
@@ -27,15 +27,15 @@ const deleteSelection = (selectedThings) => {
   }
 }
 
-// const updateTags = () => {
+// const updateGroups = () => {
 //   return (dispatch) => {
 //     const meshbluConfig = getMeshbluConfig()
-//     dispatch(updateSelectedTags())
+//     dispatch(updateSelectedGroups())
 //
 //
 //     return Promise.each(selectedThings, uuid => dispatch(update({ uuid, meshbluConfig })))
-//       .then(() => dispatch(updateSelectedTagsSuccess()))
-//       .catch(err => dispatch(updateSelectedTagsFailure(err)))
+//       .then(() => dispatch(updateSelectedGroupsSuccess()))
+//       .catch(err => dispatch(updateSelectedGroupsFailure(err)))
 //   }
 // }
 
@@ -49,7 +49,7 @@ export {
   deleteSelectedThingsFailure,
   dismissDeleteDialog,
   showDeleteDialog,
-  updateSelectedTags,
-  updateSelectedTagsSuccess,
-  updateSelectedTagsFailure,
+  updateSelectedGroups,
+  updateSelectedGroupsSuccess,
+  updateSelectedGroupsFailure,
 }

@@ -15,12 +15,12 @@ import reducer from './'
 
 describe('Things Reducer', () => {
   const initialState = {
-    applications: [],
+    groups: [],
     deletingThings: false,
     devices: null,
     error: null,
     fetching: false,
-    selectedApplications: [],
+    selectedGroups: [],
     selectedThings: [],
     showDeleteDialog: false,
   }
@@ -46,17 +46,17 @@ describe('Things Reducer', () => {
         { uuid: 'my-thing-4-uuid' },
         {
           uuid: 'my-app-1-uuid',
-          type: 'octoblu:application',
+          type: 'octoblu:group',
           devices: [],
         },
         {
           uuid: 'my-app-2-uuid',
-          type: 'octoblu:application',
+          type: 'octoblu:group',
           devices: [],
         },
       ]
 
-      const applications = [
+      const groups = [
         'my-app-1-uuid',
         'my-app-2-uuid',
       ]
@@ -66,8 +66,8 @@ describe('Things Reducer', () => {
         payload: devices,
       })).to.deep.equal({
         ...initialState,
-        applications,
-        devices: _.reject(devices, { type: 'octoblu:application' }),
+        groups,
+        devices: _.reject(devices, { type: 'octoblu:group' }),
       })
     })
 
@@ -202,7 +202,7 @@ describe('Things Reducer', () => {
     it('should handle addThingsToApplication action', () => {
       const state = {
         ...initialState,
-        applications: [
+        groups: [
           'app-uuid-1',
         ],
         devices: [
@@ -211,7 +211,7 @@ describe('Things Reducer', () => {
           { uuid: 'thing-uuid-3' },
           {
             uuid: 'app-uuid-1',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: [
               'thing-uuid-2',
             ],
@@ -221,7 +221,7 @@ describe('Things Reducer', () => {
           'thing-uuid-1',
           'thing-uuid-3',
         ],
-        selectedApplications: [],
+        selectedGroups: [],
       }
 
       const expectedState = {
@@ -232,7 +232,7 @@ describe('Things Reducer', () => {
           { uuid: 'thing-uuid-3' },
           {
             uuid: 'app-uuid-1',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: [
               'thing-uuid-2',
               'thing-uuid-1',
@@ -240,7 +240,7 @@ describe('Things Reducer', () => {
             ],
           },
         ],
-        selectedApplications: ['app-uuid-1'],
+        selectedGroups: ['app-uuid-1'],
       }
 
       expect(
@@ -256,7 +256,7 @@ describe('Things Reducer', () => {
     it('should handle removeThingsFromApplication action', () => {
       const state = {
         ...initialState,
-        applications: [
+        groups: [
           'app-uuid-1',
         ],
         devices: [
@@ -265,7 +265,7 @@ describe('Things Reducer', () => {
           { uuid: 'thing-uuid-3' },
           {
             uuid: 'app-uuid-1',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: [
               'thing-uuid-2',
               'thing-uuid-1',
@@ -287,7 +287,7 @@ describe('Things Reducer', () => {
           { uuid: 'thing-uuid-3' },
           {
             uuid: 'app-uuid-1',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: [
               'thing-uuid-2',
             ],

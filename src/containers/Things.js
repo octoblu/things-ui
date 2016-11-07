@@ -13,9 +13,9 @@ import {
 } from '../actions/things'
 
 import {
-  dismissApplicationDialog,
-  showApplicationDialog,
-} from '../actions/applications'
+  dismissGroupDialog,
+  showGroupDialog,
+} from '../actions/groups'
 
 import { getMeshbluConfig } from '../services/auth-service'
 
@@ -74,17 +74,17 @@ class Things extends React.Component {
     this.props.dispatch(dismissDeleteDialog())
   }
 
-  handleApplicationDialogShow = () => {
+  handleGroupDialogShow = () => {
     const { selectedThings } = this.props.things
-    this.props.dispatch(showApplicationDialog(selectedThings))
+    this.props.dispatch(showGroupDialog(selectedThings))
   }
 
-  handleApplicationDialogDismiss = () => {
-    this.props.dispatch(dismissApplicationDialog())
+  handleGroupDialogDismiss = () => {
+    this.props.dispatch(dismissGroupDialog())
   }
 
-  handleUpdateTags = () => {
-    console.log('onUpdateTags');
+  handleUpdateGroups = () => {
+    console.log('onUpdateGroups');
   }
 
   handleThingSelectionToggle = (thingUuid, selected) => {
@@ -99,12 +99,12 @@ class Things extends React.Component {
         onDeleteDialogShow={this.handleDeleteDialogShow}
         onDeleteDialogDismiss={this.handleDeleteDialogDismiss}
         onDeleteSelection={this.handleDeleteSelection}
-        onApplicationDialogShow={this.handleApplicationDialogShow}
-        onApplicationDialogDismiss={this.handleApplicationDialogDismiss}
-        onTagSelection={this.handleTagSelection}
+        onGroupDialogShow={this.handleGroupDialogShow}
+        onGroupDialogDismiss={this.handleGroupDialogDismiss}
+        onGroupSelection={this.handleGroupSelection}
         onThingSelection={this.handleThingSelectionToggle}
-        onUpdateTags={this.handleUpdateTags}
-        showApplicationDialog={this.props.showApplicationDialog}
+        onUpdateGroups={this.handleUpdateGroups}
+        showGroupDialog={this.props.showGroupDialog}
         things={this.props.things}
       />
     )
@@ -113,9 +113,9 @@ class Things extends React.Component {
 
 Things.propTypes = propTypes
 
-const mapStateToProps = ({ applications, things }) => {
-  const {showApplicationDialog} = applications
-  return { showApplicationDialog, things }
+const mapStateToProps = ({ groups, things }) => {
+  const {showGroupDialog} = groups
+  return { showGroupDialog, things }
 }
 
 export default connect(mapStateToProps)(Things)

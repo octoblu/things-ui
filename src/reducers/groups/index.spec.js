@@ -3,18 +3,18 @@ import _ from 'lodash'
 import { searchActions } from 'redux-meshblu'
 
 import {
-  dismissApplicationDialog,
-  showApplicationDialog,
-} from '../../actions/applications'
+  dismissGroupDialog,
+  showGroupDialog,
+} from '../../actions/groups'
 
 import reducer from './'
 
-describe('Applications Reducer', () => {
+describe('Groups Reducer', () => {
   const initialState = {
     devices: null,
     error: null,
     fetching: false,
-    showApplicationDialog: false,
+    showGroupDialog: false,
   }
 
   it('should return the initial state', () => {
@@ -23,7 +23,7 @@ describe('Applications Reducer', () => {
     ).to.deep.equal(initialState)
   })
 
-  describe('fetchApplications', () => {
+  describe('fetchGroups', () => {
     it('should handle fetching request', () => {
       expect(reducer(undefined, {
         type: searchActions.searchRequest.getType(),
@@ -41,12 +41,12 @@ describe('Applications Reducer', () => {
         { uuid: 'my-thing-4-uuid' },
         {
           uuid: 'my-app-1-uuid',
-          type: 'octoblu:application',
+          type: 'octoblu:group',
           devices: [],
         },
         {
           uuid: 'my-app-2-uuid',
-          type: 'octoblu:application',
+          type: 'octoblu:group',
           devices: [],
         },
       ]
@@ -56,7 +56,7 @@ describe('Applications Reducer', () => {
         payload: devices,
       })).to.deep.equal({
         ...initialState,
-        devices: _.filter(devices, { type: 'octoblu:application' }),
+        devices: _.filter(devices, { type: 'octoblu:group' }),
         fetching: false,
       })
     })
@@ -73,14 +73,14 @@ describe('Applications Reducer', () => {
     })
   })
 
-  describe('showApplicationDialog', () => {
-    it('should handle showApplicationDialog action', () => {
+  describe('showGroupDialog', () => {
+    it('should handle showGroupDialog action', () => {
       const state = {
         ...initialState,
         devices: [
           {
             uuid: 'app-uuid-1',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: [
               'thing-uuid-1',
               'thing-uuid-2',
@@ -89,39 +89,39 @@ describe('Applications Reducer', () => {
           },
           {
             uuid: 'app-uuid-2',
-            type: 'octoblu:application',
+            type: 'octoblu:group',
             devices: ['thing-uuid-1'],
           },
         ],
       }
       const expectedState = {
         ...state,
-        selectedApplications: ['app-uuid-1'],
-        showApplicationDialog: true,
+        selectedGroups: ['app-uuid-1'],
+        showGroupDialog: true,
       }
       expect(
         reducer(state, {
-          type: showApplicationDialog.getType(),
+          type: showGroupDialog.getType(),
           payload: ['thing-uuid-1', 'thing-uuid-3'],
         })
       ).to.deep.equal(expectedState)
     })
   })
-  describe('dismissApplicationDialog', () => {
-    it('should handle dismissApplicationDialog action', () => {
+  describe('dismissGroupDialog', () => {
+    it('should handle dismissGroupDialog action', () => {
       const state = {
         ...initialState,
-        showApplicationDialog: true,
-        selectedApplications: ['cats'],
+        showGroupDialog: true,
+        selectedGroups: ['cats'],
       }
       const expectedState = {
         ...state,
-        selectedApplications: [],
-        showApplicationDialog: false,
+        selectedGroups: [],
+        showGroupDialog: false,
       }
       expect(
         reducer(state, {
-          type: dismissApplicationDialog.getType(),
+          type: dismissGroupDialog.getType(),
         })
       ).to.deep.equal(expectedState)
     })

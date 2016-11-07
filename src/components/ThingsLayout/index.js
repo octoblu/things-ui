@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 import Page from 'zooid-page'
 
 import DeleteDialog from '../DeleteDialog'
-import TagDialog from '../TagDialog'
+import GroupDialog from '../GroupDialog'
 import ThingList from '../ThingList'
 import ThingListActions from '../ThingListActions'
 import ThingsPageHeader from '../ThingsPageHeader'
@@ -11,43 +11,43 @@ import ThingsPageHeader from '../ThingsPageHeader'
 import styles from './styles.css'
 
 const propTypes = {
-  onApplicationDialogShow: PropTypes.func,
-  onApplicationDialogDismiss: PropTypes.func,
+  onGroupDialogShow: PropTypes.func,
+  onGroupDialogDismiss: PropTypes.func,
   onClearSelection: PropTypes.func,
   onDeleteDialogDismiss: PropTypes.func,
   onDeleteDialogShow: PropTypes.func,
   onDeleteSelection: PropTypes.func,
-  onTagSelection: PropTypes.func,
+  onGroupSelection: PropTypes.func,
   onThingSelection: PropTypes.func,
-  onUpdateTags: PropTypes.func,
-  showApplicationDialog: PropTypes.bool,
+  onUpdateGroups: PropTypes.func,
+  showGroupDialog: PropTypes.bool,
   things: PropTypes.object.isRequired,
 }
 
 const defaultProps = {
-  onApplicationDialogShow: _.noop,
-  onApplicationDialogDismiss: _.noop,
+  onGroupDialogShow: _.noop,
+  onGroupDialogDismiss: _.noop,
   onClearSelection: _.noop,
   onDeleteDialogDismiss: _.noop,
   onDeleteDialogShow: _.noop,
   onDeleteSelection: _.noop,
-  onTagSelection: _.noop,
+  onGroupSelection: _.noop,
   onThingSelection: _.noop,
-  onUpdateTags: _.noop,
-  showApplicationDialog: false,
+  onUpdateGroups: _.noop,
+  showGroupDialog: false,
 }
 
 const ThingsLayout = (props) => {
   const {
-    onApplicationDialogDismiss,
-    onApplicationDialogShow,
+    onGroupDialogDismiss,
+    onGroupDialogShow,
     onClearSelection,
     onDeleteDialogDismiss,
     onDeleteDialogShow,
     onDeleteSelection,
     onThingSelection,
-    onUpdateTags,
-    showApplicationDialog,
+    onUpdateGroups,
+    showGroupDialog,
     things,
   } = props
 
@@ -71,7 +71,7 @@ const ThingsLayout = (props) => {
       <ThingListActions
         onClearSelection={onClearSelection}
         onDeleteDialogShow={onDeleteDialogShow}
-        onApplicationDialogShow={onApplicationDialogShow}
+        onGroupDialogShow={onGroupDialogShow}
         selectedThings={selectedThings}
       />
 
@@ -83,10 +83,10 @@ const ThingsLayout = (props) => {
         />
       </Page>
 
-      <TagDialog
-        visible={showApplicationDialog}
-        onApplicationDialogDismiss={onApplicationDialogDismiss}
-        onUpdateTags={onUpdateTags}
+      <GroupDialog
+        visible={showGroupDialog}
+        onGroupDialogDismiss={onGroupDialogDismiss}
+        onUpdateGroups={onUpdateGroups}
       />
 
       <DeleteDialog

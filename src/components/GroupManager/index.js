@@ -8,7 +8,7 @@ import {
   removeThingsFromApplication,
 } from '../../actions/things'
 
-import TagList from '../TagList'
+import GroupList from '../GroupList'
 
 import styles from './styles.css'
 
@@ -16,10 +16,10 @@ const propTypes = {
   applicationDevices: PropTypes.array,
   dispatch: PropTypes.func,
   selectedThings: PropTypes.array,
-  selectedApplications: PropTypes.array,
+  selectedGroups: PropTypes.array,
 }
 
-class TagManager extends React.Component {
+class GroupManager extends React.Component {
   detectKeyDownHandler(event) {
     console.log('Event', event)
   }
@@ -35,20 +35,20 @@ class TagManager extends React.Component {
   }
 
   render() {
-    const { applicationDevices, selectedThings, selectedApplications } = this.props
+    const { applicationDevices, selectedThings, selectedGroups } = this.props
 
     if (_.isEmpty(selectedThings)) return null
 
     return (
       <div className={styles.root}>
         <Input
-          placeholder="Add Tag"
+          placeholder="Add Group"
           onKeyDown={this.detectKeyDownHandler.bind(this)}
         />
 
-        <TagList
-          applications={applicationDevices}
-          selectedApplications={selectedApplications}
+        <GroupList
+          groups={applicationDevices}
+          selectedGroups={selectedGroups}
           onUpdateApplicationDevices={this.handleUpdateApplicationDevices.bind(this)}
         />
       </div>
@@ -56,13 +56,13 @@ class TagManager extends React.Component {
   }
 }
 
-TagManager.propTypes = propTypes
+GroupManager.propTypes = propTypes
 
-const mapStateToProps = ({ applications, things }) => {
-  const { selectedApplications, selectedThings } = things
-  const applicationDevices = applications.devices
+const mapStateToProps = ({ groups, things }) => {
+  const { selectedGroups, selectedThings } = things
+  const applicationDevices = groups.devices
 
-  return { applicationDevices, selectedApplications, selectedThings }
+  return { applicationDevices, selectedGroups, selectedThings }
 }
 
-export default connect(mapStateToProps)(TagManager)
+export default connect(mapStateToProps)(GroupManager)

@@ -3,19 +3,19 @@ import { createReducer } from 'redux-act'
 import { searchActions } from 'redux-meshblu'
 
 import {
-  dismissApplicationDialog,
-  showApplicationDialog,
-} from '../../actions/applications'
+  dismissGroupDialog,
+  showGroupDialog,
+} from '../../actions/groups'
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
   devices: null,
   error: null,
   fetching: false,
-  showApplicationDialog: false,
+  showGroupDialog: false,
 }
 
-const computeSelectedApplications = ({ devices, selectedThings }) => {
+const computeSelectedGroups = ({ devices, selectedThings }) => {
   return _(devices)
     .filter(application => (_.difference(selectedThings, application.devices).length === 0))
     .map('uuid')
@@ -23,29 +23,29 @@ const computeSelectedApplications = ({ devices, selectedThings }) => {
 }
 
 export default createReducer({
-  [dismissApplicationDialog]: state => ({
+  [dismissGroupDialog]: state => ({
     ...state,
-    showApplicationDialog: false,
-    selectedApplications: [],
+    showGroupDialog: false,
+    selectedGroups: [],
   }),
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
     return {
       ...initialState,
-      devices: _.filter(devices, { type: 'octoblu:application' }),
+      devices: _.filter(devices, { type: 'octoblu:group' }),
       fetching: false,
     }
   },
-  [showApplicationDialog]: (state, selectedThings) => {
-    const selectedApplications = computeSelectedApplications({
+  [showGroupDialog]: (state, selectedThings) => {
+    const selectedGroups = computeSelectedGroups({
       devices: state.devices,
       selectedThings,
     })
     return {
       ...state,
-      selectedApplications,
-      showApplicationDialog: true,
+      selectedGroups,
+      showGroupDialog: true,
     }
   },
 }, initialState)
