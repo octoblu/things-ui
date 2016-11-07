@@ -4,8 +4,8 @@ import { searchActions } from 'redux-meshblu'
 
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
-  addThingsToApplication,
-  removeThingsFromApplication,
+  addThingsToGroup,
+  removeThingsFromGroup,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
@@ -17,7 +17,6 @@ import {
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
-  groups: [],
   deletingThings: false,
   devices: null,
   error: null,
@@ -31,15 +30,15 @@ const initialState = {
 const computeSelectedGroups = ({ devices, selectedThings }) => {
   return _(devices)
     .filter({ type: 'octoblu:group' })
-    .filter(application => (_.difference(selectedThings, application.devices).length === 0))
+    .filter(group => (_.difference(selectedThings, group.devices).length === 0))
     .map('uuid')
     .value()
 }
 
 export default createReducer({
-  [addThingsToApplication]: (state, applicationUuid) => {
+  [addThingsToGroup]: (state, groupUuid) => {
     const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== applicationUuid) return device
+      if (device.uuid !== groupUuid) return device
       return {
         ...device,
         devices: _.uniq([...device.devices, ...state.selectedThings]),
@@ -55,9 +54,9 @@ export default createReducer({
       }),
     }
   },
-  [removeThingsFromApplication]: (state, applicationUuid) => {
+  [removeThingsFromGroup]: (state, groupUuid) => {
     const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== applicationUuid) return device
+      if (device.uuid !== groupUuid) return device
       return {
         ...device,
         devices: _.difference(device.devices, state.selectedThings),
@@ -91,15 +90,9 @@ export default createReducer({
   [showDeleteDialog]: state => ({ ...state, showDeleteDialog: true }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
-    const groups = _(devices)
-      .filter({ type: 'octoblu:group' })
-      .map('uuid')
-      .value()
-
     return {
       ...initialState,
-      groups,
-      devices: _.reject(devices, { type: 'octoblu:group'}),
+      devices: _.reject(devices, { type: 'octoblu:group' }),
       fetching: false,
       selectedThings: [],
     }

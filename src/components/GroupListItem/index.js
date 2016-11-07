@@ -5,26 +5,26 @@ import { ListItem } from 'zooid-list'
 import styles from './styles.css'
 
 const propTypes = {
-  application: PropTypes.object,
-  onUpdateApplicationDevices: PropTypes.func,
+  group: PropTypes.object,
+  onUpdateGroupDevices: PropTypes.func,
   selected: PropTypes.bool,
 }
 
 const defaultProps = {
-  application: null,
-  onUpdateApplicationDevices: noop,
+  group: null,
+  onUpdateGroupDevices: noop,
   selected: false,
 }
 
-const GroupListItem = ({ application, onUpdateApplicationDevices, selected }) => {
+const GroupListItem = ({ group, onUpdateGroupDevices, selected }) => {
   return (
     <ListItem className={styles.root}>
-      <span>{application.name}</span>
+      <span>{group.name}</span>
       <input
         type="checkbox"
         checked={selected}
-        onClick={() => onUpdateApplicationDevices({ applicationUuid: application.uuid, inApplication: selected })}
-        name={application.name}
+        onClick={() => onUpdateGroupDevices({ groupUuid: group.uuid, inGroup: selected })}
+        name={group.name}
       />
     </ListItem>
   )

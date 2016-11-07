@@ -4,8 +4,8 @@ import { unregister } from 'redux-meshblu'
 
 import { getMeshbluConfig } from '../../services/auth-service'
 
-const addThingsToApplication      = createAction('/things/selection/add/group')
-const removeThingsFromApplication = createAction('/things/selection/remove/group')
+const addThingsToGroup      = createAction('/things/selection/add/group')
+const removeThingsFromGroup = createAction('/things/selection/remove/group')
 const clearSelectedThings         = createAction('/things/selection/clear')
 const deleteSelectedThings        = createAction('/things/selection/delete')
 const deleteSelectedThingsSuccess = createAction('/things/selection/delete/success')
@@ -40,8 +40,8 @@ const deleteSelection = (selectedThings) => {
 // }
 
 export {
-  addThingsToApplication,
-  removeThingsFromApplication,
+  addThingsToGroup,
+  removeThingsFromGroup,
   clearSelectedThings,
   deleteSelection,
   deleteSelectedThings,

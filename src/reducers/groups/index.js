@@ -17,7 +17,7 @@ const initialState = {
 
 const computeSelectedGroups = ({ devices, selectedThings }) => {
   return _(devices)
-    .filter(application => (_.difference(selectedThings, application.devices).length === 0))
+    .filter(group => (_.difference(selectedThings, group.devices).length === 0))
     .map('uuid')
     .value()
 }

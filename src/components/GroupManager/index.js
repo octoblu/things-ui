@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import Input from 'zooid-input'
 
 import {
-  addThingsToApplication,
-  removeThingsFromApplication,
+  addThingsToGroup,
+  removeThingsFromGroup,
 } from '../../actions/things'
 
 import GroupList from '../GroupList'
@@ -13,7 +13,7 @@ import GroupList from '../GroupList'
 import styles from './styles.css'
 
 const propTypes = {
-  applicationDevices: PropTypes.array,
+  groupDevices: PropTypes.array,
   dispatch: PropTypes.func,
   selectedThings: PropTypes.array,
   selectedGroups: PropTypes.array,
@@ -24,18 +24,18 @@ class GroupManager extends React.Component {
     console.log('Event', event)
   }
 
-  handleUpdateApplicationDevices({ applicationUuid, inApplication }) {
+  handleUpdateGroupDevices({ groupUuid, inGroup }) {
     const { dispatch } = this.props
 
-    if (inApplication) {
-      return dispatch(removeThingsFromApplication(applicationUuid))
+    if (inGroup) {
+      return dispatch(removeThingsFromGroup(groupUuid))
     }
 
-    return dispatch(addThingsToApplication(applicationUuid))
+    return dispatch(addThingsToGroup(groupUuid))
   }
 
   render() {
-    const { applicationDevices, selectedThings, selectedGroups } = this.props
+    const { groupDevices, selectedThings, selectedGroups } = this.props
 
     if (_.isEmpty(selectedThings)) return null
 
@@ -47,9 +47,9 @@ class GroupManager extends React.Component {
         />
 
         <GroupList
-          groups={applicationDevices}
+          groups={groupDevices}
           selectedGroups={selectedGroups}
-          onUpdateApplicationDevices={this.handleUpdateApplicationDevices.bind(this)}
+          onUpdateGroupDevices={this.handleUpdateGroupDevices.bind(this)}
         />
       </div>
     )
@@ -60,9 +60,9 @@ GroupManager.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
   const { selectedGroups, selectedThings } = things
-  const applicationDevices = groups.devices
+  const groupDevices = groups.devices
 
-  return { applicationDevices, selectedGroups, selectedThings }
+  return { groupDevices, selectedGroups, selectedThings }
 }
 
 export default connect(mapStateToProps)(GroupManager)

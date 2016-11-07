@@ -6,7 +6,7 @@ import GroupListItem from '../GroupListItem'
 
 const propTypes = {
   groups: PropTypes.array,
-  onUpdateApplicationDevices: PropTypes.func,
+  onUpdateGroupDevices: PropTypes.func,
   selectedGroups: PropTypes.array,
 }
 const defaultProps = {
@@ -14,23 +14,23 @@ const defaultProps = {
   selectedGroups: [],
 }
 
-const GroupList = ({ groups, onUpdateApplicationDevices, selectedGroups }) => {
+const GroupList = ({ groups, onUpdateGroupDevices, selectedGroups }) => {
   if (isEmpty(groups)) return null
 
-  const applicationListItems = map(groups, (application) => {
-    const selected = selectedGroups.includes(application.uuid)
+  const groupListItems = map(groups, (group) => {
+    const selected = selectedGroups.includes(group.uuid)
     return (
       <GroupListItem
-        application={application}
-        key={application.uuid}
-        onUpdateApplicationDevices={onUpdateApplicationDevices}
+        group={group}
+        key={group.uuid}
+        onUpdateGroupDevices={onUpdateGroupDevices}
         selected={selected}
       />
     )
   })
 
   return (
-    <List>{applicationListItems}</List>
+    <List>{groupListItems}</List>
   )
 }
 

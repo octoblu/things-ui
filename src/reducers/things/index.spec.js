@@ -4,8 +4,8 @@ import { searchActions } from 'redux-meshblu'
 
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
-  addThingsToApplication,
-  removeThingsFromApplication,
+  addThingsToGroup,
+  removeThingsFromGroup,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
@@ -15,7 +15,6 @@ import reducer from './'
 
 describe('Things Reducer', () => {
   const initialState = {
-    groups: [],
     deletingThings: false,
     devices: null,
     error: null,
@@ -56,17 +55,11 @@ describe('Things Reducer', () => {
         },
       ]
 
-      const groups = [
-        'my-app-1-uuid',
-        'my-app-2-uuid',
-      ]
-
       expect(reducer(undefined, {
         type: searchActions.searchSuccess.getType(),
         payload: devices,
       })).to.deep.equal({
         ...initialState,
-        groups,
         devices: _.reject(devices, { type: 'octoblu:group' }),
       })
     })
@@ -198,13 +191,10 @@ describe('Things Reducer', () => {
     })
   })
 
-  describe('addThingsToApplication', () => {
-    it('should handle addThingsToApplication action', () => {
+  describe('addThingsToGroup', () => {
+    it('should handle addThingsToGroup action', () => {
       const state = {
         ...initialState,
-        groups: [
-          'app-uuid-1',
-        ],
         devices: [
           { uuid: 'thing-uuid-1' },
           { uuid: 'thing-uuid-2' },
@@ -245,20 +235,17 @@ describe('Things Reducer', () => {
 
       expect(
         reducer(state, {
-          type: addThingsToApplication.getType(),
+          type: addThingsToGroup.getType(),
           payload: 'app-uuid-1',
         })
       ).to.deep.equal(expectedState)
     })
   })
 
-  describe('removeThingsFromApplication', () => {
-    it('should handle removeThingsFromApplication action', () => {
+  describe('removeThingsFromGroup', () => {
+    it('should handle removeThingsFromGroup action', () => {
       const state = {
         ...initialState,
-        groups: [
-          'app-uuid-1',
-        ],
         devices: [
           { uuid: 'thing-uuid-1' },
           { uuid: 'thing-uuid-2' },
@@ -297,7 +284,7 @@ describe('Things Reducer', () => {
 
       expect(
         reducer(state, {
-          type: removeThingsFromApplication.getType(),
+          type: removeThingsFromGroup.getType(),
           payload: 'app-uuid-1',
         })
       ).to.deep.equal(expectedState)
