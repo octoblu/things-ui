@@ -6,6 +6,8 @@ import {
   addSelectedThingsToGroup,
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
+  selectGroupFilters,
+  removeGroupFilters,
   showGroupDialog,
   updateDirtyGroupsRequest,
   updateDirtyGroupsSuccess,
@@ -21,6 +23,7 @@ describe('Groups Reducer', () => {
     error: null,
     fetching: false,
     groupUpdateError: null,
+    selectedGroupFilters: [],
     showGroupDialog: false,
     updatingGroups: false,
   }
@@ -258,6 +261,98 @@ describe('Groups Reducer', () => {
       expect(
         reducer(state, {
           type: dismissGroupDialog.getType(),
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
+  describe('selectGroupFilters', () => {
+    it('should handle selectGroupFilters action', () => {
+      const state = {
+        ...initialState,
+        devices: [
+          {
+            uuid: 'app-uuid-1',
+            type: 'octoblu:group',
+            devices: [
+              'thing-uuid-1',
+              'thing-uuid-2',
+              'thing-uuid-3',
+            ],
+          },
+          {
+            uuid: 'app-uuid-2',
+            type: 'octoblu:group',
+            devices: ['thing-uuid-1'],
+          },
+        ],
+      }
+      const expectedState = {
+        ...state,
+        selectedGroupFilters: [
+          {
+            uuid: 'app-uuid-2',
+            type: 'octoblu:group',
+            devices: ['thing-uuid-1'],
+          },
+        ],
+      }
+      expect(
+        reducer(state, {
+          type: selectGroupFilters.getType(),
+          payload: {
+            uuid: 'app-uuid-2',
+            type: 'octoblu:group',
+            devices: ['thing-uuid-1'],
+          },
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+  describe('removeGroupFilters', () => {
+    it('should handle removeGroupFilters action', () => {
+      const state = {
+        ...initialState,
+        devices: [
+          {
+            uuid: 'group-uuid-1',
+            type: 'octoblu:group',
+            devices: [],
+          },
+          {
+            uuid: 'group-uuid-2',
+            type: 'octoblu:group',
+            devices: [],
+          },
+        ],
+        selectedGroupFilters: [
+          {
+            uuid: 'group-uuid-1',
+            type: 'octoblu:group',
+            devices: [],
+          },
+          {
+            uuid: 'group-uuid-2',
+            type: 'octoblu:group',
+            devices: [],
+          },
+        ],
+      }
+      const expectedState = {
+        ...state,
+        selectedGroupFilters: [{
+          uuid: 'group-uuid-1',
+          type: 'octoblu:group',
+          devices: [],
+        }],
+      }
+      expect(
+        reducer(state, { type: removeGroupFilters.getType(),
+          payload: {
+            uuid: 'group-uuid-2',
+            type: 'octoblu:group',
+            devices: [],
+          },
         })
       ).to.deep.equal(expectedState)
     })

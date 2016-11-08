@@ -6,6 +6,8 @@ import {
   addSelectedThingsToGroup,
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
+  selectGroupFilters,
+  removeGroupFilters,
   showGroupDialog,
   updateDirtyGroupsRequest,
   updateDirtyGroupsSuccess,
@@ -19,6 +21,7 @@ const initialState = {
   error: null,
   fetching: false,
   groupUpdateError: null,
+  selectedGroupFilters: [],
   showGroupDialog: false,
   updatingGroups: false,
 }
@@ -45,6 +48,18 @@ export default createReducer({
       ...state,
       devices: updatedDevices,
       dirtyDevices: _.union(state.dirtyDevices, [groupUuid]),
+    }
+  },
+  [dismissGroupDialog]: state => ({
+    ...state,
+    showGroupDialog: false,
+    selectedGroups: [],
+  }),
+  [removeGroupFilters]: (state, group) => {
+    const { selectedGroupFilters } = state
+    return {
+      ...state,
+      selectedGroupFilters: _.pull(selectedGroupFilters, _.find(selectedGroupFilters, group)),
     }
   },
   [removeSelectedThingsFromGroup]: (state, { groupUuid, selectedThings }) => {
@@ -78,6 +93,11 @@ export default createReducer({
     selectedGroups: [],
     dirtyDevices: [],
   }),
+  [selectGroupFilters]: (state, group) => {
+    const { selectedGroupFilters } = state
+    selectedGroupFilters.push(group)
+    return { ...state, selectedGroupFilters }
+  },
   [showGroupDialog]: (state, selectedThings) => {
     const selectedGroups = computeSelectedGroups({
       devices: state.devices,

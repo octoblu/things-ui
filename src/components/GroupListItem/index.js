@@ -18,8 +18,6 @@ const defaultProps = {
 const GroupListItem = ({ group, onUpdateGroupDevices, selectedThings }) => {
   const isSelected = _.isEmpty(_.difference(selectedThings, group.devices))
 
-  console.log('Group Devices', group.devices, 'isSelected', isSelected)
-
   return (
     <ListItem className={styles.root}>
       <span>{group.name}</span>

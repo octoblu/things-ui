@@ -20,13 +20,22 @@ const sendMessageHandler = (msg, thing) => {
     port: MESHBLU_PORT,
   })
 
-  const { device } = thing
-  const meshblu    = new MeshbluHttp(credentials)
+  const { device }   = thing
+  const meshblu      = new MeshbluHttp(credentials)
   const { metadata } = msg
-  const message = { ...msg, devices: [device.uuid], metadata: { ...metadata, respondTo: device.uuid } }
+  const message = {
+    ...msg,
+    devices: [device.uuid],
+    metadata: {
+      ...metadata,
+      respondTo: device.uuid,
+    },
+  }
 
   meshblu.message(message, (error, result) => {
-    console.log('Result of sending messages', error, result)
+    if (error) return console.error(error)
+
+    return console.log('Result of sending messages', result)
   })
 }
 

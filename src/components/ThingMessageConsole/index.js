@@ -1,17 +1,19 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles';
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { tomorrowNight }  from 'react-syntax-highlighter/dist/styles'
 import Firehose from 'meshblu-firehose-socket.io/src/firehose-socket-io.coffee'
 import { FIREHOSE_CONFIG } from 'config'
 import Button from 'zooid-button'
-import { setupMessageSubscription, messageReceived } from '../../actions/thing'
+
 import styles from './styles.css'
 
+import { setupMessageSubscription, messageReceived } from '../../actions/thing'
 import {
   addUserToDeviceWhiteLists,
   createMessageSubscriptionsForDevice,
 } from '../../services/subscription-service'
+
 import { getMeshbluConfig } from '../../services/auth-service'
 import { getCredentials } from '../../services/auth-service'
 

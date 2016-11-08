@@ -13,6 +13,8 @@ const showGroupDialog               = createAction('/groups/show/dialog')
 const updateDirtyGroupsRequest      = createAction('/groups/update/dirty/request')
 const updateDirtyGroupsSuccess      = createAction('/groups/update/dirty/success')
 const updateDirtyGroupsFailure      = createAction('/groups/update/dirty/failure')
+const removeGroupFilters            = createAction('/groups/remove/filter')
+const selectGroupFilters            = createAction('/groups/add/filter')
 
 const updateDirtyGroups = (groups) => {
   return (dispatch) => {
@@ -35,6 +37,8 @@ export {
   addSelectedThingsToGroup,
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
+  selectGroupFilters,
+  removeGroupFilters,
   showGroupDialog,
   updateDirtyGroups,
   updateDirtyGroupsRequest,
