@@ -27,8 +27,8 @@ const ThingListItem = ({ groups, onThingSelection, selected, thing }) => {
 
   const { uuid, logo, type } = thing
 
-  const groupItems = _.map(groups, (group) => {
-    return (<span className={styles.group} key={group.uuid}>{group.name}</span>)
+  const groupItems = _.map(groups, ({ name, uuid }) => {
+    return (<span className={styles.group} key={uuid}>{name || uuid}</span>)
   })
 
   return (
