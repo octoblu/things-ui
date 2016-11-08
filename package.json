@@ -1,6 +1,6 @@
 {
   "name": "things-ui",
-  "version": "1.0.28",
+  "version": "2.0.0",
   "description": "things-ui",
   "main": "index.js",
   "scripts": {
