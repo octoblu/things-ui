@@ -15,6 +15,7 @@ import {
 import {
   dismissGroupDialog,
   showGroupDialog,
+  updateDirtyGroups,
 } from '../actions/groups'
 
 import { getMeshbluConfig } from '../services/auth-service'
@@ -84,7 +85,9 @@ class Things extends React.Component {
   }
 
   handleUpdateGroups = () => {
-    console.log('onUpdateGroups');
+    const { dispatch, groups } = this.props
+    dispatch(updateDirtyGroups(groups))
+      .then(() => dispatch(dismissGroupDialog()))
   }
 
   handleThingSelectionToggle = (thingUuid, selected) => {
@@ -104,8 +107,9 @@ class Things extends React.Component {
         onGroupSelection={this.handleGroupSelection}
         onThingSelection={this.handleThingSelectionToggle}
         onUpdateGroups={this.handleUpdateGroups}
-        showGroupDialog={this.props.showGroupDialog}
+        showGroupDialog={this.props.groups.showGroupDialog}
         things={this.props.things}
+        groups={this.props.groups}
       />
     )
   }
@@ -114,8 +118,7 @@ class Things extends React.Component {
 Things.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
-  const { showGroupDialog } = groups
-  return { showGroupDialog, things }
+  return { groups, things }
 }
 
 export default connect(mapStateToProps)(Things)

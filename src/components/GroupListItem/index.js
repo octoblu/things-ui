@@ -1,4 +1,4 @@
-import { noop } from 'lodash'
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { ListItem } from 'zooid-list'
 
@@ -7,23 +7,26 @@ import styles from './styles.css'
 const propTypes = {
   group: PropTypes.object,
   onUpdateGroupDevices: PropTypes.func,
-  selected: PropTypes.bool,
+  selectedThings: PropTypes.array,
 }
 
 const defaultProps = {
   group: null,
-  onUpdateGroupDevices: noop,
-  selected: false,
+  onUpdateGroupDevices: _.noop,
 }
 
-const GroupListItem = ({ group, onUpdateGroupDevices, selected }) => {
+const GroupListItem = ({ group, onUpdateGroupDevices, selectedThings }) => {
+  const isSelected = _.isEmpty(_.difference(selectedThings, group.devices))
+
+  console.log('Group Devices', group.devices, 'isSelected', isSelected)
+
   return (
     <ListItem className={styles.root}>
       <span>{group.name}</span>
       <input
         type="checkbox"
-        checked={selected}
-        onClick={() => onUpdateGroupDevices({ groupUuid: group.uuid, inGroup: selected })}
+        checked={isSelected}
+        onClick={() => onUpdateGroupDevices({ groupUuid: group.uuid, inGroup: isSelected })}
         name={group.name}
       />
     </ListItem>

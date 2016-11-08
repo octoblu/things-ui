@@ -7,7 +7,6 @@ import {
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
-  deleteSelectedThingsFailure,
   dismissDeleteDialog,
   showDeleteDialog,
 } from '../../actions/things'
@@ -21,15 +20,6 @@ const initialState = {
   fetching: false,
   selectedThings: [],
   showDeleteDialog: false,
-}
-
-
-const computeSelectedGroups = ({ devices, selectedThings }) => {
-  return _(devices)
-    .filter({ type: 'octoblu:group' })
-    .filter(group => (_.difference(selectedThings, group.devices).length === 0))
-    .map('uuid')
-    .value()
 }
 
 export default createReducer({

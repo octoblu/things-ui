@@ -32,7 +32,7 @@ class GroupManager extends React.Component {
   }
 
   render() {
-    const { groups, selectedThings, selectedGroups } = this.props
+    const { groups, selectedThings } = this.props
 
     if (_.isEmpty(selectedThings)) return null
 
@@ -45,7 +45,7 @@ class GroupManager extends React.Component {
 
         <GroupList
           groups={groups}
-          selectedGroups={selectedGroups}
+          selectedThings={selectedThings}
           onUpdateGroupDevices={this.handleUpdateGroupDevices.bind(this)}
         />
       </div>
@@ -56,10 +56,10 @@ class GroupManager extends React.Component {
 GroupManager.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
-  const { devices, selectedGroups } = groups
+  const { devices } = groups
   const { selectedThings } = things
 
-  return { groups: devices, selectedGroups, selectedThings }
+  return { groups: devices, selectedThings }
 }
 
 export default connect(mapStateToProps)(GroupManager)

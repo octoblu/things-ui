@@ -6,18 +6,20 @@ import Dialog, { DialogActions, DialogBody, DialogHeader } from 'zooid-dialog'
 import GroupManager from '../GroupManager'
 
 const propTypes = {
-  visible: PropTypes.bool,
   onGroupDialogDismiss: PropTypes.func,
   onUpdateGroups: PropTypes.func,
+  updatingGroups: PropTypes.bool,
+  visible: PropTypes.bool,
 }
 
 const defaultProps = {
-  visible: false,
   onGroupDialogDismiss: _.noop,
   onUpdateGroups: _.noop,
+  updatingGroups: false,
+  visible: false,
 }
 
-const GroupDialog = ({ visible, onGroupDialogDismiss, onUpdateGroups }) => {
+const GroupDialog = ({ onGroupDialogDismiss, onUpdateGroups, updatingGroups, visible }) => {
   return (
     <Dialog visible={visible}>
       <DialogHeader>
@@ -29,7 +31,7 @@ const GroupDialog = ({ visible, onGroupDialogDismiss, onUpdateGroups }) => {
       </DialogBody>
 
       <DialogActions>
-        <Button onClick={onUpdateGroups} kind="primary">Update</Button>
+        <Button onClick={onUpdateGroups} kind="primary" disabled={updatingGroups}>Update</Button>
         <Button onClick={onGroupDialogDismiss}>Cancel</Button>
       </DialogActions>
     </Dialog>

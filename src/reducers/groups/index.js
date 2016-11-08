@@ -7,15 +7,20 @@ import {
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
   showGroupDialog,
+  updateDirtyGroupsRequest,
+  updateDirtyGroupsSuccess,
+  updateDirtyGroupsFailure,
 } from '../../actions/groups'
 
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 const initialState = {
   devices: null,
+  dirtyDevices: [],
   error: null,
   fetching: false,
-  selectedGroups: [],
+  groupUpdateError: null,
   showGroupDialog: false,
+  updatingGroups: false,
 }
 
 const computeSelectedGroups = ({ devices, selectedThings }) => {
@@ -27,18 +32,36 @@ const computeSelectedGroups = ({ devices, selectedThings }) => {
 
 export default createReducer({
   [addSelectedThingsToGroup]: (state, { groupUuid, selectedThings }) => {
-    const groups = _.clone(state.devices)
-    const selectedGroup = _.find(groups, { uuid: groupUuid })
-    selectedGroup.devices = _.union(selectedGroup.devices, selectedThings)
+    const updatedDevices = _.map(state.devices, (group) => {
+      if (group.uuid !== groupUuid) return group
 
-    return { ...state, devices: groups }
+      return {
+        ...group,
+        devices: _.union(group.devices, selectedThings),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      dirtyDevices: _.union(state.dirtyDevices, [groupUuid]),
+    }
   },
   [removeSelectedThingsFromGroup]: (state, { groupUuid, selectedThings }) => {
-    const groups = _.clone(state.devices)
-    const selectedGroup = _.find(groups, { uuid: groupUuid })
-    selectedGroup.devices = _.difference(selectedGroup.devices, selectedThings)
+    const updatedDevices = _.map(state.devices, (group) => {
+      if (group.uuid !== groupUuid) return group
 
-    return { ...state, devices: groups }
+      return {
+        ...group,
+        devices: _.difference(group.devices, selectedThings),
+      }
+    })
+
+    return {
+      ...state,
+      devices: updatedDevices,
+      dirtyDevices: _.union(state.dirtyDevices, [groupUuid]),
+    }
   },
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
@@ -53,17 +76,23 @@ export default createReducer({
     ...state,
     showGroupDialog: false,
     selectedGroups: [],
+    dirtyDevices: [],
   }),
   [showGroupDialog]: (state, selectedThings) => {
     const selectedGroups = computeSelectedGroups({
       devices: state.devices,
       selectedThings,
     })
-    console.log('selectedGroups', selectedGroups);
     return {
       ...state,
       selectedGroups,
       showGroupDialog: true,
+      dirtyDevices: [],
     }
+  },
+  [updateDirtyGroupsRequest]: state => ({ ...state, updatingGroups: true }),
+  [updateDirtyGroupsSuccess]: state => ({ ...state, updatingGroups: false }),
+  [updateDirtyGroupsFailure]: (state, payload) => {
+    return { ...state, updatingGroups: false, groupUpdateError: payload }
   },
 }, initialState)

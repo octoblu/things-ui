@@ -7,6 +7,9 @@ import {
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
   showGroupDialog,
+  updateDirtyGroupsRequest,
+  updateDirtyGroupsSuccess,
+  updateDirtyGroupsFailure,
 } from '../../actions/groups'
 
 import reducer from './'
@@ -14,10 +17,12 @@ import reducer from './'
 describe('Groups Reducer', () => {
   const initialState = {
     devices: null,
+    dirtyDevices: [],
     error: null,
     fetching: false,
-    selectedGroups: [],
+    groupUpdateError: null,
     showGroupDialog: false,
+    updatingGroups: false,
   }
 
   it('should return the initial state', () => {
@@ -76,6 +81,45 @@ describe('Groups Reducer', () => {
     })
   })
 
+  describe('updateDirtyGroups', () => {
+    it('should handle updateDirtyGroupsRequest', () => {
+      const expectedState = {
+        ...initialState,
+        updatingGroups: true,
+      }
+
+      expect(
+        reducer(initialState, { type: updateDirtyGroupsRequest.getType() })
+      ).to.deep.equal(expectedState)
+    })
+
+    it('updateDirtyGroupsSuccess', () => {
+      const expectedState = {
+        ...initialState,
+        updatingGroups: false,
+      }
+
+      expect(
+        reducer(initialState, { type: updateDirtyGroupsSuccess.getType() })
+      ).to.deep.equal(expectedState)
+    })
+
+    it('updateDirtyGroupsFailure', () => {
+      const expectedState = {
+        ...initialState,
+        groupUpdateError: new Error('Error: Group update failed.'),
+        updatingGroups: false,
+      }
+
+      expect(
+        reducer(initialState, {
+          type: updateDirtyGroupsFailure.getType(),
+          payload: new Error('Error: Group update failed.'),
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
   describe('addSelectedThingsToGroup', () => {
     it('should handle addSelectedThingsToGroup action', () => {
       const state = {
@@ -83,31 +127,35 @@ describe('Groups Reducer', () => {
         devices: [
           {
             uuid: 'group-1',
-            devices: ['device-2'],
+            devices: ['thing-1'],
+          },
+          {
+            uuid: 'group-2',
+            devices: ['thing-3'],
           },
         ],
       }
-
       const expectedState = {
         ...state,
         devices: [
           {
             uuid: 'group-1',
-            devices: [
-              'device-2',
-              'device-1',
-              'device-3',
-            ],
+            devices: ['thing-1', 'thing-2', 'thing-3'],
+          },
+          {
+            uuid: 'group-2',
+            devices: ['thing-3'],
           },
         ],
+        dirtyDevices: ['group-1'],
       }
 
       expect(
         reducer(state, {
           type: addSelectedThingsToGroup.getType(),
           payload: {
-            selectedThings: ['device-1', 'device-3'],
             groupUuid: 'group-1',
+            selectedThings: ['thing-2', 'thing-3'],
           },
         })
       ).to.deep.equal(expectedState)
@@ -121,33 +169,35 @@ describe('Groups Reducer', () => {
         devices: [
           {
             uuid: 'group-1',
-            devices: [
-              'device-2',
-              'device-1',
-              'device-3',
-            ],
+            devices: ['thing-1', 'thing-2', 'thing-3'],
+          },
+          {
+            uuid: 'group-2',
+            devices: ['thing-3'],
           },
         ],
       }
-
       const expectedState = {
         ...state,
         devices: [
           {
             uuid: 'group-1',
-            devices: [
-              'device-2',
-            ],
+            devices: ['thing-1'],
+          },
+          {
+            uuid: 'group-2',
+            devices: ['thing-3'],
           },
         ],
+        dirtyDevices: ['group-1'],
       }
 
       expect(
         reducer(state, {
           type: removeSelectedThingsFromGroup.getType(),
           payload: {
-            selectedThings: ['device-1', 'device-3'],
             groupUuid: 'group-1',
+            selectedThings: ['thing-2', 'thing-3'],
           },
         })
       ).to.deep.equal(expectedState)
@@ -174,11 +224,13 @@ describe('Groups Reducer', () => {
             devices: ['thing-uuid-1'],
           },
         ],
+        dirtyDevices: ['meh'],
       }
       const expectedState = {
         ...state,
         selectedGroups: ['app-uuid-1'],
         showGroupDialog: true,
+        dirtyDevices: [],
       }
       expect(
         reducer(state, {
@@ -195,11 +247,13 @@ describe('Groups Reducer', () => {
         ...initialState,
         showGroupDialog: true,
         selectedGroups: ['cats'],
+        dirtyDevices: ['meh'],
       }
       const expectedState = {
         ...state,
         selectedGroups: [],
         showGroupDialog: false,
+        dirtyDevices: [],
       }
       expect(
         reducer(state, {

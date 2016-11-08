@@ -7,28 +7,23 @@ import GroupListItem from '../GroupListItem'
 const propTypes = {
   groups: PropTypes.array,
   onUpdateGroupDevices: PropTypes.func,
-  selectedGroups: PropTypes.array,
-}
-const defaultProps = {
-  groups: [],
-  selectedGroups: [],
+  selectedThings: PropTypes.array,
 }
 
-const GroupList = ({ groups, onUpdateGroupDevices, selectedGroups }) => {
+const defaultProps = {
+  groups: [],
+}
+
+const GroupList = ({ groups, onUpdateGroupDevices, selectedThings }) => {
   if (isEmpty(groups)) return null
 
   const groupListItems = map(groups, (group) => {
-    console.log(selectedGroups, group.uuid);
-    
-    const selected = selectedGroups.includes(group.uuid)
-    console.log('SELECTED', selected);
-
     return (
       <GroupListItem
         group={group}
         key={group.uuid}
+        selectedThings={selectedThings}
         onUpdateGroupDevices={onUpdateGroupDevices}
-        selected={selected}
       />
     )
   })

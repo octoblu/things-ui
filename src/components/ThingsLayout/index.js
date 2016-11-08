@@ -22,6 +22,7 @@ const propTypes = {
   onUpdateGroups: PropTypes.func,
   showGroupDialog: PropTypes.bool,
   things: PropTypes.object.isRequired,
+  groups: PropTypes.object.isRequired,
 }
 
 const defaultProps = {
@@ -39,6 +40,7 @@ const defaultProps = {
 
 const ThingsLayout = (props) => {
   const {
+    groups,
     onGroupDialogDismiss,
     onGroupDialogShow,
     onClearSelection,
@@ -59,6 +61,8 @@ const ThingsLayout = (props) => {
     selectedThings,
     showDeleteDialog,
   } = things
+
+  const { updatingGroups } = groups
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -84,9 +88,10 @@ const ThingsLayout = (props) => {
       </Page>
 
       <GroupDialog
-        visible={showGroupDialog}
         onGroupDialogDismiss={onGroupDialogDismiss}
         onUpdateGroups={onUpdateGroups}
+        updatingGroups={updatingGroups}
+        visible={showGroupDialog}
       />
 
       <DeleteDialog

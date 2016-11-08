@@ -25,18 +25,6 @@ const deleteSelection = (selectedThings) => {
   }
 }
 
-// const updateGroups = () => {
-//   return (dispatch) => {
-//     const meshbluConfig = getMeshbluConfig()
-//     dispatch(updateSelectedGroups())
-//
-//
-//     return Promise.each(selectedThings, uuid => dispatch(update({ uuid, meshbluConfig })))
-//       .then(() => dispatch(updateSelectedGroupsSuccess()))
-//       .catch(err => dispatch(updateSelectedGroupsFailure(err)))
-//   }
-// }
-
 export {
   clearSelectedThings,
   deleteSelection,
