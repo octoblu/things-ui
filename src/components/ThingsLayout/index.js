@@ -24,7 +24,6 @@ const propTypes = {
   onUpdateGroups: PropTypes.func,
   showGroupDialog: PropTypes.bool,
   things: PropTypes.object.isRequired,
-  groups: PropTypes.object.isRequired,
 }
 
 const defaultProps = {
@@ -88,6 +87,7 @@ const ThingsLayout = (props) => {
           onThingSelection={onThingSelection}
           selectedThings={selectedThings}
           things={devices}
+          groups={groups.devices}
         />
         <GroupFilterList
           groups={groups.devices}

@@ -8,6 +8,7 @@ import ThingName from '../ThingName'
 import styles from './styles.css'
 
 const propTypes = {
+  groups: PropTypes.array,
   onThingSelection: PropTypes.func,
   selected: PropTypes.bool,
   thing: PropTypes.object,
@@ -20,11 +21,15 @@ const defaultProps = {
 }
 
 
-const ThingListItem = ({ onThingSelection, selected, thing }) => {
+const ThingListItem = ({ groups, onThingSelection, selected, thing }) => {
   if (_.isEmpty(thing)) return null
   if (_.isEmpty(thing.uuid)) return null
 
   const { uuid, logo, type } = thing
+
+  const groupItems = _.map(groups, (group) => {
+    return (<span className={styles.group} key={group.uuid}>{group.name}</span>)
+  })
 
   return (
     <div className={styles.root}>
@@ -45,7 +50,7 @@ const ThingListItem = ({ onThingSelection, selected, thing }) => {
           <ThingName thing={thing} />
         </Link>
 
-        <div><span className={styles.group}>Group #1</span></div>
+        <div>{groupItems}</div>
       </div>
     </div>
   )
