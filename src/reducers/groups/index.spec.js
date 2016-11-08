@@ -3,6 +3,8 @@ import _ from 'lodash'
 import { searchActions } from 'redux-meshblu'
 
 import {
+  addSelectedThingsToGroup,
+  removeSelectedThingsFromGroup,
   dismissGroupDialog,
   showGroupDialog,
 } from '../../actions/groups'
@@ -74,6 +76,84 @@ describe('Groups Reducer', () => {
     })
   })
 
+  describe('addSelectedThingsToGroup', () => {
+    it('should handle addSelectedThingsToGroup action', () => {
+      const state = {
+        ...initialState,
+        devices: [
+          {
+            uuid: 'group-1',
+            devices: ['device-2'],
+          },
+        ],
+      }
+
+      const expectedState = {
+        ...state,
+        devices: [
+          {
+            uuid: 'group-1',
+            devices: [
+              'device-2',
+              'device-1',
+              'device-3',
+            ],
+          },
+        ],
+      }
+
+      expect(
+        reducer(state, {
+          type: addSelectedThingsToGroup.getType(),
+          payload: {
+            selectedThings: ['device-1', 'device-3'],
+            groupUuid: 'group-1',
+          },
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
+  describe('removeSelectedThingsFromGroup', () => {
+    it('should handle removeSelectedThingsFromGroup action', () => {
+      const state = {
+        ...initialState,
+        devices: [
+          {
+            uuid: 'group-1',
+            devices: [
+              'device-2',
+              'device-1',
+              'device-3',
+            ],
+          },
+        ],
+      }
+
+      const expectedState = {
+        ...state,
+        devices: [
+          {
+            uuid: 'group-1',
+            devices: [
+              'device-2',
+            ],
+          },
+        ],
+      }
+
+      expect(
+        reducer(state, {
+          type: removeSelectedThingsFromGroup.getType(),
+          payload: {
+            selectedThings: ['device-1', 'device-3'],
+            groupUuid: 'group-1',
+          },
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
   describe('showGroupDialog', () => {
     it('should handle showGroupDialog action', () => {
       const state = {
@@ -108,6 +188,7 @@ describe('Groups Reducer', () => {
       ).to.deep.equal(expectedState)
     })
   })
+
   describe('dismissGroupDialog', () => {
     it('should handle dismissGroupDialog action', () => {
       const state = {

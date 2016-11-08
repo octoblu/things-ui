@@ -26,43 +26,20 @@ const computeSelectedGroups = ({ devices, selectedThings }) => {
 }
 
 export default createReducer({
-  [addSelectedThingsToGroup]: (state, groupUuid) => {
-    const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== groupUuid) return device
-      return {
-        ...device,
-        devices: _.uniq([...device.devices, ...state.selectedThings]),
-      }
-    })
+  [addSelectedThingsToGroup]: (state, { groupUuid, selectedThings }) => {
+    const groups = _.clone(state.devices)
+    const selectedGroup = _.find(groups, { uuid: groupUuid })
+    selectedGroup.devices = _.union(selectedGroup.devices, selectedThings)
 
-    return {
-      ...state,
-      devices: updatedDevices,
-      selectedGroups: computeSelectedGroups({
-        devices: updatedDevices,
-        selectedThings: state.selectedThings,
-      }),
-    }
+    return { ...state, devices: groups }
   },
-  [removeSelectedThingsFromGroup]: (state, groupUuid) => {
-    const updatedDevices = _.map(state.devices, (device) => {
-      if (device.uuid !== groupUuid) return device
-      return {
-        ...device,
-        devices: _.difference(device.devices, state.selectedThings),
-      }
-    })
+  [removeSelectedThingsFromGroup]: (state, { groupUuid, selectedThings }) => {
+    const groups = _.clone(state.devices)
+    const selectedGroup = _.find(groups, { uuid: groupUuid })
+    selectedGroup.devices = _.difference(selectedGroup.devices, selectedThings)
 
-    return {
-      ...state,
-      devices: updatedDevices,
-      selectedGroups: computeSelectedGroups({
-        devices: updatedDevices,
-        selectedThings: state.selectedThings,
-      }),
-    }
+    return { ...state, devices: groups }
   },
-
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => ({ ...initialState, fetching: true }),
   [searchSuccess]: (state, devices) => {
@@ -82,6 +59,7 @@ export default createReducer({
       devices: state.devices,
       selectedThings,
     })
+    console.log('selectedGroups', selectedGroups);
     return {
       ...state,
       selectedGroups,

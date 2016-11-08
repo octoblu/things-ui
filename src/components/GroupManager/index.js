@@ -25,10 +25,10 @@ class GroupManager extends React.Component {
   }
 
   handleUpdateGroupDevices({ groupUuid, inGroup }) {
-    const { dispatch } = this.props
+    const { dispatch, selectedThings } = this.props
 
-    if (inGroup) return dispatch(removeSelectedThingsFromGroup(groupUuid))
-    return dispatch(addSelectedThingsToGroup(groupUuid))
+    if (inGroup) return dispatch(removeSelectedThingsFromGroup({ groupUuid, selectedThings }))
+    return dispatch(addSelectedThingsToGroup({ groupUuid, selectedThings }))
   }
 
   render() {
