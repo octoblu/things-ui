@@ -6,6 +6,8 @@ import {
   addSelectedThingsToGroup,
   removeSelectedThingsFromGroup,
   dismissGroupDialog,
+  selectGroupFilters,
+  removeGroupFilters,
   showGroupDialog,
 } from '../../actions/groups'
 
@@ -15,6 +17,7 @@ const initialState = {
   error: null,
   fetching: false,
   selectedGroups: [],
+  selectedGroupFilters: [],
   showGroupDialog: false,
 }
 
@@ -33,6 +36,18 @@ export default createReducer({
 
     return { ...state, devices: groups }
   },
+  [dismissGroupDialog]: state => ({
+    ...state,
+    showGroupDialog: false,
+    selectedGroups: [],
+  }),
+  [removeGroupFilters]: (state, group) => {
+    const { selectedGroupFilters } = state
+    return {
+      ...state,
+      selectedGroupFilters: _.pull(selectedGroupFilters, _.find(selectedGroupFilters, group)),
+    }
+  },
   [removeSelectedThingsFromGroup]: (state, { groupUuid, selectedThings }) => {
     const groups = _.clone(state.devices)
     const selectedGroup = _.find(groups, { uuid: groupUuid })
@@ -49,17 +64,16 @@ export default createReducer({
       fetching: false,
     }
   },
-  [dismissGroupDialog]: state => ({
-    ...state,
-    showGroupDialog: false,
-    selectedGroups: [],
-  }),
+  [selectGroupFilters]: (state, group) => {
+    const { selectedGroupFilters } = state
+    selectedGroupFilters.push(group)
+    return { ...state, selectedGroupFilters }
+  },
   [showGroupDialog]: (state, selectedThings) => {
     const selectedGroups = computeSelectedGroups({
       devices: state.devices,
       selectedThings,
     })
-    console.log('selectedGroups', selectedGroups);
     return {
       ...state,
       selectedGroups,

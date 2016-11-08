@@ -14,6 +14,8 @@ import {
 
 import {
   dismissGroupDialog,
+  removeGroupFilters,
+  selectGroupFilters,
   showGroupDialog,
 } from '../actions/groups'
 
@@ -23,6 +25,7 @@ import ThingsLayout from '../components/ThingsLayout'
 
 const propTypes = {
   dispatch: PropTypes.func,
+  groups: PropTypes.object,
   things: PropTypes.object,
 }
 
@@ -84,7 +87,13 @@ class Things extends React.Component {
   }
 
   handleUpdateGroups = () => {
-    console.log('onUpdateGroups');
+    console.log('onUpdateGroups')
+  }
+
+  handleUpdateGroupFilters = ({group, selected}) => {
+    if (selected) return this.props.dispatch(removeGroupFilters(group))
+    return this.props.dispatch(selectGroupFilters(group))
+
   }
 
   handleThingSelectionToggle = (thingUuid, selected) => {
@@ -95,6 +104,7 @@ class Things extends React.Component {
   render() {
     return (
       <ThingsLayout
+        groups={this.props.groups}
         onClearSelection={this.handleClearSelection}
         onDeleteDialogShow={this.handleDeleteDialogShow}
         onDeleteDialogDismiss={this.handleDeleteDialogDismiss}
@@ -103,8 +113,9 @@ class Things extends React.Component {
         onGroupDialogDismiss={this.handleGroupDialogDismiss}
         onGroupSelection={this.handleGroupSelection}
         onThingSelection={this.handleThingSelectionToggle}
+        onUpdateGroupFilters={this.handleUpdateGroupFilters}
         onUpdateGroups={this.handleUpdateGroups}
-        showGroupDialog={this.props.showGroupDialog}
+        showGroupDialog={this.props.groups.showGroupDialog}
         things={this.props.things}
       />
     )
@@ -114,8 +125,7 @@ class Things extends React.Component {
 Things.propTypes = propTypes
 
 const mapStateToProps = ({ groups, things }) => {
-  const { showGroupDialog } = groups
-  return { showGroupDialog, things }
+  return { groups, things }
 }
 
 export default connect(mapStateToProps)(Things)

@@ -18,10 +18,7 @@ const GroupList = ({ groups, onUpdateGroupDevices, selectedGroups }) => {
   if (isEmpty(groups)) return null
 
   const groupListItems = map(groups, (group) => {
-    console.log(selectedGroups, group.uuid);
-    
     const selected = selectedGroups.includes(group.uuid)
-    console.log('SELECTED', selected);
 
     return (
       <GroupListItem
