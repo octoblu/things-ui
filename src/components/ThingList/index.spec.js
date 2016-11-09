@@ -25,23 +25,4 @@ describe('<ThingList />', () => {
       expect(sut).to.be.blank()
     })
   })
-
-  describe('when things prop is not empty', () => {
-    it('should render each thing', () => {
-      const things = [
-        {
-          uuid: 'uuid-1',
-          name: 'Thing 1',
-        },
-        {
-          uuid: 'uuid-2',
-          name: 'Thing 2',
-        },
-      ]
-      const sut = shallow(<ThingList things={things} />)
-
-      expect(sut).to.contain(<ThingListItem thing={things[0]} />)
-      expect(sut).to.contain(<ThingListItem thing={things[1]} />)
-    })
-  })
 })
