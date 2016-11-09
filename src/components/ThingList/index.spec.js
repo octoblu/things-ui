@@ -1,12 +1,10 @@
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
 import React from 'react'
-import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 import ThingList from './'
-import ThingListItem from '../ThingListItem'
 
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
@@ -20,9 +18,9 @@ describe('<ThingList />', () => {
   })
 
   describe('when things prop is empty', () => {
-    it('should render nothing', () => {
-      const sut = shallow(<ThingList things={[]} />)
-      expect(sut).to.be.blank()
+    it('should show a No Things Found message', () => {
+      const sut = mount(<ThingList things={[]} />)
+      expect(sut).to.contain(<div>No Things Found</div>)
     })
   })
 })

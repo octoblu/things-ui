@@ -19,6 +19,7 @@ const propTypes = {
   onDeleteDialogDismiss: PropTypes.func,
   onDeleteDialogShow: PropTypes.func,
   onDeleteSelection: PropTypes.func,
+  onFilterThings: PropTypes.func,
   onThingSelection: PropTypes.func,
   onUpdateGroupFilters: PropTypes.func,
   onUpdateGroups: PropTypes.func,
@@ -33,6 +34,7 @@ const defaultProps = {
   onDeleteDialogDismiss: _.noop,
   onDeleteDialogShow: _.noop,
   onDeleteSelection: _.noop,
+  onFilterThings: _.noop,
   onThingSelection: _.noop,
   onUpdateGroupFilters: _.noop,
   onUpdateGroups: _.noop,
@@ -48,6 +50,7 @@ const ThingsLayout = (props) => {
     onDeleteDialogDismiss,
     onDeleteDialogShow,
     onDeleteSelection,
+    onFilterThings,
     onThingSelection,
     onUpdateGroupFilters,
     onUpdateGroups,
@@ -62,25 +65,38 @@ const ThingsLayout = (props) => {
     fetching,
     selectedThings,
     showDeleteDialog,
+    thingFilter,
   } = things
 
-  const { updatingGroups } = groups
-  const { selectedGroupFilters } = groups
+  const { selectedGroupFilters, updatingGroups } = groups
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
 
-  let updatedDevices = devices
+  const filterThingsByString = () => {
+    if (_.isEmpty(thingFilter)) return devices
 
-  if (!_.isEmpty(selectedGroupFilters)) {
-    updatedDevices = []
-    const thingsInGroups = _.uniq(_.flatMap(selectedGroupFilters, 'devices'))
-    _.each(thingsInGroups, (uuid) => {
-      updatedDevices.push(_.find(devices, { uuid }))
+    const filteredDevices = _.filter(devices, (device) => {
+      const matchesName = device.name.indexOf(thingFilter) !== -1
+      const matchesUuid = device.uuid.indexOf(thingFilter) !== -1
+
+
+      if (device.name && matchesName) return matchesName
+
+      return matchesUuid
     })
+    return filteredDevices
   }
 
-  if (_.isEmpty(updatedDevices)) return <div>No Things Found</div>
+  const filterThingsByGroups = () => {
+    if (_.isEmpty(selectedGroupFilters)) return devices
+    const filteredDevices = []
+    const thingsInGroups = _.uniq(_.flatMap(selectedGroupFilters, 'devices'))
+    _.each(thingsInGroups, (uuid) => { filteredDevices.push(_.find(devices, { uuid })) })
+    return filteredDevices
+  }
+
+  const updatedDevices = filterThingsByString(filterThingsByGroups(devices))
 
   return (
     <div>
@@ -101,6 +117,7 @@ const ThingsLayout = (props) => {
           groups={groups.devices}
         />
         <GroupFilterList
+          onFilterThings={onFilterThings}
           groups={groups.devices}
           onUpdateGroupFilters={onUpdateGroupFilters}
           selectedGroupFilters={selectedGroupFilters}

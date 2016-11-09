@@ -2,23 +2,23 @@ import { noop } from 'lodash'
 import React, { PropTypes } from 'react'
 import { ListItem } from 'zooid-list'
 
-import styles from './styles.css'
-
 const propTypes = {
+  className: PropTypes.string,
   group: PropTypes.object,
   onUpdateGroupFilters: PropTypes.func,
   selected: PropTypes.bool,
 }
 
 const defaultProps = {
+  className: '',
   group: null,
   onUpdateGroupFilters: noop,
   selected: false,
 }
 
-const GroupFilterListItem = ({ group, onUpdateGroupFilters, selected }) => {
+const GroupFilterListItem = ({ className, group, onUpdateGroupFilters, selected }) => {
   return (
-    <ListItem className={styles.root}>
+    <ListItem className={className} >
       <span>{group.name}</span>
       <input
         type="checkbox"

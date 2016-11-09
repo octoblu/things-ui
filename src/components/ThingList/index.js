@@ -20,7 +20,7 @@ const defaultProps = {
 }
 
 const ThingList = ({ groups, onThingSelection, things, selectedThings }) => {
-  if (_.isEmpty(things)) return null
+  if (_.isEmpty(things)) return <div>No Things Found</div>
 
   const thingItems = _.map(things, (thing) => {
     const { uuid } = thing

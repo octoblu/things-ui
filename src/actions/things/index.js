@@ -9,6 +9,7 @@ const deleteSelectedThings        = createAction('/things/selection/delete')
 const deleteSelectedThingsSuccess = createAction('/things/selection/delete/success')
 const deleteSelectedThingsFailure = createAction('/things/selection/delete/failure')
 const dismissDeleteDialog         = createAction('/things/selection/dialog/delete/dismiss')
+const updateThingFilter           = createAction('/things/filter/update')
 const showDeleteDialog            = createAction('/things/selection/dialog/delete/show')
 const updateSelectedGroups        = createAction('/things/selection/update/group')
 const updateSelectedGroupsSuccess = createAction('/things/selection/update/group/success')
@@ -36,4 +37,5 @@ export {
   updateSelectedGroups,
   updateSelectedGroupsSuccess,
   updateSelectedGroupsFailure,
+  updateThingFilter,
 }

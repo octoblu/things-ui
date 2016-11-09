@@ -4,11 +4,10 @@ import { searchActions } from 'redux-meshblu'
 
 import { selectThing, unselectThing } from '../../actions/thing'
 import {
-  addSelectedThingsToGroup,
-  removeSelectedThingsFromGroup,
   clearSelectedThings,
   deleteSelectedThings,
   deleteSelectedThingsSuccess,
+  updateThingFilter,
 } from '../../actions/things'
 
 import reducer from './'
@@ -21,6 +20,7 @@ describe('Things Reducer', () => {
     fetching: false,
     selectedThings: [],
     showDeleteDialog: false,
+    thingFilter: '',
   }
 
   it('should return the initial state', () => {
@@ -185,6 +185,18 @@ describe('Things Reducer', () => {
       expect(
         reducer(currentState, {
           type: deleteSelectedThingsSuccess.getType(),
+        })
+      ).to.deep.equal(expectedState)
+    })
+  })
+
+  describe('filterThings', () => {
+    it('should handle the filterThings action', () => {
+      const expectedState = { ...initialState, thingFilter: 'abc' }
+      expect(
+        reducer(initialState, {
+          type: updateThingFilter.getType(),
+          payload: 'abc',
         })
       ).to.deep.equal(expectedState)
     })

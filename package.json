@@ -1,6 +1,6 @@
 {
   "name": "things-ui",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "things-ui",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "atob": "^2.0.3",
     "bluebird": "^3.4.6",
     "browser-meshblu-http": "^5.4.1",
+    "classnames": "^2.2.5",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.11.1",
     "debug": "^2.2.0",

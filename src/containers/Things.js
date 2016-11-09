@@ -10,6 +10,7 @@ import {
   deleteSelection,
   dismissDeleteDialog,
   showDeleteDialog,
+  updateThingFilter,
 } from '../actions/things'
 
 import {
@@ -83,6 +84,11 @@ class Things extends React.Component {
     this.props.dispatch(showGroupDialog(selectedThings))
   }
 
+  handleFilterThings = (event) => {
+    const { value } = event.target
+    this.props.dispatch(updateThingFilter(value))
+  }
+
   handleGroupDialogDismiss = () => {
     this.props.dispatch(dismissGroupDialog())
   }
@@ -115,6 +121,7 @@ class Things extends React.Component {
         onGroupDialogDismiss={this.handleGroupDialogDismiss}
         onGroupSelection={this.handleGroupSelection}
         onThingSelection={this.handleThingSelectionToggle}
+        onFilterThings={this.handleFilterThings}
         onUpdateGroupFilters={this.handleUpdateGroupFilters}
         onUpdateGroups={this.handleUpdateGroups}
         showGroupDialog={this.props.groups.showGroupDialog}

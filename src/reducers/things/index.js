@@ -9,6 +9,7 @@ import {
   deleteSelectedThingsSuccess,
   dismissDeleteDialog,
   showDeleteDialog,
+  updateThingFilter,
 } from '../../actions/things'
 
 
@@ -20,6 +21,7 @@ const initialState = {
   fetching: false,
   selectedThings: [],
   showDeleteDialog: false,
+  thingFilter: '',
 }
 
 export default createReducer({
@@ -57,5 +59,9 @@ export default createReducer({
   [unselectThing]: (state, payload) => {
     const filteredDevices = _.without(state.selectedThings, payload)
     return { ...state, selectedThings: filteredDevices }
+  },
+  [updateThingFilter]: (state, payload) => {
+    const thingFilter = _.toLower(_.trim(payload))
+    return { ...state, thingFilter }
   },
 }, initialState)
