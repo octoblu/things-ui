@@ -69,8 +69,9 @@ const ThingsLayout = (props) => {
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
-  if (_.isEmpty(devices)) return <div>No Things Found</div>
+
   let updatedDevices = devices
+
   if (!_.isEmpty(selectedGroupFilters)) {
     updatedDevices = []
     const thingsInGroups = _.uniq(_.flatMap(selectedGroupFilters, 'devices'))
@@ -78,6 +79,8 @@ const ThingsLayout = (props) => {
       updatedDevices.push(_.find(devices, { uuid }))
     })
   }
+
+  if (_.isEmpty(updatedDevices)) return <div>No Things Found</div>
 
   return (
     <div>
