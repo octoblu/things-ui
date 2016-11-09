@@ -17,9 +17,6 @@ before_deploy:
 - if [ -z "$PKG_VERSION" ]; then echo 'Missing PKG_VERSION env' && exit 1; fi
 - mkdir -p dpl_assets/v$PKG_VERSION
 - cp -r dist/* dpl_assets/v$PKG_VERSION
-branches:
-  only:
-  - "/^v[0-9]/"
 deploy:
   - provider: s3
     access_key_id: AKIAJU3UCEPAB64BWU7A
@@ -29,6 +26,9 @@ deploy:
     local_dir: dpl_assets
     skip_cleanup: true
     region: us-west-2
+    on:
+      all_branches: true
+      tags: true
 notifications:
   webhooks:
   - https://beekeeper.octoblu.com/webhooks/travis:ci
