@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import { createAction } from 'redux-act'
-import { update } from 'redux-meshblu'
+import { register, update } from 'redux-meshblu'
 import Promise from 'bluebird'
-
 
 import { getMeshbluConfig } from '../../services/auth-service'
 
@@ -15,6 +14,7 @@ const updateDirtyGroupsSuccess      = createAction('/groups/update/dirty/success
 const updateDirtyGroupsFailure      = createAction('/groups/update/dirty/failure')
 const removeGroupFilters            = createAction('/groups/remove/filter')
 const selectGroupFilters            = createAction('/groups/add/filter')
+const updateGroupFilter             = createAction('/groups/update/filter')
 
 const updateDirtyGroups = (groups) => {
   return (dispatch) => {
@@ -40,6 +40,7 @@ export {
   selectGroupFilters,
   removeGroupFilters,
   showGroupDialog,
+  updateGroupFilter,
   updateDirtyGroups,
   updateDirtyGroupsRequest,
   updateDirtyGroupsFailure,

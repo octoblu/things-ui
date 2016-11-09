@@ -119,7 +119,6 @@ class Things extends React.Component {
         onUpdateGroups={this.handleUpdateGroups}
         showGroupDialog={this.props.groups.showGroupDialog}
         things={this.props.things}
-        groups={this.props.groups}
       />
     )
   }

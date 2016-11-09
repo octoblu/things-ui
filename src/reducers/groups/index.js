@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { createReducer } from 'redux-act'
-import { searchActions } from 'redux-meshblu'
+import { registerActions, searchActions } from 'redux-meshblu'
 
 import {
   addSelectedThingsToGroup,
@@ -9,17 +9,23 @@ import {
   selectGroupFilters,
   removeGroupFilters,
   showGroupDialog,
+  updateGroupFilter,
   updateDirtyGroupsRequest,
   updateDirtyGroupsSuccess,
   updateDirtyGroupsFailure,
 } from '../../actions/groups'
 
+const { registerRequest, registerSuccess, registerFailure } = registerActions
 const { searchRequest, searchSuccess, searchFailure } = searchActions
+
 const initialState = {
-  devices: null,
+  creating: false,
+  creatingError: null,
+  devices: [],
   dirtyDevices: [],
   error: null,
   fetching: false,
+  filterValue: '',
   groupUpdateError: null,
   selectedGroupFilters: [],
   showGroupDialog: false,
@@ -48,6 +54,22 @@ export default createReducer({
       ...state,
       devices: updatedDevices,
       dirtyDevices: _.union(state.dirtyDevices, [groupUuid]),
+    }
+  },
+  [registerRequest]: state => ({ ...state, creating: true }),
+  [registerSuccess]: (state, payload) => {
+    console.log('Payload', payload);
+    return {
+      ...state,
+      creating: false,
+      devices: [payload, ...state.devices],
+    }
+  },
+  [registerFailure]: (state, payload) => {
+    return {
+      ...state,
+      creating: false,
+      creatingError: payload,
     }
   },
   [dismissGroupDialog]: state => ({
@@ -110,6 +132,7 @@ export default createReducer({
       dirtyDevices: [],
     }
   },
+  [updateGroupFilter]: (state, payload) => ({ ...state, filterValue: payload }),
   [updateDirtyGroupsRequest]: state => ({ ...state, updatingGroups: true }),
   [updateDirtyGroupsSuccess]: state => ({ ...state, updatingGroups: false }),
   [updateDirtyGroupsFailure]: (state, payload) => {

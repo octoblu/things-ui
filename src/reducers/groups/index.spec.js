@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import _ from 'lodash'
-import { searchActions } from 'redux-meshblu'
+import { registerActions, searchActions } from 'redux-meshblu'
 
 import {
   addSelectedThingsToGroup,
@@ -18,10 +18,13 @@ import reducer from './'
 
 describe('Groups Reducer', () => {
   const initialState = {
-    devices: null,
+    creating: false,
+    creatingError: null,
+    devices: [],
     dirtyDevices: [],
     error: null,
     fetching: false,
+    filterValue: '',
     groupUpdateError: null,
     selectedGroupFilters: [],
     showGroupDialog: false,
@@ -80,6 +83,51 @@ describe('Groups Reducer', () => {
         ...initialState,
         fetching: false,
         error: new Error('Nooooo'),
+      })
+    })
+  })
+
+  describe('createGroup', () => {
+    it('should handle registerRequest', () => {
+      expect(
+        reducer(initialState, {
+          type: registerActions.registerRequest.getType(),
+          payload: {
+            name: 'Boom',
+          },
+        })
+      ).to.deep.equal({ ...initialState, creating: true })
+    })
+
+    it('should handle registerSuccess', () => {
+      const newDevice = {
+        uuid: 'new-group',
+        name: 'New Group',
+        devices: [],
+      }
+
+      expect(
+        reducer(initialState, {
+          type: registerActions.registerSuccess.getType(),
+          payload: newDevice,
+        })
+      ).to.deep.equal({
+        ...initialState,
+        devices: [newDevice, ...initialState.devices],
+        creating: false,
+      })
+    })
+
+    it('should handle registerFailure', () => {
+      expect(
+        reducer(initialState, {
+          type: registerActions.registerFailure.getType(),
+          payload: new Error('Oops... we encountered an error while creating a Group'),
+        })
+      ).to.deep.equal({
+        ...initialState,
+        creating: false,
+        creatingError: new Error('Oops... we encountered an error while creating a Group'),
       })
     })
   })
