@@ -1,6 +1,10 @@
 import _ from 'lodash'
+import Immutable from 'immutable'
 import { createReducer } from 'redux-act'
 import { registerActions, searchActions } from 'redux-meshblu'
+
+import Group from '../../models/Group'
+import GroupMap from '../../models/GroupMap'
 
 import {
   addSelectedThingsToGroup,
@@ -18,19 +22,21 @@ import {
 const { registerRequest, registerSuccess, registerFailure } = registerActions
 const { searchRequest, searchSuccess, searchFailure } = searchActions
 
-const initialState = {
-  creating: false,
-  creatingError: null,
-  devices: [],
-  dirtyDevices: [],
-  error: null,
-  fetching: false,
-  filterValue: '',
-  groupUpdateError: null,
-  selectedGroupFilters: [],
-  showGroupDialog: false,
-  updatingGroups: false,
-}
+// const initialState = {
+//   creating: false,
+//   creatingError: null,
+//   devices: [],
+//   dirtyDevices: [],
+//   error: null,
+//   fetching: false,
+//   filterValue: '',
+//   groupUpdateError: null,
+//   selectedGroupFilters: [],
+//   showGroupDialog: false,
+//   updatingGroups: false,
+// }
+
+const initialState = new GroupMap()
 
 const computeSelectedGroups = ({ devices, selectedThings }) => {
   return _(devices)
@@ -58,7 +64,6 @@ export default createReducer({
   },
   [registerRequest]: state => ({ ...state, creating: true }),
   [registerSuccess]: (state, payload) => {
-    console.log('Payload', payload);
     return {
       ...state,
       creating: false,
@@ -101,13 +106,24 @@ export default createReducer({
     }
   },
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
-  [searchRequest]: () => ({ ...initialState, fetching: true }),
+  [searchRequest]: () => initialState,
   [searchSuccess]: (state, devices) => {
-    return {
-      ...initialState,
-      devices: _.filter(devices, { type: 'octoblu:group' }),
-      fetching: false,
-    }
+
+    const groups = _.filter(devices, { type: 'octoblu:group' })
+    console.log('Groups!', groups);
+    // if (!action.entities.tasks) { return state }
+    //   return mergeEntities(state, );
+
+    return state.merge(Immutable.fromJS(groups).map((group) => {
+      console.log(group)
+      return new Group(group)
+    }))
+
+    // return {
+    //   ...initialState,
+    //   devices: _.filter(devices, { type: 'octoblu:group' }),
+    //   fetching: false,
+    // }
   },
   [dismissGroupDialog]: state => ({
     ...state,

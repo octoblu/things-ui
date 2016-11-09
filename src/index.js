@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -12,7 +13,21 @@ import reducers from './reducers/'
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
-  createLogger(),
+  createLogger({
+    stateTransformer: (state) => {
+      const newState = {}
+
+      for (const i of Object.keys(state)) {
+        if (Immutable.Iterable.isIterable(state[i])) {
+          newState[i] = state[i].toJS()
+        } else {
+          newState[i] = state[i]
+        }
+      }
+
+      return newState
+    },
+  }),
   routerMiddleware(browserHistory)
 )
 
