@@ -71,6 +71,14 @@ const ThingsLayout = (props) => {
   if (error) return <div>Error: {error.message}</div>
   if (_.isEmpty(devices)) return <div>No Things Found</div>
 
+  if (!_.isEmpty(selectedGroupFilters)){
+    const thingsInGroups = _.uniq(_.flatMap(selectedGroupFilters, 'devices'))
+    const updatedThings = _.each(thingsInGroups, (uuid) => {
+      _.includes(devices, {uuid: uuid})
+    })
+    console.log(updatedThings);
+  }
+
   return (
     <div>
       <ThingsPageHeader />
