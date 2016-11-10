@@ -1,6 +1,5 @@
 import { noop } from 'lodash'
 import React, { PropTypes } from 'react'
-import { ListItem } from 'zooid-list'
 import Button from 'zooid-button'
 
 const propTypes = {
@@ -18,17 +17,14 @@ const defaultProps = {
 }
 
 const GroupFilterListItem = ({ className, group, onUpdateGroupFilters, selected }) => {
-  return (
-    <ListItem className={className} >
-      <Button
-        block
-        kind="no-style"
-        onClick={() => onUpdateGroupFilters({ group, selected })}
-      >
-        {group.name}
-      </Button>
-    </ListItem>
-  )
+  return (<Button
+    className={className}
+    block
+    kind="no-style"
+    onClick={() => onUpdateGroupFilters({ group, selected })}
+  >
+    {group.name}
+  </Button>)
 }
 
 GroupFilterListItem.propTypes    = propTypes

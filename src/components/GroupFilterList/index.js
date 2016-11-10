@@ -44,16 +44,16 @@ const GroupFilterList = ({
   })
 
   return (<div className={styles.root}>
-    <Input
-      type="search"
-      name="filterInput"
-      autoFocus
-      placeholder="Filter..."
-      onChange={e => onFilterThings(e)}
-    />
-    <List className={styles.filters}>
+      <Input
+        type="search"
+        name="filterInput"
+        autoFocus
+        placeholder="Filter..."
+        onChange={e => onFilterThings(e)}
+      />
+    <div className={styles.filters}>
       {groupFilterListItems}
-    </List>
+    </div>
   </div>
   )
 }
