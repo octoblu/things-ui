@@ -14,22 +14,27 @@ import {
   updateDirtyGroupsFailure,
 } from '../../actions/groups'
 
+// import Group from '../../models/Group'
+import GroupMap from '../../models/GroupMap'
+
 import reducer from './'
 
 describe('Groups Reducer', () => {
-  const initialState = {
-    creating: false,
-    creatingError: null,
-    devices: [],
-    dirtyDevices: [],
-    error: null,
-    fetching: false,
-    filterValue: '',
-    groupUpdateError: null,
-    selectedGroupFilters: [],
-    showGroupDialog: false,
-    updatingGroups: false,
-  }
+  // const initialState = {
+  //   creating: false,
+  //   creatingError: null,
+  //   devices: [],
+  //   dirtyDevices: [],
+  //   error: null,
+  //   fetching: false,
+  //   filterValue: '',
+  //   groupUpdateError: null,
+  //   selectedGroupFilters: [],
+  //   showGroupDialog: false,
+  //   updatingGroups: false,
+  // }
+
+  const initialState = new GroupMap()
 
   it('should return the initial state', () => {
     expect(

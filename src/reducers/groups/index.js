@@ -108,16 +108,8 @@ export default createReducer({
   [searchFailure]: (state, error) => ({ ...initialState, error, fetching: false }),
   [searchRequest]: () => initialState,
   [searchSuccess]: (state, devices) => {
-
     const groups = _.filter(devices, { type: 'octoblu:group' })
-    console.log('Groups!', groups);
-    // if (!action.entities.tasks) { return state }
-    //   return mergeEntities(state, );
-
-    return state.merge(Immutable.fromJS(groups).map((group) => {
-      console.log(group)
-      return new Group(group)
-    }))
+    return Immutable.fromJS(groups).map(group => new Group(group))
 
     // return {
     //   ...initialState,
