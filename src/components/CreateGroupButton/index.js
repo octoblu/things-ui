@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react'
 import _ from 'lodash'
+import React, { PropTypes } from 'react'
 import Button from 'zooid-button'
 
 const propTypes = {
@@ -18,7 +18,9 @@ const CreateGroupButton = ({ nameFilter, onCreate, visible }) => {
   if (!visible) return null
 
   return (
-    <Button kind="no-style" onClick={onCreate}>Create "{nameFilter}" Group</Button>
+    <Button kind="no-style" onClick={onCreate}>
+      Create "{nameFilter}" Group
+    </Button>
   )
 }
 

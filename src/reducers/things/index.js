@@ -45,7 +45,8 @@ export default createReducer({
   [searchSuccess]: (state, devices) => {
     return {
       ...initialState,
-      devices: _.reject(devices, { type: 'octoblu:group' }),
+      // devices: _.reject(devices, { type: 'octoblu:group' }),
+      devices,
       fetching: false,
       selectedThings: [],
     }

@@ -4,6 +4,7 @@ import Page from 'zooid-page'
 
 import DeleteDialog from '../DeleteDialog'
 import GroupDialog from '../GroupDialog'
+import GroupManager from '../GroupManager'
 import GroupFilterList from '../GroupFilterList'
 import ThingList from '../ThingList'
 import ThingListActions from '../ThingListActions'
@@ -122,6 +123,8 @@ const ThingsLayout = (props) => {
         />
       </Page>
 
+
+      <GroupManager />
       <GroupDialog
         onGroupDialogDismiss={onGroupDialogDismiss}
         onUpdateGroups={onUpdateGroups}

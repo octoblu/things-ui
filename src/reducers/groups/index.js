@@ -58,11 +58,11 @@ export default createReducer({
   },
   [registerRequest]: state => ({ ...state, creating: true }),
   [registerSuccess]: (state, payload) => {
-    console.log('Payload', payload);
     return {
       ...state,
       creating: false,
       devices: [payload, ...state.devices],
+      filterValue: '',
     }
   },
   [registerFailure]: (state, payload) => {

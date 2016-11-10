@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { ListItem } from 'zooid-list'
+import MdLabel from 'react-icons/lib/md/label'
 
 import styles from './styles.css'
 
@@ -20,7 +21,11 @@ const GroupListItem = ({ group, onUpdateGroupDevices, selectedThings }) => {
 
   return (
     <ListItem className={styles.root}>
-      <span>{group.name}</span>
+      <div>
+        <MdLabel />
+        <span className={styles.groupName}>{group.name}</span>
+      </div>
+
       <input
         type="checkbox"
         checked={isSelected}

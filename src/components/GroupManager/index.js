@@ -1,17 +1,20 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
+import AddIcon from 'react-icons/lib/md/add'
 import { connect } from 'react-redux'
 import { register } from 'redux-meshblu'
+import Button from 'zooid-button'
 import Input from 'zooid-input'
 
 import CreateGroupButton from '../CreateGroupButton'
+import GroupManagerEmptyState from '../GroupManagerEmptyState'
 
 import { getMeshbluConfig } from '../../services/auth-service'
 
 import {
   addSelectedThingsToGroup,
   removeSelectedThingsFromGroup,
-    updateGroupFilter,
+  updateGroupFilter,
 } from '../../actions/groups'
 
 import GroupList from '../GroupList'
@@ -75,6 +78,8 @@ class GroupManager extends React.Component {
 
   isCreateGroupButtonVisible(filterName) {
     const { devices } = this.props.groups
+    if (_.isEmpty(devices)) return false
+
     const deviceNames = _.map(devices, device => device.name.toLowerCase())
 
     if (_.isEmpty(filterName)) return false
@@ -85,29 +90,43 @@ class GroupManager extends React.Component {
 
   render() {
     const { dispatch, groups, selectedThings } = this.props
-    const { filterValue } = groups
+    const { devices, filterValue } = groups
 
     if (_.isEmpty(selectedThings)) return null
+    if (_.isEmpty(devices)) return <GroupManagerEmptyState />
 
     return (
       <div className={styles.root}>
-        <Input
-          placeholder="Add Group"
+        {/* <Input
+          placeholder="Filter Groups"
           value={filterValue}
           onChange={({ target }) => dispatch(updateGroupFilter(target.value))}
-        />
+        /> */}
 
-        <CreateGroupButton
-          visible={this.isCreateGroupButtonVisible(filterValue)}
+        <Button kind="hollow-primary" block>
+          <AddIcon />
+          Create Group
+        </Button>
+        {/* <CreateGroupButton
+          visible={!_.isEmpty(devices)}
           nameFilter={filterValue}
           onCreate={() => this.registerGroup(filterValue)}
-        />
+        /> */}
 
         <GroupList
           groups={this.filterGroupsByName(filterValue)}
           selectedThings={selectedThings}
           onUpdateGroupDevices={this.handleUpdateGroupDevices.bind(this)}
         />
+
+        <Button
+          onClick={onUpdateGroups}
+          kind="primary"
+          disabled={updatingGroups}
+        >
+          Update
+        </Button>
+        <Button onClick={onGroupDialogDismiss}>Cancel</Button>
       </div>
     )
   }
