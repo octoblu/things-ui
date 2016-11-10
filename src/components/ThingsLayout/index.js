@@ -77,13 +77,11 @@ const ThingsLayout = (props) => {
     if (_.isEmpty(thingFilter)) return devices
 
     const filteredDevices = _.filter(devices, (device) => {
-      const matchesName = device.name.indexOf(thingFilter) !== -1
-      const matchesUuid = device.uuid.indexOf(thingFilter) !== -1
+      if (device.name && (device.name.indexOf(thingFilter) !== -1)) {
+        return (device.name.indexOf(thingFilter) !== -1)
+      }
 
-
-      if (device.name && matchesName) return matchesName
-
-      return matchesUuid
+      return device.uuid.indexOf(thingFilter) !== -1
     })
     return filteredDevices
   }
