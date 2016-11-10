@@ -73,24 +73,26 @@ const ThingsLayout = (props) => {
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
 
-  const filterThingsByString = () => {
-    if (_.isEmpty(thingFilter)) return devices
-
-    const filteredDevices = _.filter(devices, (device) => {
-      if (device.name && (device.name.indexOf(thingFilter) !== -1)) {
-        return (device.name.indexOf(thingFilter) !== -1)
+  const filterThingsByString = (thingDevices) => {
+    if (_.isEmpty(thingFilter)) return thingDevices
+    const filteredDevices = _.filter(thingDevices, (device) => {
+      const name = _.toLower(device.name)
+      if (name && _.includes(name, thingFilter)) {
+        return _.includes(name, thingFilter)
       }
 
-      return device.uuid.indexOf(thingFilter) !== -1
+      return _.includes(device.uuid, thingFilter)
     })
     return filteredDevices
   }
 
-  const filterThingsByGroups = () => {
-    if (_.isEmpty(selectedGroupFilters)) return devices
+  const filterThingsByGroups = (thingDevices) => {
+    if (_.isEmpty(selectedGroupFilters)) return thingDevices
     const filteredDevices = []
     const thingsInGroups = _.uniq(_.flatMap(selectedGroupFilters, 'devices'))
-    _.each(thingsInGroups, (uuid) => { filteredDevices.push(_.find(devices, { uuid })) })
+    _.each(thingsInGroups, (uuid) => {
+      filteredDevices.push(_.find(thingDevices, { uuid }))
+    })
     return filteredDevices
   }
 
