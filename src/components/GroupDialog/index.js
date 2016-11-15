@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { register } from 'redux-meshblu'
 import Button from 'zooid-button'
 import Dialog, { DialogActions, DialogBody, DialogHeader } from 'zooid-dialog'
 
@@ -10,10 +11,14 @@ import {
   selectGroupFilters,
   showGroupDialog,
   updateDirtyGroups,
-} from '../actions/groups'
+  updateGroupFilter,
+} from '../../actions/groups'
 
+import { getMeshbluConfig } from '../../services/auth-service'
 
 import GroupManager from '../GroupManager'
+import GroupManagerEmptyState from '../GroupManagerEmptyState'
+
 
 // const propTypes = {
 //   onGroupDialogDismiss: PropTypes.func,
@@ -36,6 +41,31 @@ const propTypes = {
 }
 
 class GroupDialog extends React.Component {
+  handleCreateGroup = () => {
+    const { dispatch, groups, selectedThings } = this.props
+    const meshbluConfig = getMeshbluConfig()
+    const ownerUuid = meshbluConfig.uuid
+    const body = {
+      description: '',
+      devices: selectedThings,
+      name: groups.filterValue,
+      owner: ownerUuid,
+      type: 'octoblu:group',
+      meshblu: {
+        whitelists: {
+          configure: {
+            update: [{ uuid: ownerUuid }],
+          },
+          discover: {
+            view: [{ uuid: ownerUuid }],
+          },
+        },
+      },
+    }
+
+    console.log('{ body, meshbluConfig }', { body, meshbluConfig });
+    return dispatch(register({ body, meshbluConfig }))
+  }
 
   handleUpdateGroups = () => {
     const { dispatch, groups } = this.props
@@ -44,23 +74,40 @@ class GroupDialog extends React.Component {
       .then(() => dispatch(dismissGroupDialog()))
   }
 
+  handleUpdateGroupFilter = (filterValue) => {
+    this.props.dispatch(updateGroupFilter(filterValue))
+  }
+
   render() {
     const { dispatch, groups } = this.props
-    const { updatingGroups } = groups
+    const { creating, devices, filterValue, showGroupDialog, updatingGroups } = groups
+
+    let dialogBody = (
+      <GroupManager
+        creating={creating}
+        filterValue={filterValue}
+        onCreateGroup={this.handleCreateGroup}
+        onUpdateGroup={this.handleUpdateGroups}
+        updateGroupFilter={this.handleUpdateGroupFilter}
+      />}
+    )
+
+    if (_.isEmpty(devices)) dialogBody = (
+      <GroupManagerEmptyState
+        creating={creating}
+        filterValue={filterValue}
+        onCreateGroup={this.handleCreateGroup}
+        updateGroupFilter={this.handleUpdateGroupFilter}
+      />
+    )
 
     return (
-      <Dialog visible={visible}>
+      <Dialog visible={showGroupDialog}>
         <DialogHeader>
           Manage Groups
         </DialogHeader>
 
-        <DialogBody>
-          <GroupManager
-            onGroupDialogDismiss={() => dispatch(dismissGroupDialog())}
-            onUpdateGroups={handleUpdateGroups}
-            updatingGroups={updatingGroups}
-          />
-        </DialogBody>
+        <DialogBody>{dialogBody}</DialogBody>
       </Dialog>
     )
   }
@@ -68,10 +115,10 @@ class GroupDialog extends React.Component {
 
 GroupDialog.propTypes = propTypes
 
-const mapStateToProps = ({ groups, things }) => {
+const mapStateToProps = ({ groups, things, dispatch }) => {
   const { selectedThings } = things
 
-  return { groups, selectedThings }
+  return { groups, selectedThings, dispatch }
 }
 
 export default connect(mapStateToProps)(GroupDialog)

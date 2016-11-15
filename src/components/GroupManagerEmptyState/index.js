@@ -1,13 +1,37 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
+import Button from 'zooid-button'
+import Input from 'zooid-input'
 
-const propTypes = {}
-const defaultProps = {}
-
-const GroupManagerEmptyState = () => {
-  return <div>GroupManagerEmptyState</div>
+const propTypes = {
+  creating: PropTypes.bool,
+  filterValue: PropTypes.string,
+  onCreateGroup: PropTypes.func,
+  updateGroupFilter: PropTypes.func,
 }
 
-GroupManagerEmptyState.propTypes    = propTypes
-GroupManagerEmptyState.defaultProps = defaultProps
+const GroupManagerEmptyState = ({ creating, filterValue, onCreateGroup, updateGroupFilter }) => {
+  return (
+    <div>
+      <p>You have no Groups yet.</p>
+      <Input
+        placeholder="Group Name"
+        value={filterValue}
+        onChange={({ target }) => updateGroupFilter(target.value)}
+      />
+
+      <Button
+        block
+        disabled={creating}
+        kind="primary"
+        onClick={onCreateGroup}
+      >
+        Create Group
+      </Button>
+    </div>
+  )
+}
+
+GroupManagerEmptyState.propTypes = propTypes
 
 export default GroupManagerEmptyState

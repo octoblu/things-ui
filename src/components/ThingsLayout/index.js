@@ -15,7 +15,6 @@ import styles from './styles.css'
 const propTypes = {
   groups: PropTypes.object,
   onGroupDialogShow: PropTypes.func,
-  onGroupDialogDismiss: PropTypes.func,
   onClearSelection: PropTypes.func,
   onDeleteDialogDismiss: PropTypes.func,
   onDeleteDialogShow: PropTypes.func,
@@ -23,29 +22,12 @@ const propTypes = {
   onFilterThings: PropTypes.func,
   onThingSelection: PropTypes.func,
   onUpdateGroupFilters: PropTypes.func,
-  onUpdateGroups: PropTypes.func,
-  showGroupDialog: PropTypes.bool,
   things: PropTypes.object.isRequired,
-}
-
-const defaultProps = {
-  onGroupDialogShow: _.noop,
-  onGroupDialogDismiss: _.noop,
-  onClearSelection: _.noop,
-  onDeleteDialogDismiss: _.noop,
-  onDeleteDialogShow: _.noop,
-  onDeleteSelection: _.noop,
-  onFilterThings: _.noop,
-  onThingSelection: _.noop,
-  onUpdateGroupFilters: _.noop,
-  onUpdateGroups: _.noop,
-  showGroupDialog: false,
 }
 
 const ThingsLayout = (props) => {
   const {
     groups,
-    onGroupDialogDismiss,
     onGroupDialogShow,
     onClearSelection,
     onDeleteDialogDismiss,
@@ -54,8 +36,6 @@ const ThingsLayout = (props) => {
     onFilterThings,
     onThingSelection,
     onUpdateGroupFilters,
-    onUpdateGroups,
-    showGroupDialog,
     things,
   } = props
 
@@ -69,7 +49,7 @@ const ThingsLayout = (props) => {
     thingFilter,
   } = things
 
-  const { selectedGroupFilters, updatingGroups } = groups
+  const { selectedGroupFilters } = groups
 
   if (fetching) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -123,14 +103,7 @@ const ThingsLayout = (props) => {
         />
       </Page>
 
-
-      <GroupManager />
-      <GroupDialog
-        onGroupDialogDismiss={onGroupDialogDismiss}
-        onUpdateGroups={onUpdateGroups}
-        updatingGroups={updatingGroups}
-        visible={showGroupDialog}
-      />
+      <GroupDialog />
 
       <DeleteDialog
         deletingThings={deletingThings}
@@ -143,7 +116,6 @@ const ThingsLayout = (props) => {
   )
 }
 
-ThingsLayout.propTypes    = propTypes
-ThingsLayout.defaultProps = defaultProps
+ThingsLayout.propTypes = propTypes
 
 export default ThingsLayout

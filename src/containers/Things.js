@@ -124,7 +124,6 @@ class Things extends React.Component {
         onFilterThings={this.handleFilterThings}
         onUpdateGroupFilters={this.handleUpdateGroupFilters}
         onUpdateGroups={this.handleUpdateGroups}
-        showGroupDialog={this.props.groups.showGroupDialog}
         things={this.props.things}
       />
     )

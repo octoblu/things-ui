@@ -7,9 +7,6 @@ import Button from 'zooid-button'
 import Input from 'zooid-input'
 
 import CreateGroupButton from '../CreateGroupButton'
-import GroupManagerEmptyState from '../GroupManagerEmptyState'
-
-import { getMeshbluConfig } from '../../services/auth-service'
 
 import {
   addSelectedThingsToGroup,
@@ -22,36 +19,14 @@ import GroupList from '../GroupList'
 import styles from './styles.css'
 
 const propTypes = {
-  groups: PropTypes.object,
-  dispatch: PropTypes.func,
-  selectedThings: PropTypes.array,
+  creating: PropTypes.bool,
+  filterValue: PropTypes.string,
+  onCreateGroup: PropTypes.func,
+  onUpdateGroups: PropTypes.func,
+  updateGroupFilter: PropTypes.func,
 }
 
 class GroupManager extends React.Component {
-  registerGroup(name) {
-    const { dispatch, selectedThings } = this.props
-    const meshbluConfig = getMeshbluConfig()
-    const ownerUuid = meshbluConfig.uuid
-    const body = {
-      description: '',
-      devices: selectedThings,
-      name,
-      owner: ownerUuid,
-      type: 'octoblu:group',
-      meshblu: {
-        whitelists: {
-          configure: {
-            update: [{ uuid: ownerUuid }],
-          },
-          discover: {
-            view: [{ uuid: ownerUuid }],
-          },
-        },
-      },
-    }
-
-    return dispatch(register({ body, meshbluConfig }))
-  }
 
   handleUpdateGroupDevices({ groupUuid, inGroup }) {
     const { dispatch, selectedThings } = this.props
@@ -89,8 +64,7 @@ class GroupManager extends React.Component {
   }
 
   render() {
-    const { dispatch, groups, selectedThings } = this.props
-    const { devices, filterValue } = groups
+    const { creating, filterValue, onCreateGroup, updateGroupFilter } = this.props
 
     if (_.isEmpty(selectedThings)) return null
     if (_.isEmpty(devices)) return <GroupManagerEmptyState />
@@ -127,8 +101,7 @@ class GroupManager extends React.Component {
           Update
         </Button>
         <Button onClick={onGroupDialogDismiss}>Cancel</Button>
-      </div>
-    )
+      </div>)
   }
 }
 
