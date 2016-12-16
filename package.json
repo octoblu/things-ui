@@ -1,6 +1,6 @@
 {
   "name": "things-ui",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "things-ui",
   "main": "index.js",
   "scripts": {
@@ -71,9 +71,9 @@
     "zooid-json-schema-editor": "^3.0.1",
     "zooid-list": "^2.1.0",
     "zooid-meshblu-device-editor": "^10.0.6",
-    "zooid-page": "^3.0.0",
-    "zooid-spinner": "^1.0.1",
-    "zooid-ui": "^8.0.0"
+    "zooid-page": "^3.0.1",
+    "zooid-spinner": "^1.0.2",
+    "zooid-ui": "^8.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.1",
