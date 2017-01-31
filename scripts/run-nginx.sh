@@ -7,7 +7,11 @@ download_index() {
 	local version="$2"
 	local index_uri="$cdn/$version/index.html"
 	echo "downloading $index_uri"
-	curl -sSl "$index_uri" -o /usr/share/nginx/html/index.html
+	curl --show-error \
+		--silent \
+		--location \
+		--fail "$index_uri" \
+		--output /usr/share/nginx/html/index.html
 }
 
 start_nginx() {
