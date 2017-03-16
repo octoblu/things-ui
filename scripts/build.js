@@ -12,12 +12,6 @@ var recursive = require('recursive-readdir')
 var filesize = require('filesize')
 var stripAnsi = require('strip-ansi')
 
-
-if (!process.env.CDN) {
-  console.log(chalk.yellow('CDN URL is required. Set the CDN environment variable'));
-  process.exit(1)
-}
-
 var paths = {
   appBuild: path.join(__dirname, '../', 'dist'),
   appPackageJson: path.join(__dirname, '../', 'package.json'),

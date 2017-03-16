@@ -1,1 +1,1 @@
-FROM octoblu/nginx:static-onbuild
+FROM octoblu/node:7-staticsite-onbuild
